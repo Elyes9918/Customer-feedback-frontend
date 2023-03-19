@@ -432,17 +432,7 @@ export const notes = [
   },
 ];
 
-export const filterStatus = [
-  { value: "Active", label: "Active" },
-  { value: "Pending", label: "Pending" },
-  { value: "Suspend", label: "Suspend" },
-];
 
-export const filterRole = [
-  { value: "investor", label: "Investor" },
-  { value: "seller", label: "Seller" },
-  { value: "buyer", label: "Buyer" },
-];
 
 export const countryOptions = [
   { value: "Canada", label: "Canada" },

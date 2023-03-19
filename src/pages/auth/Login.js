@@ -20,6 +20,7 @@ import {useState}  from 'react';
 import { useAppThunkDispatch,} from "../../app/store";
 import { LoginUserAction } from "../../features/authSlice";
 import validateEmail from "../../utils/EmailValidation";
+import { getUserByEmailAction } from "../../features/userSlice";
 
 
 const Login = () => {
@@ -46,7 +47,7 @@ const Login = () => {
           .unwrap()
           .then(() => {
             navigate(`/main`);
-  
+            window.location.reload(false);
           });
       } catch (error) {
         setError("Invalid credentials, Please try again");

@@ -8,7 +8,10 @@ import { useMatch } from 'react-router-dom';
 
 import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular";
 import { UserContextProvider } from "../pages/pre-built/user-manage/UserContext";
-import Content from "../layout/content/Content";
+
+import Content from "./content/Content";
+import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
+import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
 
 
 
@@ -75,6 +78,8 @@ const Layout = () => {
   });
 
   const isUserList = useMatch('/user-list');
+  const isUserDetails = useMatch('/user-details/:userId');
+  const isUserProfile = useMatch('/user-profile')
 
 
 
@@ -94,10 +99,11 @@ const Layout = () => {
             <Header sidebarToggle={toggleSidebar} fixed setVisibility={setVisibility} theme={themeState.header} />
             {/* <Pages /> */}
 
-             
-              {isUserList && <UserContextProvider> <UserListRegularPage/> </UserContextProvider>}
+                {isUserList &&  <UserListRegularPage/> }
+                {isUserDetails &&  <UserDetailsPage/>}
+                {isUserProfile && <UserContextProvider> <UserProfileLayout/> </UserContextProvider>}
 
-
+            
 
             <Footer />
           </div>

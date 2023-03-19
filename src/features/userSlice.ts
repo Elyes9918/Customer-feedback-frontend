@@ -5,11 +5,13 @@ import { IUser } from "../../src/types/User";
 
 
 const list : IUser[] = [];
+const user : IUser = {};
 
 const initialState = {
     list,
     listStatus: ApiStatus.ideal,
-    LoginUserFormStatus:ApiStatus.ideal
+    LoginUserFormStatus:ApiStatus.ideal,
+    user
 }
 
 export const getUserListAction = createAsyncThunk(
@@ -43,7 +45,8 @@ export const getUserByEmailAction = createAsyncThunk(
     "user/getUserByEmailAction",
     async (email:string) => {
        const response = await getUserByEmailApi(email);
-       console.log(response.data);
+       const currentUser = JSON.stringify(response.data);
+       localStorage.setItem("currentUser",currentUser);
        return response.data;
     }
 );
@@ -84,6 +87,7 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) =>{
 
+    //  GetUserList Action
     builder.addCase(getUserListAction.pending,(state)=>{
         state.listStatus = ApiStatus.loading
     });
@@ -97,6 +101,37 @@ const userSlice = createSlice({
         state.listStatus = ApiStatus.error;
       });
 
+    // GetUserById Action 
+    builder.addCase(GetUserByIdAction.pending,(state)=>{
+        state.listStatus = ApiStatus.loading
+    });
+
+    builder.addCase(GetUserByIdAction.fulfilled,(state,action)=>{
+        state.listStatus=ApiStatus.ideal;
+        state.user=action.payload;
+    });
+
+    builder.addCase(GetUserByIdAction.rejected, (state) => {
+        state.listStatus = ApiStatus.error;
+      });
+
+
+    //  GetUserByEmail Action
+    builder.addCase(getUserByEmailAction.pending,(state)=>{
+        state.listStatus = ApiStatus.loading
+    });
+
+    builder.addCase(getUserByEmailAction.fulfilled,(state,action)=>{
+        state.listStatus=ApiStatus.ideal;
+        state.user=action.payload;
+    });
+
+    builder.addCase(getUserByEmailAction.rejected, (state) => {
+        state.listStatus = ApiStatus.error;
+      });
+
+
+    
     }
 })
 

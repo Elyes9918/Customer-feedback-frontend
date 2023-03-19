@@ -3,6 +3,7 @@ import { ApiStatus } from "../../src/types/ApiStatus";
 import { IUserForm } from "../../src/types/User";
 import { ChangePasswordApi, LoginUserApi, RegisterUserApi, ResetPasswordRequestApi } from "../services/AuthService";
 import { IjwtPayload } from "../../src/types/Jwt";
+import { getUserByEmailAction } from "./userSlice";
 
 const jwtpayload : IjwtPayload = {} as any;
 
@@ -18,6 +19,8 @@ export const LoginUserAction = createAsyncThunk(
        await LoginUserApi(data).then((response)=>{
             const AccessToken = JSON.stringify(response.data.token);
             localStorage.setItem("accessToken",AccessToken);
+            // getUserByEmailAction(data.email)
+        
     
             return response.data;
         }).catch((error)=>{

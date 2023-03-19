@@ -29,7 +29,7 @@ const useRole = () => {
 	}
 }
 
-const WithPermessionTree = (props: Props) => {
+const RolesWithPermessionTree = (props: Props) => {
 	const {minRoleRequired, children} = props
 	const roles = useRole();
 
@@ -49,4 +49,4 @@ const WithPermessionTree = (props: Props) => {
 	)
 }
 
-export default WithPermessionTree
+export default RolesWithPermessionTree

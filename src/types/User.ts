@@ -1,8 +1,9 @@
 import { ApiStatus } from "./ApiStatus";
+import { IjwtPayload } from "./Jwt";
 
 export interface IUser {
     id?: string;
-    email: string;
+    email?: string;
     password?: string;
     createdAt?: string;
     modifiedAt?:string;
@@ -16,7 +17,9 @@ export interface IUser {
     projectsId?: number[];
     feedbacksId?: number[];
     roles?: string[];
-    token?:string;
+    token?:IjwtPayload;
+    isVerified?:number;
+    checked?:boolean;
   }
 
 export interface IUserForm{

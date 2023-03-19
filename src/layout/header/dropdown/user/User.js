@@ -1,15 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
 import { Icon } from "../../../../components/Component";
 import { LinkList, LinkItem } from "../../../../components/links/Links";
 import UserAvatar from "../../../../components/user/UserAvatar";
+import {currentUser} from "../../../../utils/currentUser";
+import {currentAccessToken} from "../../../../utils/currentAccessToken";
+import {  RootState, useAppSelector,useAppDispatch} from "../../../../app/store";
+import { getUserByEmailAction } from "../../../../features/userSlice";
+
+
 
 const User = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
 
+  const { user } = useAppSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  const accesToken = currentAccessToken();
+  //const cUser = currentUser();
+
+
+  useEffect(()=>{
+    // CurrentUser();
+    dispatch(getUserByEmailAction(accesToken.username));
+
+  },[])
+
   const handleSignout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("currentUser");
+
   };
 
   return (
@@ -25,8 +45,8 @@ const User = () => {
         <div className="user-toggle">
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">Administrator</div>
-            <div className="user-name dropdown-indicator">Elyes Bouallegue</div>
+            <div className="user-status">{user.id}</div>
+            <div className="user-name dropdown-indicator">{user.firstName} {user.lastName}</div>
           </div>
         </div>
       </DropdownToggle>
@@ -37,8 +57,8 @@ const User = () => {
               <span>AB</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Elyes Bouallegue</span>
-              <span className="sub-text">Elyes@wevioo.com</span>
+              <span className="lead-text">{user.firstName} {user.lastName}</span>
+              <span className="sub-text">{user.email}</span>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import menu from "./MenuData";
 import { NavLink, Link } from "react-router-dom";
 import Icon from "../../components/icon/Icon";
 import classNames from "classnames";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 
 const MenuHeading = ({ heading }) => {
   return (
@@ -12,7 +13,7 @@ const MenuHeading = ({ heading }) => {
   );
 };
 
-const MenuItem = ({ icon, link, text, sub, subPanel, panel, newTab, mobileView, sidebarToggle, badge, ...props }) => {
+const MenuItem = ({ icon, link, role,text, sub, subPanel, panel, newTab, mobileView, sidebarToggle, badge, ...props }) => {
   let currentUrl;
 
   const toggleActionSidebar = (e) => {
@@ -180,7 +181,8 @@ const MenuItem = ({ icon, link, text, sub, subPanel, panel, newTab, mobileView, 
   );
 };
 
-const PanelItem = ({ icon, link, text, subPanel, index, data, setMenuData, ...props }) => {
+const PanelItem = ({ icon, link,role, text, subPanel, index, data, setMenuData, ...props }) => {
+  
   const menuItemClass = classNames({
     "nk-menu-item": true,
   });
@@ -238,10 +240,11 @@ const PanelItem = ({ icon, link, text, subPanel, index, data, setMenuData, ...pr
   }
 };
 
-const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, ...props }) => {
+const MenuSub = ({ icon, link, text,role, sub, sidebarToggle, mobileView, ...props }) => {
   return (
     <ul className="nk-menu-sub" style={props.style}>
       {sub.map((item) => (
+        <RolesWithPermession rolesRequired={item.role}>
         <MenuItem
           link={item.link}
           icon={item.icon}
@@ -253,6 +256,7 @@ const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, ...props })
           sidebarToggle={sidebarToggle}
           mobileView={mobileView}
         />
+        </RolesWithPermession>
       ))}
     </ul>
   );
@@ -278,7 +282,9 @@ const Menu = ({ sidebarToggle, mobileView }) => {
     <ul className="nk-menu">
       {data.map((item, index) =>
         item.heading ? (
+          <RolesWithPermession rolesRequired={item.role}>
           <MenuHeading heading={item.heading} key={item.heading} />
+          </RolesWithPermession>
         ) : item.panel ? (
           <PanelItem
             key={item.text}
@@ -293,6 +299,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
             sidebarToggle={sidebarToggle}
           />
         ) : (
+          <RolesWithPermession rolesRequired={item.role}>
           <MenuItem
             key={item.text}
             link={item.link}
@@ -305,6 +312,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
             sidebarToggle={sidebarToggle}
             mobileView={mobileView}
           />
+          </RolesWithPermession>
         )
       )}
     </ul>

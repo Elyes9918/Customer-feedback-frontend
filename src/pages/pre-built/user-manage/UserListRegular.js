@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownToggle,
@@ -7,6 +7,8 @@ import {
   ModalBody,
   DropdownItem,
   Form,
+  Label,
+  Spinner,
 } from "reactstrap";
 import {
   Block,
@@ -18,7 +20,6 @@ import {
   Icon,
   Row,
   Col,
-  UserAvatar,
   PaginationComponent,
   Button,
   DataTable,
@@ -30,15 +31,20 @@ import {
   RSelect,
 } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
-import { filterRole, filterStatus, userData } from "./UserData";
 import { bulkActionOptions, findUpper } from "../../../utils/Utils";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { UserContext } from "./UserContext";
+import { useAppDispatch, useAppSelector,RootState } from "../../../app/store";
+import { getUserListAction } from "../../../features/userSlice";
+import DatePicker from "react-datepicker";
 
 const UserListRegularPage = () => {
-  const { contextData } = useContext(UserContext);
-  const [data, setData] = contextData;
+  // const { contextData } = useContext(UserContext);
+
+  const { list, listStatus } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  const [data, setData] = useState(list);
 
   const [sm, updateSm] = useState(false);
   const [tablesm, updateTableSm] = useState(false);
@@ -46,7 +52,6 @@ const UserListRegularPage = () => {
   const [onSearchText, setSearchText] = useState("");
   const [modal, setModal] = useState({
     edit: false,
-    add: false,
   });
   const [editId, setEditedId] = useState();
   const [formData, setFormData] = useState({
@@ -55,46 +60,66 @@ const UserListRegularPage = () => {
     balance: "",
     phone: "",
     status: "Active",
-  });
+  }); 
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
+  const [itemPerPage, setItemPerPage] = useState(5);
   const [sort, setSortState] = useState("");
+
+  const [selectedRole,setSelectedRole] = useState();
+  const [selectedStatus,setSelectedStatus] = useState();
+  const [filterClicked, setFilterClicked] = useState(false);
+  const [startIconDate, setStartIconDate] = useState(new Date());
+
+
+  const filterStatus = [
+    { value: "1", label: "Active" },
+    { value: "0", label: "Inactive" },
+    { value: "2", label: "Suspended" },
+  ];
+  
+   const filterRole = [
+    { value: "ROLE_ADMIN", label: "Admin" },
+    { value: "ROLE_GESTIONNAIRE", label: "Gestionnaire" },
+    { value: "ROLE_MEMBER", label: "Member" },
+    { value: "ROLE_CLIENT", label: "Client" },
+  ];
+
+
+    // unselects the data on mount
+    useEffect(() => {
+      dispatch(getUserListAction()).then((updatedList)=>{
+        setData(updatedList.payload);
+      });
+      // setData(...list);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   // Sorting data
   const sortFunc = (params) => {
-    let defaultData = data;
     if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.name.localeCompare(b.name));
-      setData([...sortedData]);
+      let sortedData = [...data].sort((a, b) => a.email.localeCompare(b.email));
+      setData(sortedData);
     } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.name.localeCompare(a.name));
-      setData([...sortedData]);
+      let sortedData = [...data].sort((a, b) => b.email.localeCompare(a.email));
+      setData(sortedData);
     }
   };
 
-  // unselects the data on mount
-  useEffect(() => {
-    let newData;
-    newData = userData.map((item) => {
-      item.checked = false;
-      return item;
-    });
-    setData([...newData]);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = userData.filter((item) => {
+      const filteredObject = list.filter((item) => {
         return (
-          item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
+          item.firstName.toLowerCase().includes(onSearchText.toLowerCase()) ||
           item.email.toLowerCase().includes(onSearchText.toLowerCase())
         );
       });
       setData([...filteredObject]);
     } else {
-      setData([...userData]);
+      setData([...list]);
     }
   }, [onSearchText, setData]);
 
@@ -113,8 +138,10 @@ const UserListRegularPage = () => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].checked = e.currentTarget.checked;
-    setData([...newData]);
+    setData([...data, ...newData]);
   };
+
+
 
   // function to reset the form
   const resetForm = () => {
@@ -129,30 +156,8 @@ const UserListRegularPage = () => {
 
   // function to close the form modal
   const onFormCancel = () => {
-    setModal({ edit: false, add: false });
+    setModal({ edit: false});
     resetForm();
-  };
-
-  // submit function to add a new item
-  const onFormSubmit = (submitData) => {
-    const { name, email, balance, phone } = submitData;
-    let submittedData = {
-      id: data.length + 1,
-      avatarBg: "purple",
-      name: name,
-      role: "Customer",
-      email: email,
-      balance: balance,
-      phone: phone,
-      emailStatus: "success",
-      kycStatus: "alert",
-      lastLogin: "10 Feb 2020",
-      status: formData.status,
-      country: "Bangladesh",
-    };
-    setData([submittedData, ...data]);
-    resetForm();
-    setModal({ edit: false }, { add: false });
   };
 
   // submit function to update a new item
@@ -196,7 +201,7 @@ const UserListRegularPage = () => {
           phone: item.phone,
           balance: item.balance,
         });
-        setModal({ edit: true }, { add: false });
+        setModal({ edit: true });
         setEditedId(id);
       }
     });
@@ -207,7 +212,7 @@ const UserListRegularPage = () => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
     newData[index].status = "Suspend";
-    setData([...newData]);
+    setData([...data, ...newData]);
   };
 
   // function to change the check property of an item
@@ -217,7 +222,8 @@ const UserListRegularPage = () => {
       item.checked = e.currentTarget.checked;
       return item;
     });
-    setData([...newData]);
+    setData([...data, ...newData]);
+
   };
 
   // function which fires on applying selected action
@@ -227,13 +233,40 @@ const UserListRegularPage = () => {
         if (item.checked === true) item.status = "Suspend";
         return item;
       });
-      setData([...newData]);
+      setData([...data, ...newData]);
     } else if (actionText === "delete") {
       let newData;
       newData = data.filter((item) => item.checked !== true);
-      setData([...newData]);
+      setData([...data, ...newData]);
     }
   };
+
+  const HandleFilterDropDown = () => {
+
+    if(selectedRole!==undefined || selectedStatus!==undefined){
+
+      const filteredObjects = data.filter((item)=>{
+        if(selectedRole===undefined && selectedStatus!==undefined){
+          return(
+            item.status===selectedStatus.value
+          );
+        }else if(selectedStatus===undefined && selectedRole!==undefined){
+          return(
+            item.roles.includes(selectedRole.value) 
+          );
+        }else{
+          return(
+            item.roles.includes(selectedRole.value) && item.status===selectedStatus.value
+          );
+        }
+       
+      })
+      setData([...filteredObjects]);
+    }else{
+      setData([...list])
+    }
+  }
+  
 
   // function to toggle the search option
   const toggle = () => setonSearch(!onSearch);
@@ -241,12 +274,25 @@ const UserListRegularPage = () => {
   // Get current list, pagination
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data.slice(indexOfFirstItem,indexOfLastItem);
+
 
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const { errors, register, handleSubmit } = useForm();
+
+
+  const reformulate = (num) =>{
+    if(num==="0"){
+      return "Inactive"
+    }else if(num==="1"){
+      return "Active"
+    }else{
+      return "Suspended"
+    }
+
+  }
 
   return (
     <React.Fragment>
@@ -255,10 +301,10 @@ const UserListRegularPage = () => {
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Users Lists
+                Users List
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total 2,595 users.</p>
+                <p>You have a total of {list.length} users.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -277,11 +323,7 @@ const UserListRegularPage = () => {
                         <span>Export</span>
                       </Button>
                     </li>
-                    <li className="nk-block-tools-opt">
-                      <Button color="primary" className="btn-icon" onClick={() => setModal({ add: true })}>
-                        <Icon name="plus"></Icon>
-                      </Button>
-                    </li>
+                   
                   </ul>
                 </div>
               </div>
@@ -386,47 +428,27 @@ const UserListRegularPage = () => {
                                   </div>
                                   <div className="dropdown-body dropdown-body-rg">
                                     <Row className="gx-6 gy-3">
-                                      <Col size="6">
-                                        <div className="custom-control custom-control-sm custom-checkbox">
-                                          <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="hasBalance"
-                                          />
-                                          <label className="custom-control-label" htmlFor="hasBalance">
-                                            {" "}
-                                            Have Balance
-                                          </label>
-                                        </div>
-                                      </Col>
-                                      <Col size="6">
-                                        <div className="custom-control custom-control-sm custom-checkbox">
-                                          <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="hasKYC"
-                                          />
-                                          <label className="custom-control-label" htmlFor="hasKYC">
-                                            {" "}
-                                            KYC Verified
-                                          </label>
-                                        </div>
-                                      </Col>
+                                      
+                                      
                                       <Col size="6">
                                         <div className="form-group">
                                           <label className="overline-title overline-title-alt">Role</label>
-                                          <RSelect options={filterRole} placeholder="Any Role" />
+                                          <RSelect options={filterRole} placeholder="Any Role" onChange={(ev)=>{
+                                            setSelectedRole(ev);
+                                          }} />
                                         </div>
                                       </Col>
                                       <Col size="6">
                                         <div className="form-group">
                                           <label className="overline-title overline-title-alt">Status</label>
-                                          <RSelect options={filterStatus} placeholder="Any Status" />
+                                          <RSelect options={filterStatus} placeholder="Any Status" onChange={(ev)=>{
+                                            setSelectedStatus(ev);
+                                          }} />
                                         </div>
                                       </Col>
                                       <Col size="12">
                                         <div className="form-group">
-                                          <button type="button" className="btn btn-secondary">
+                                          <button type="button" className="btn btn-secondary" onClick={HandleFilterDropDown}>
                                             Filter
                                           </button>
                                         </div>
@@ -443,14 +465,7 @@ const UserListRegularPage = () => {
                                     >
                                       Reset Filter
                                     </a>
-                                    <a
-                                      href="#save"
-                                      onClick={(ev) => {
-                                        ev.preventDefault();
-                                      }}
-                                    >
-                                      Save Filter
-                                    </a>
+                                    
                                   </div>
                                 </DropdownMenu>
                               </UncontrolledDropdown>
@@ -465,6 +480,18 @@ const UserListRegularPage = () => {
                                     <li>
                                       <span>Show</span>
                                     </li>
+                                    <li className={itemPerPage === 5 ? "active" : ""}>
+                                      <DropdownItem
+                                        tag="a"
+                                        href="#dropdownitem"
+                                        onClick={(ev) => {
+                                          ev.preventDefault();
+                                          setItemPerPage(5);
+                                        }}
+                                      >
+                                        5
+                                      </DropdownItem>
+                                    </li>
                                     <li className={itemPerPage === 10 ? "active" : ""}>
                                       <DropdownItem
                                         tag="a"
@@ -475,18 +502,6 @@ const UserListRegularPage = () => {
                                         }}
                                       >
                                         10
-                                      </DropdownItem>
-                                    </li>
-                                    <li className={itemPerPage === 15 ? "active" : ""}>
-                                      <DropdownItem
-                                        tag="a"
-                                        href="#dropdownitem"
-                                        onClick={(ev) => {
-                                          ev.preventDefault();
-                                          setItemPerPage(15);
-                                        }}
-                                      >
-                                        15
                                       </DropdownItem>
                                     </li>
                                   </ul>
@@ -531,6 +546,7 @@ const UserListRegularPage = () => {
                   </ul>
                 </div>
               </div>
+
               <div className={`card-search search-wrap ${!onSearch && "active"}`}>
                 <div className="card-body">
                   <div className="search-content">
@@ -559,22 +575,12 @@ const UserListRegularPage = () => {
             </div>
             <DataTableBody>
               <DataTableHead>
-                <DataTableRow className="nk-tb-col-check">
-                  <div className="custom-control custom-control-sm custom-checkbox notext">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      onChange={(e) => selectorCheck(e)}
-                      id="uid"
-                    />
-                    <label className="custom-control-label" htmlFor="uid"></label>
-                  </div>
-                </DataTableRow>
+              
                 <DataTableRow>
-                  <span className="sub-text">User</span>
+                  <span className="sub-text">Email</span>
                 </DataTableRow>
                 <DataTableRow size="mb">
-                  <span className="sub-text">Balance</span>
+                  <span className="sub-text">Name</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Phone</span>
@@ -583,7 +589,7 @@ const UserListRegularPage = () => {
                   <span className="sub-text">Verified</span>
                 </DataTableRow>
                 <DataTableRow size="lg">
-                  <span className="sub-text">Last Login</span>
+                  <span className="sub-text">Last Modified</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Status</span>
@@ -640,7 +646,7 @@ const UserListRegularPage = () => {
                 ? currentItems.map((item) => {
                     return (
                       <DataTableItem key={item.id}>
-                        <DataTableRow className="nk-tb-col-check">
+                        {/* <DataTableRow className="nk-tb-col-check">
                           <div className="custom-control custom-control-sm custom-checkbox notext">
                             <input
                               type="checkbox"
@@ -652,95 +658,56 @@ const UserListRegularPage = () => {
                             />
                             <label className="custom-control-label" htmlFor={item.id + "uid1"}></label>
                           </div>
-                        </DataTableRow>
+                        </DataTableRow> */}
                         <DataTableRow>
-                          <Link to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}>
+                          <Link to={`${process.env.PUBLIC_URL}/user-details/${item.id}`}>
                             <div className="user-card">
-                              <UserAvatar
-                                theme={item.avatarBg}
-                                text={findUpper(item.name)}
-                                image={item.image}
-                              ></UserAvatar>
+                             
                               <div className="user-info">
                                 <span className="tb-lead">
-                                  {item.name}{" "}
-                                  <span
-                                    className={`dot dot-${
-                                      item.status === "Active"
-                                        ? "success"
-                                        : item.status === "Pending"
-                                        ? "warning"
-                                        : "danger"
-                                    } d-md-none ms-1`}
-                                  ></span>
+                                  {item.email}{" "}
                                 </span>
-                                <span>{item.email}</span>
                               </div>
                             </div>
                           </Link>
                         </DataTableRow>
                         <DataTableRow size="mb">
-                          <span className="tb-amount">
-                            {item.balance} <span className="currency">USD</span>
-                          </span>
+                            {item.firstName} {item.lastName} 
                         </DataTableRow>
                         <DataTableRow size="md">
-                          <span>{item.phone}</span>
+                          <span>{item.phoneNumber}</span>
                         </DataTableRow>
                         <DataTableRow size="lg">
                           <ul className="list-status">
                             <li>
                               <Icon
                                 className={`text-${
-                                  item.emailStatus === "success"
+                                  item.isVerified === 1
                                     ? "success"
-                                    : item.emailStatus === "pending"
-                                    ? "info"
+              
                                     : "secondary"
                                 }`}
                                 name={`${
-                                  item.emailStatus === "success"
+                                  item.isVerified === 1
                                     ? "check-circle"
-                                    : item.emailStatus === "alert"
-                                    ? "alert-circle"
                                     : "alarm-alt"
                                 }`}
                               ></Icon>{" "}
                               <span>Email</span>
                             </li>
-                            <li>
-                              <Icon
-                                className={`text-${
-                                  item.kycStatus === "success"
-                                    ? "success"
-                                    : item.kycStatus === "pending"
-                                    ? "info"
-                                    : item.kycStatus === "warning"
-                                    ? "warning"
-                                    : "secondary"
-                                }`}
-                                name={`${
-                                  item.kycStatus === "success"
-                                    ? "check-circle"
-                                    : item.kycStatus === "pending"
-                                    ? "alarm-alt"
-                                    : "alert-circle"
-                                }`}
-                              ></Icon>{" "}
-                              <span>KYC</span>
-                            </li>
+                           
                           </ul>
                         </DataTableRow>
                         <DataTableRow size="lg">
-                          <span>{item.lastLogin}</span>
+                          <span>{item.createdAt}</span>
                         </DataTableRow>
                         <DataTableRow size="md">
                           <span
                             className={`tb-status text-${
-                              item.status === "Active" ? "success" : item.status === "Pending" ? "warning" : "danger"
+                              item.status === "1" ? "success" : item.status === "0" ? "warning" : "danger"
                             }`}
                           >
-                            {item.status}
+                            {reformulate(item.status)}
                           </span>
                         </DataTableRow>
                         <DataTableRow className="nk-tb-col-tools">
@@ -755,7 +722,7 @@ const UserListRegularPage = () => {
                                 text="Edit"
                               />
                             </li>
-                            {item.status !== "Suspend" && (
+                            {item.status !== "2" && (
                               <React.Fragment>
                                 <li className="nk-tb-action-hidden" onClick={() => suspendUser(item.id)}>
                                   <TooltipComponent
@@ -817,136 +784,23 @@ const UserListRegularPage = () => {
                 : null}
             </DataTableBody>
             <div className="card-inner">
-              {currentItems.length > 0 ? (
+              {list.length > 0 ? (
                 <PaginationComponent
                   itemPerPage={itemPerPage}
-                  totalItems={data.length}
+                  totalItems={list.length}
                   paginate={paginate}
                   currentPage={currentPage}
                 />
               ) : (
-                <div className="text-center">
-                  <span className="text-silent">No data found</span>
-                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
+                        <Spinner type="grow" color="primary" />
+
+                      </div>
               )}
             </div>
           </DataTable>
         </Block>
-        <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#close"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Add User</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" noValidate onSubmit={handleSubmit(onFormSubmit)}>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        defaultValue={formData.name}
-                        placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Email </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="email"
-                        defaultValue={formData.email}
-                        placeholder="Enter email"
-                        ref={register({
-                          required: "This field is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "invalid email address",
-                          },
-                        })}
-                      />
-                      {errors.email && <span className="invalid">{errors.email.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Balance</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="balance"
-                        defaultValue={formData.balance}
-                        placeholder="Balance"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.balance && <span className="invalid">{errors.balance.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Phone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={formData.phone}
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="12">
-                    <div className="form-group">
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{ value: "Active", label: "Active" }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </div>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Add User
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
+      
 
         <Modal isOpen={modal.edit} toggle={() => setModal({ edit: false })} className="modal-dialog-centered" size="lg">
           <ModalBody>
@@ -964,21 +818,7 @@ const UserListRegularPage = () => {
               <h5 className="title">Update User</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        defaultValue={formData.name}
-                        placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </div>
-                  </Col>
-                  <Col md="6">
+                <Col md="6">
                     <div className="form-group">
                       <label className="form-label">Email</label>
                       <input
@@ -1000,32 +840,113 @@ const UserListRegularPage = () => {
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Balance</label>
+                      <label className="form-label">First name</label>
                       <input
                         className="form-control"
-                        type="number"
-                        name="balance"
-                        disabled
-                        defaultValue={parseFloat(formData.balance.replace(/,/g, ""))}
-                        placeholder="Balance"
+                        type="text"
+                        name="name"
+                        defaultValue={formData.name}
+                        placeholder="Enter name"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.balance && <span className="invalid">{errors.balance.message}</span>}
+                      {errors.name && <span className="invalid">{errors.name.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Phone</label>
+                      <label className="form-label">Last name</label>
                       <input
                         className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={Number(formData.phone)}
+                        type="text"
+                        name="name"
+                        defaultValue={formData.name}
+                        placeholder="Enter name"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
+                      {errors.name && <span className="invalid">{errors.name.message}</span>}
                     </div>
                   </Col>
+                  <Col md="6">
+                    <div className="form-group">
+                    <Label>Birth date</Label>
+                  <div className="form-control-wrap">
+                   
+                    <DatePicker
+                      selected={startIconDate}
+                      className="form-control date-picker"
+                      onChange={setStartIconDate}
+                    />
+                  </div>
+                  </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">Phone number</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="name"
+                        defaultValue={formData.name}
+                        placeholder="Enter name"
+                        ref={register({ required: "This field is required" })}
+                      />
+                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">Company</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="name"
+                        defaultValue={formData.name}
+                        placeholder="Enter name"
+                        ref={register({ required: "This field is required" })}
+                      />
+                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                    </div>
+                  </Col>
+                  <Col md="12">
+                    <div className="form-group">
+                      <label className="form-label">Roles</label>
+                      <ul className="custom-control-group g-5 align-center">
+                      <li>
+                        <div className="custom-control custom-control-sm custom-checkbox">
+                          <input type="checkbox" className="custom-control-input" id="admin" />
+                          <label className="custom-control-label" htmlFor="admin">
+                            Admin
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="custom-control custom-control-sm custom-checkbox">
+                          <input type="checkbox" className="custom-control-input" id="gestionnaire" />
+                          <label className="custom-control-label " htmlFor="gestionnaire">
+                            Gestionnaire
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="custom-control custom-control-sm custom-checkbox">
+                          <input type="checkbox" className="custom-control-input" id="member" />
+                          <label className="custom-control-label" htmlFor="member">
+                            Member
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="custom-control custom-control-sm custom-checkbox">
+                          <input type="checkbox" className="custom-control-input" id="client" />
+                          <label className="custom-control-label" htmlFor="client">
+                            Client
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                    </div>
+                  </Col>
+              
                   <Col md="12">
                     <div className="form-group">
                       <label className="form-label">Status</label>
@@ -1067,6 +988,7 @@ const UserListRegularPage = () => {
             </div>
           </ModalBody>
         </Modal>
+
       </Content>
     </React.Fragment>
   );

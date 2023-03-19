@@ -71,7 +71,7 @@ const Register = () => {
               <BlockContent>
                 <BlockTitle tag="h4">Register</BlockTitle>
                 <BlockDes>
-                  <p>Create New Customer Feedback Account</p>
+                  <p>Create a new Customer Feedback account</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
