@@ -9,17 +9,14 @@ import { useMatch } from 'react-router-dom';
 import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular";
 import { UserContextProvider } from "../pages/pre-built/user-manage/UserContext";
 
-import Content from "./content/Content";
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
 
 
 
-
-
 const Layout = () => {
   //Sidebar
-  const [mobileView, setMobileView] = useState();
+  const [mobileView, setMobileView] = useState(false);
   const [visibility, setVisibility] = useState(false);
   const [themeState] = useState({
     main: "default",
@@ -51,8 +48,8 @@ const Layout = () => {
   }, [visibility]);
 
   // function to toggle sidebar
-  const toggleSidebar = (e) => {
-    e.preventDefault();
+  const toggleSidebar = () => {
+    
     if (visibility === false) {
       setVisibility(true);
     } else {

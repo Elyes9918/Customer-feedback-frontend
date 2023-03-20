@@ -1,4 +1,4 @@
-import React from "react";
+import  { FC } from "react";
 import classNames from "classnames";
 import Toggle from "../sidebar/Toggle";
 import Logo from "../logo/Logo";
@@ -6,14 +6,23 @@ import User from "./dropdown/user/User";
 import Notification from "./dropdown/notification/Notification";
 import HeaderSearch from "../header-search/HeaderSearch";
 
-const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
+interface HeaderProps {
+  fixed: boolean;
+  theme: string;
+  className?: string;
+  sidebarToggle: () => void;
+  setVisibility: (visible: boolean) => void;
+}
+
+const Header: FC<HeaderProps> = ({ fixed, theme, className, setVisibility, sidebarToggle }) => {
   const headerClass = classNames({
     "nk-header": true,
     "nk-header-fixed": fixed,
-    [`is-light`]: theme === "white",
+    "is-light": theme === "white",
     [`is-${theme}`]: theme !== "white" && theme !== "light",
     [`${className}`]: className,
   });
+
   return (
     <div className={headerClass}>
       <div className="container-fluid">
@@ -22,7 +31,7 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
             <Toggle
               className="nk-nav-toggle nk-quick-nav-icon d-xl-none ms-n1"
               icon="menu"
-              click={props.sidebarToggle}
+              click={sidebarToggle}
             />
           </div>
           <div className="nk-header-brand d-xl-none">
@@ -33,11 +42,10 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
           </div>
           <div className="nk-header-tools">
             <ul className="nk-quick-nav">
-            
-              <li className="notification-dropdown me-n1"  onClick={() => setVisibility(false)}>
+              <li className="notification-dropdown me-n1" onClick={() => setVisibility(false)}>
                 <Notification />
               </li>
-              <li className="user-dropdown"  onClick={() => setVisibility(false)}>
+              <li className="user-dropdown" onClick={() => setVisibility(false)}>
                 <User />
               </li>
             </ul>
@@ -47,4 +55,5 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
     </div>
   );
 };
+
 export default Header;

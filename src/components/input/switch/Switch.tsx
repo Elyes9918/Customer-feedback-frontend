@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-const InputSwitch = ({ label, id, checked }) => {
+interface InputSwitchProps {
+  label?:string,
+  id?:string,
+  checked?:Boolean
+}
+
+const InputSwitch: React.FC<InputSwitchProps>  = ({ label, id, checked }) => {
   const [inputCheck, setCheck] = useState(checked ? true : false);
 
   return (

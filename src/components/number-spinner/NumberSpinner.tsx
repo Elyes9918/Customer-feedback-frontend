@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import { Icon, Button } from "../Component";
 
-const NSComponent = ({ max, min, step, outline, color, defaultVal }) => {
-  const [value, setValue] = useState(defaultVal);
-  const addVal = (n) => {
+interface NSComponentProps {
+  max: number;
+  min: number;
+  step?: number;
+  outline?: boolean;
+  color: string;
+  defaultVal: number;
+}
+
+const NSComponent: React.FC<NSComponentProps> = ({ max, min, step, outline, color, defaultVal }) => {
+  const [value, setValue] = useState<number>(defaultVal);
+  const addVal = (n: number): void => {
     if (value !== max) {
       if (step) {
         n = step;
@@ -11,7 +20,7 @@ const NSComponent = ({ max, min, step, outline, color, defaultVal }) => {
       setValue(value + n);
     }
   };
-  const reduceVal = (n) => {
+  const reduceVal = (n: number): void => {
     if (value > 0 && value !== min) {
       if (step) {
         n = step;
@@ -35,7 +44,7 @@ const NSComponent = ({ max, min, step, outline, color, defaultVal }) => {
         type="number"
         className="form-control number-spinner"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => setValue(parseInt(e.target.value))}
         max={max}
         min={min}
       />{" "}

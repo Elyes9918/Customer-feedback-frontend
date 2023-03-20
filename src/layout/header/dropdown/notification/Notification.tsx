@@ -4,12 +4,19 @@ import { DropdownToggle, DropdownMenu, UncontrolledDropdown } from "reactstrap";
 import Icon from "../../../../components/icon/Icon";
 import data from "./NotificationData";
 
-const NotificationItem = (props) => {
-  const { icon, iconStyle, text, time, id } = props;
+interface NotificationItemProps {
+  icon: string;
+  iconStyle?: string;
+  text: string;
+  time: string;
+  id: string;
+}
+
+const NotificationItem: React.FC<NotificationItemProps> = ({ icon, iconStyle, text, time, id }) => {
   return (
     <div className="nk-notification-item" key={id} id={id}>
       <div className="nk-notification-icon">
-        <Icon name={icon} className={[`icon-circle ${iconStyle ? " " + iconStyle : ""}`]} />
+      <Icon name={icon} className={`icon-circle${iconStyle ? ` ${iconStyle}` : ""}`} />
       </div>
       <div className="nk-notification-content">
         <div className="nk-notification-text">{text}</div>

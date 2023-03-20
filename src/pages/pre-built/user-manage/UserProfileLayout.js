@@ -8,12 +8,20 @@ import { Route, Routes, Link } from "react-router-dom";
 import { Icon, UserAvatar } from "../../../components/Component";
 import { findUpper } from "../../../utils/Utils";
 import { Card, DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle } from "reactstrap";
-import AuthProtectedRoutes from '../../../routesProtectionComponents/AuthProtectedRoutes';
-import RoleProtectedRoutes from '../../../routesProtectionComponents/RoleProtectedRoutes';
+import currentUser from "../../../utils/currentUser";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
+import { GetUserByIdAction, getUserByEmailAction } from "../../../features/userSlice";
+import currentAccessToken from "../../../utils/currentAccessToken";
 
 
 
 const UserProfileLayout = () => {
+
+  const token = currentAccessToken();
+  const {user,listStatus} = useAppSelector((state)=>state.user)
+  const dispatch = useAppDispatch();
+  const [fullName,setFullName]=useState("");
+
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const [profileName, setProfileName] = useState("Abu Bin Ishtiak");
@@ -31,6 +39,7 @@ const UserProfileLayout = () => {
   };
 
   useEffect(() => {
+    dispatch(getUserByEmailAction(token.username));
     viewChange();
     window.addEventListener("load", viewChange);
     window.addEventListener("resize", viewChange);
@@ -42,6 +51,8 @@ const UserProfileLayout = () => {
       window.removeEventListener("load", viewChange);
     };
   }, []);
+
+
 
   return (
     <React.Fragment>
@@ -56,10 +67,10 @@ const UserProfileLayout = () => {
               <div className="card-inner-group">
                 <div className="card-inner">
                   <div className="user-card">
-                    <UserAvatar text={findUpper(profileName)} theme="primary" />
+                    <UserAvatar text={findUpper(user.firstName+" "+user.lastName)} theme="primary" />
                     <div className="user-info">
-                      <span className="lead-text">{profileName}</span>
-                      <span className="sub-text">info@softnio.com</span>
+                      <span className="lead-text">{user.firstName} {user.lastName}</span>
+                      <span className="sub-text">{user.email}</span>
                     </div>
                     <div className="user-action">
                       <UncontrolledDropdown>
@@ -100,16 +111,7 @@ const UserProfileLayout = () => {
                 </div>
                 <div className="card-inner">
                   <div className="user-account-info py-0">
-                    <h6 className="overline-title-alt">Nio Wallet Account</h6>
-                    <div className="user-balance">
-                      12.395769 <small className="currency currency-btc">BTC</small>
-                    </div>
-                    <div className="user-balance-sub">
-                      Locked{" "}
-                      <span>
-                        0.344939 <span className="currency currency-btc">BTC</span>
-                      </span>
-                    </div>
+                    <h6 className="overline-title-alt">Customer Feedback account</h6>
                   </div>
                 </div>
                 <div className="card-inner p-0">
@@ -132,6 +134,23 @@ const UserProfileLayout = () => {
                       >
                         <Icon name="bell-fill"></Icon>
                         <span>Notification</span>
+                      </Link>
+                    </li>
+                    <li onClick={() => {}}>
+                      <Link
+                        
+                      >
+                        <Icon name="contact-fill"></Icon>
+                        <span>My Projects</span>
+                      </Link>
+                    </li>
+                    <li onClick={() => {}}>
+                      <Link
+                        
+                      >
+                        <Icon name="files"></Icon>
+                        <span>My Feedbacks</span>
+                        
                       </Link>
                     </li>
                     

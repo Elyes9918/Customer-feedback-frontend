@@ -16,10 +16,14 @@ import {
 } from "../../../components/Component";
 import { countryOptions, userData } from "./UserData";
 import { getDateStructured } from "../../../utils/Utils";
+import { useAppSelector } from "../../../app/store";
 
 const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
+
+  const {user,listStatus} = useAppSelector((state)=>state.user)
+
   const [modalTab, setModalTab] = useState("1");
-  const [userInfo, setUserInfo] = useState(userData[0]);
+  const [userInfo, setUserInfo] = useState(user);
   const [formData, setFormData] = useState({
     name: "Abu Bin Ishtiak",
     displayName: "Ishtiak",
@@ -55,7 +59,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <BlockHeadContent>
             <BlockTitle tag="h4">Personal Information</BlockTitle>
             <BlockDes>
-              <p>Basic info, like your name and address, that you use on Nio Platform.</p>
+              <p>Information related to your account on our platform Customer feedback.</p>
             </BlockDes>
           </BlockHeadContent>
           <BlockHeadContent className="align-self-start d-lg-none">
@@ -77,7 +81,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Full Name</span>
-              <span className="data-value">{userInfo.name}</span>
+              <span className="data-value">{userInfo.firstName} {userInfo.lastName}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -85,21 +89,10 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
               </span>
             </div>
           </div>
-          <div className="data-item" onClick={() => setModal(true)}>
-            <div className="data-col">
-              <span className="data-label">Display Name</span>
-              <span className="data-value">{userInfo.displayName}</span>
-            </div>
-            <div className="data-col data-col-end">
-              <span className="data-more">
-                <Icon name="forward-ios"></Icon>
-              </span>
-            </div>
-          </div>
-          <div className="data-item">
+          <div className="data-item" >
             <div className="data-col">
               <span className="data-label">Email</span>
-              <span className="data-value">info@softnio.com</span>
+              <span className="data-value">{userInfo.email}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more disable">
@@ -109,8 +102,19 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           </div>
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
+              <span className="data-label">Company</span>
+              <span className="data-value">{userInfo.company}</span>
+            </div>
+            <div className="data-col data-col-end">
+              <span className="data-more">
+                <Icon name="forward-ios"></Icon>
+              </span>
+            </div>
+          </div>
+          <div className="data-item" onClick={() => setModal(true)}>
+            <div className="data-col">
               <span className="data-label">Phone Number</span>
-              <span className="data-value text-soft">{userInfo.phone}</span>
+              <span className="data-value text-soft">{userInfo.phoneNumber}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -121,7 +125,7 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
           <div className="data-item" onClick={() => setModal(true)}>
             <div className="data-col">
               <span className="data-label">Date of Birth</span>
-              <span className="data-value">{userInfo.dob}</span>
+              <span className="data-value">{userInfo.birthDate}</span>
             </div>
             <div className="data-col data-col-end">
               <span className="data-more">
@@ -133,9 +137,9 @@ const UserProfileRegularPage = ({ sm, updateSm, setProfileName }) => {
             <div className="data-col">
               <span className="data-label">Address</span>
               <span className="data-value">
-                {userInfo.address},
+                {userInfo.address}
                 <br />
-                {userInfo.state}, {userInfo.country}
+               {userInfo.country}
               </span>
             </div>
             <div className="data-col data-col-end">

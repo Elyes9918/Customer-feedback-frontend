@@ -1,7 +1,3 @@
-import React from "react";
-import LogoLight2x from "../../images/logo2x.png";
-import LogoDark2x from "../../images/logo-dark2x.png";
-import LogoSmall from "../../images/logo-small.png";
 import {Link} from "react-router-dom";
 import weviooILogo from "../../images/weviooI-logo.png";
 import weviootext from "../../images/wevioo-text.png";

@@ -19,11 +19,7 @@ const menu = [
         link: "/user-profile",
         role:"ADMIN"
       },
-      {
-        text: "User Details",
-        link: "/user-details",
-        role:"ADMIN"
-      }
+
     ],
   },
   {

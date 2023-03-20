@@ -18,7 +18,6 @@ export const getUserListAction = createAsyncThunk(
     "user/getUserListAction",
     async () => {
        const response = await getUserListApi();
-       console.log(response.data);
        return response.data;
     }
 );
@@ -27,7 +26,6 @@ export const UpdateUserAction = createAsyncThunk(
     "user/UpdateUserAction",
     async (data:IUser) => {
        const response = await updateUserApi(data);
-       console.log(response.data);
        return response.data;
     }
 );
@@ -36,7 +34,6 @@ export const GetUserByIdAction = createAsyncThunk(
     "user/GetUserByIdAction",
     async (id:number) => {
        const response = await getUserByIdApi(id);
-       console.log(response.data);
        return response.data;
     }
 );
@@ -55,7 +52,6 @@ export const unAssignRoleAction = createAsyncThunk(
     "user/unAssignRoleAction",
     async (data:IUser) => {
        const response = await unAssignRoleApi(data);
-       console.log(response.data);
        return response.data;
     }
 );
@@ -64,14 +60,12 @@ export const unAssignProjectAction = createAsyncThunk(
     "user/unAssignProjectAction",
     async (data:IUser) => {
        const response = await unAssignProjectApi(data);
-       console.log(response.data);
        return response.data;
     }
 );
 
 export const unAssignFeedbackAction = createAsyncThunk("user/unAssignFeedbackAction", async (data : IUser) => {
     const response = await unAssignFeedbackApi(data);
-    console.log(response.data);
     return response.data;
 });
 

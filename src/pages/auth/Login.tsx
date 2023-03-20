@@ -20,7 +20,7 @@ import {useState}  from 'react';
 import { useAppThunkDispatch,} from "../../app/store";
 import { LoginUserAction } from "../../features/authSlice";
 import validateEmail from "../../utils/EmailValidation";
-import { getUserByEmailAction } from "../../features/userSlice";
+import { IUserForm } from "../../types/User";
 
 
 const Login = () => {
@@ -31,7 +31,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppThunkDispatch();
 
-  const onFormSubmit = async (data) => {
+  const onFormSubmit = async (data:IUserForm) => {
     setLoading(true);
     const user  = {
       email: data?.email,
@@ -47,7 +47,7 @@ const Login = () => {
           .unwrap()
           .then(() => {
             navigate(`/main`);
-            window.location.reload(false);
+            window.location.reload();
           });
       } catch (error) {
         setError("Invalid credentials, Please try again");

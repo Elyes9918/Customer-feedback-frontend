@@ -28,6 +28,12 @@ export interface IUserForm{
   token?:string;
 }
 
+export interface RegisterUser{
+  email?:string;
+  password?:string;
+  cPassword?:string
+}
+
 interface IUserState{
     list: IUser[],
     listStatus: ApiStatus,

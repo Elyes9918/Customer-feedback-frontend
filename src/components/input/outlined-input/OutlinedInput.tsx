@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Icon } from "../../Component";
 
-const OutlinedInput = ({ label, size, id, icon }) => {
+interface OutlinedInputProps {
+  label: string;
+  size?: string;
+  id: string;
+  icon?: string;
+}
+
+const OutlinedInput: React.FC<OutlinedInputProps> = ({ label, size, id, icon }) => {
   const [focus, setFocus] = useState(false);
   return (
     <div className={`form-control-wrap ${focus ? "focused" : ""}`}>

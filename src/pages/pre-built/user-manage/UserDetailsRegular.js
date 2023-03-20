@@ -19,7 +19,7 @@ import { useHistory } from "react-router";
 import Content from "../../../layout/content/Content";
 import { currentTime, findUpper, monthNames, todaysDate } from "../../../utils/Utils";
 import { notes } from "./UserData";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { GetUserByIdAction } from "../../../features/userSlice";
 import { ApiStatus } from "../../../types/ApiStatus";
@@ -33,6 +33,7 @@ const UserDetailsPage = () => {
 
   const {user,listStatus} = useAppSelector((state)=>state.user);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
 
   const [sideBar, setSidebar] = useState(false);
@@ -40,6 +41,7 @@ const UserDetailsPage = () => {
   const [addNoteModal, setAddNoteModal] = useState(false);
   const [addNoteText, setAddNoteText] = useState("");
   const history = useHistory();
+  
 
   // grabs the id of the url and loads the corresponding data
   useEffect(() => {
@@ -127,7 +129,7 @@ const UserDetailsPage = () => {
                   color="light"
                   outline
                   className="bg-white d-none d-sm-inline-flex"
-                  onClick={() => history.goBack()}
+                  onClick={() => navigate("/user-list")}
                 >
                   <Icon name="arrow-left"></Icon>
                   <span>Back</span>
@@ -136,7 +138,7 @@ const UserDetailsPage = () => {
                   href="#back"
                   onClick={(ev) => {
                     ev.preventDefault();
-                    history.goBack();
+                    navigate("/user-list");
                   }}
                   className="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"
                 >
@@ -240,6 +242,18 @@ const UserDetailsPage = () => {
                               <span className="profile-ud-value">{formatRoles(user.roles)}</span>
                             </div>
                           </div>
+                          <div className="profile-ud-item">
+                              <div className="profile-ud wider">
+                                <span className="profile-ud-label">Country</span>
+                                <span className="profile-ud-value">Tunisia</span>
+                              </div>
+                            </div>
+                            <div className="profile-ud-item">
+                              <div className="profile-ud wider">
+                                <span className="profile-ud-label">Nationality</span>
+                                <span className="profile-ud-value">Tunisian</span>
+                              </div>
+                            </div>
                         </div>
                       </Block><Block>
                           <BlockHead className="nk-block-head-line">
@@ -250,8 +264,20 @@ const UserDetailsPage = () => {
                           <div className="profile-ud-list">
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Joining Date</span>
+                                <span className="profile-ud-label">Date of creation</span>
                                 <span className="profile-ud-value">{user.createdAt}</span>
+                              </div>
+                            </div>
+                            <div className="profile-ud-item">
+                              <div className="profile-ud wider">
+                                <span className="profile-ud-label">Last modified</span>
+                                <span className="profile-ud-value">{user.modifiedAt}</span>
+                              </div>
+                            </div>
+                            <div className="profile-ud-item">
+                              <div className="profile-ud wider">
+                                <span className="profile-ud-label">Last login</span>
+                                <span className="profile-ud-value">{user.modifiedAt}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
@@ -260,18 +286,7 @@ const UserDetailsPage = () => {
                                 <span className="profile-ud-value">Email</span>
                               </div>
                             </div>
-                            <div className="profile-ud-item">
-                              <div className="profile-ud wider">
-                                <span className="profile-ud-label">Country</span>
-                                <span className="profile-ud-value">Tunisia</span>
-                              </div>
-                            </div>
-                            <div className="profile-ud-item">
-                              <div className="profile-ud wider">
-                                <span className="profile-ud-label">Nationality</span>
-                                <span className="profile-ud-value">Tunisia</span>
-                              </div>
-                            </div>
+                          
                           </div>
                         </Block>
                         </>

@@ -12,7 +12,7 @@ const AuthFooter = () => {
     <div className="nk-footer nk-auth-footer-full">
       <div className="container wide-lg">
         <Row className="g-3">
-          <Col lg={6} className="order-lg-last">
+          <Col lg="6" className="order-lg-last">
             <ul className="nav nav-sm justify-content-center justify-content-lg-end">
               <li className="nav-item">
                 <Link className="nav-link" target="_blank" to={`${process.env.PUBLIC_URL}/auths/terms`}>

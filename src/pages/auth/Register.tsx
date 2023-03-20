@@ -20,6 +20,7 @@ import validateEmail from '../../utils/EmailValidation'
 import {  useAppDispatch } from '../../app/store';
 import { useNavigate } from 'react-router-dom';
 import {  RegisterUserAction } from '../../features/authSlice';
+import { IUserForm, RegisterUser } from "../../types/User";
 
 
 
@@ -34,7 +35,9 @@ const Register = () => {
   const dispatch = useAppDispatch();
 
 
-  const handleFormSubmit = (data) => {
+  
+
+  const handleFormSubmit = (data:RegisterUser) => {
     setLoading(true);
     const user = {
       email: data?.email,
@@ -94,7 +97,6 @@ const Register = () => {
                 <div className="form-control-wrap">
                   <input
                     type="text"
-                    bssize="lg"
                     id="default-01"
                     name="email"
                     ref={register({ required: true })}

@@ -24,7 +24,7 @@ import NioIconCard from "./partials/nioIcon/NioIcon";
 import { ProjectCard, ProjectBody, ProjectHead } from "./partials/project-card/ProjectCard";
 import UserAvatar from "./user/UserAvatar";
 import UserGroup from "./user/UserGroup";
-import PaginationComponent from "../components/pagination/Pagination";
+import PaginationComponent from "./pagination/Pagination";
 import DataTablePagination from "./pagination/DataTablePagination";
 import {
   DataTable,
@@ -33,7 +33,7 @@ import {
   DataTableRow,
   DataTableItem,
   DataTableTitle,
-} from "../components/table/DataTable";
+} from "./table/DataTable";
 import InputSwitch from "./input/switch/Switch";
 import OutlinedInput from "./input/outlined-input/OutlinedInput";
 import { OverlineTitle } from "./text/Text";

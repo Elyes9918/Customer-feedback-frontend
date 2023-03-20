@@ -7,9 +7,24 @@ import AuthProtectedRoutes from './routesProtectionComponents/AuthProtectedRoute
 import UnProtectedRoutes from './routesProtectionComponents/UnProtectedRoutes';
 import Layout from './layout/Layout';
 import RoleProtectedRoutes from './routesProtectionComponents/RoleProtectedRoutes';
+import currentAccessToken from './utils/currentAccessToken';
 
 function App() {
+
+    if(localStorage.getItem("accessToken")){
+      const token = currentAccessToken();
+      if (token.exp * 1000 < Date.now()) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("currentUser");
+      }
+    }
+    
+    
+
   return (
+
+      // Remove access Token and user if token is expired
+
 
         <Routes>
 
