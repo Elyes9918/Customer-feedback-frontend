@@ -23,6 +23,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { GetUserByIdAction } from "../../../features/userSlice";
 import { ApiStatus } from "../../../types/ApiStatus";
+import EditUserModal from "./EditUserModal"
+
 
 
 const UserDetailsPage = () => {
@@ -40,7 +42,9 @@ const UserDetailsPage = () => {
   const [noteData, setNoteData] = useState(notes);
   const [addNoteModal, setAddNoteModal] = useState(false);
   const [addNoteText, setAddNoteText] = useState("");
-  const history = useHistory();
+
+  const [modal, setModal] = useState(false);
+  const [shouldReRenderModal, setShouldReRenderModal] = useState(false);
   
 
   // grabs the id of the url and loads the corresponding data
@@ -102,6 +106,12 @@ const UserDetailsPage = () => {
     }
     return result;
   };
+
+  const handleUserEditModal = () =>{
+        setModal(true);
+        setShouldReRenderModal(!shouldReRenderModal);
+
+  }
 
   return (
     <React.Fragment>
@@ -172,24 +182,20 @@ const UserDetailsPage = () => {
                         href="#documents"
                         onClick={(ev) => {
                           ev.preventDefault();
+                          handleUserEditModal();
                         }}
+                       
                       >
                         <Icon name="file-text"></Icon>
                         <span>Projects</span>
                       </a>
                     </li>
 
-                    <li className="nav-item">
-                      <a
-                        className="nav-link disabled"
-                        href="#documents"
-                        onClick={(ev) => {
-                          ev.preventDefault();
-                        }}
-                      >
+
+                    <li className="nav-item nav-item-trigger d-xxl-none">
+                      <Button  onClick={handleUserEditModal}>
                         <Icon name="pen2"></Icon>
-                        <span>Edit User</span>
-                      </a>
+                      </Button>
                     </li>
         
                 
@@ -396,6 +402,13 @@ const UserDetailsPage = () => {
                     </div>
                   </ModalBody>
                 </Modal>
+
+                 {/* Modal is here */}
+                 <EditUserModal 
+                  key={shouldReRenderModal}
+                  isModalOpen={modal} 
+                  userToEdit={user} 
+                  />
 
                 {/* <Sidebar toggleState={sideBar}>
                   <div className="card-inner">
