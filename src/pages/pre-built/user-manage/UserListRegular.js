@@ -37,6 +37,8 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector,RootState } from "../../../app/store";
 import { getUserListAction } from "../../../features/userSlice";
 import DatePicker from "react-datepicker";
+import { countryOptions } from "../../../utils/CountryOptions";
+
 
 const UserListRegularPage = () => {
   // const { contextData } = useContext(UserContext);
@@ -46,14 +48,13 @@ const UserListRegularPage = () => {
 
   const [data, setData] = useState(list);
 
+  
+
   const [sm, updateSm] = useState(false);
   const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
-  const [modal, setModal] = useState({
-    edit: false,
-  });
-  const [editId, setEditedId] = useState();
+  const [selectedEditUser,setSelectedEditUser] = useState();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,6 +66,11 @@ const UserListRegularPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(5);
   const [sort, setSortState] = useState("");
+
+  const [modal, setModal] = useState(false);
+  const [modalTab, setModalTab] = useState("1");
+
+
 
   const [selectedRole,setSelectedRole] = useState();
   const [selectedStatus,setSelectedStatus] = useState();
@@ -84,6 +90,11 @@ const UserListRegularPage = () => {
     { value: "ROLE_MEMBER", label: "Member" },
     { value: "ROLE_CLIENT", label: "Client" },
   ];
+
+  const EmailVerifiedOptions = [
+    {value:true,label:"Is verified"},
+    {value:false,label:"Not verified"}
+  ]
 
 
     // unselects the data on mount
@@ -133,15 +144,6 @@ const UserListRegularPage = () => {
     setSearchText(e.target.value);
   };
 
-  // function to change the selected property of an item
-  const onSelectChange = (e, id) => {
-    let newData = data;
-    let index = newData.findIndex((item) => item.id === id);
-    newData[index].checked = e.currentTarget.checked;
-    setData([...data, ...newData]);
-  };
-
-
 
   // function to reset the form
   const resetForm = () => {
@@ -154,57 +156,49 @@ const UserListRegularPage = () => {
     });
   };
 
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal({ edit: false});
-    resetForm();
-  };
+
 
   // submit function to update a new item
   const onEditSubmit = (submitData) => {
     const { name, email, phone } = submitData;
-    let submittedData;
-    let newitems = data;
-    newitems.forEach((item) => {
-      if (item.id === editId) {
-        submittedData = {
-          id: item.id,
-          avatarBg: item.avatarBg,
-          name: name,
-          image: item.image,
-          role: item.role,
-          email: email,
-          balance: formData.balance,
-          phone: "+" + phone,
-          emailStatus: item.emailStatus,
-          kycStatus: item.kycStatus,
-          lastLogin: item.lastLogin,
-          status: formData.status,
-          country: item.country,
-        };
-      }
-    });
-    let index = newitems.findIndex((item) => item.id === editId);
-    newitems[index] = submittedData;
-    setModal({ edit: false });
+    
+    setModal(false);
+    resetForm();
+  };
+
+  const onEditPersonal = (data) => {
+
+    setModal(false);
+  }
+
+  const onEditAddress = (data) => {
+
+    setModal(false);
+  }
+
+  const onEditRoles = (data) => {
+
+    setModal(false);
+  }
+
+  const onEditStatus = (data) => {
+
+    setModal(false);
+  }
+
+
+
+
+  // function to close the form modal
+  const onFormCancel = () => {
+    setModal(false);
     resetForm();
   };
 
   // function that loads the want to editted data
-  const onEditClick = (id) => {
-    data.forEach((item) => {
-      if (item.id === id) {
-        setFormData({
-          name: item.name,
-          email: item.email,
-          status: item.status,
-          phone: item.phone,
-          balance: item.balance,
-        });
-        setModal({ edit: true });
-        setEditedId(id);
-      }
-    });
+  const onEditClick = (user) => {
+        setSelectedEditUser(user);
+        setModal(true);
   };
 
   // function to change to suspend property for an item
@@ -712,7 +706,7 @@ const UserListRegularPage = () => {
                         </DataTableRow>
                         <DataTableRow className="nk-tb-col-tools">
                           <ul className="nk-tb-actions gx-1">
-                            <li className="nk-tb-action-hidden" onClick={() => onEditClick(item.id)}>
+                            <li className="nk-tb-action-hidden" onClick={() => onEditClick(item)}>
                               <TooltipComponent
                                 tag="a"
                                 containerClassName="btn btn-trigger btn-icon"
@@ -802,22 +796,75 @@ const UserListRegularPage = () => {
         </Block>
       
 
-        <Modal isOpen={modal.edit} toggle={() => setModal({ edit: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Update User</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
+        <Modal isOpen={modal} toggle={() => setModal(false)} className="modal-dialog-centered" size="lg">
+        <ModalBody>
+          <a
+            href="#dropdownitem"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setModal(false);
+            }}
+            className="close"
+          >
+            <Icon name="cross-sm"></Icon>
+          </a>
+          <div className="p-2">
+            <h5 className="title">Update User</h5>
+            <ul className="nk-nav nav nav-tabs">
+              <li className="nav-item">
+                <a
+                  className={`nav-link ${modalTab === "1" && "active"}`}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    setModalTab("1");
+                  }}
+                  href="#personal"
+                >
+                  Personal
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className={`nav-link ${modalTab === "2" && "active"}`}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    setModalTab("2");
+                  }}
+                  href="#address"
+                >
+                  Address
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className={`nav-link ${modalTab === "3" && "active"}`}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    setModalTab("3");
+                  }}
+                  href="#address"
+                >
+                  Roles
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className={`nav-link ${modalTab === "4" && "active"}`}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    setModalTab("4");
+                  }}
+                  href="#address"
+                >
+                  Status
+                </a>
+              </li>
+            </ul>
+            <div className="tab-content">
+
+
+              <div className={`tab-pane ${modalTab === "1" ? "active" : ""}`} id="personal">
+                <Form className="row gy-4" onSubmit={handleSubmit(onEditPersonal)}>
                 <Col md="6">
                     <div className="form-group">
                       <label className="form-label">Email</label>
@@ -825,7 +872,7 @@ const UserListRegularPage = () => {
                         className="form-control"
                         type="text"
                         name="email"
-                        defaultValue={formData.email}
+                        defaultValue={selectedEditUser?.email}
                         placeholder="Enter email"
                         ref={register({
                           required: "This field is required",
@@ -844,12 +891,12 @@ const UserListRegularPage = () => {
                       <input
                         className="form-control"
                         type="text"
-                        name="name"
-                        defaultValue={formData.name}
+                        name="firstName"
+                        defaultValue={selectedEditUser?.firstName}
                         placeholder="Enter name"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                      {errors.firstName && <span className="invalid">{errors.firstName.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
@@ -858,12 +905,12 @@ const UserListRegularPage = () => {
                       <input
                         className="form-control"
                         type="text"
-                        name="name"
-                        defaultValue={formData.name}
+                        name="lastName"
+                        defaultValue={selectedEditUser?.lastName}
                         placeholder="Enter name"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                      {errors.lastName && <span className="invalid">{errors.lastName.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
@@ -885,12 +932,12 @@ const UserListRegularPage = () => {
                       <input
                         className="form-control"
                         type="text"
-                        name="name"
-                        defaultValue={formData.name}
+                        name="phoneNumber"
+                        defaultValue={selectedEditUser?.phoneNumber}
                         placeholder="Enter name"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                      {errors.phoneNumber && <span className="invalid">{errors.phoneNumber.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
@@ -900,73 +947,21 @@ const UserListRegularPage = () => {
                         className="form-control"
                         type="text"
                         name="name"
-                        defaultValue={formData.name}
+                        defaultValue={selectedEditUser?.company}
                         placeholder="Enter name"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                      {errors.company && <span className="invalid">{errors.company.message}</span>}
                     </div>
                   </Col>
-                  <Col md="12">
-                    <div className="form-group">
-                      <label className="form-label">Roles</label>
-                      <ul className="custom-control-group g-5 align-center">
-                      <li>
-                        <div className="custom-control custom-control-sm custom-checkbox">
-                          <input type="checkbox" className="custom-control-input" id="admin" />
-                          <label className="custom-control-label" htmlFor="admin">
-                            Admin
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="custom-control custom-control-sm custom-checkbox">
-                          <input type="checkbox" className="custom-control-input" id="gestionnaire" />
-                          <label className="custom-control-label " htmlFor="gestionnaire">
-                            Gestionnaire
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="custom-control custom-control-sm custom-checkbox">
-                          <input type="checkbox" className="custom-control-input" id="member" />
-                          <label className="custom-control-label" htmlFor="member">
-                            Member
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="custom-control custom-control-sm custom-checkbox">
-                          <input type="checkbox" className="custom-control-input" id="client" />
-                          <label className="custom-control-label" htmlFor="client">
-                            Client
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
-                    </div>
-                  </Col>
+                  
               
-                  <Col md="12">
-                    <div className="form-group">
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{
-                            value: formData.status,
-                            label: formData.status,
-                          }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </div>
-                  </Col>
+                
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update User
+                          Update Personal information
                         </Button>
                       </li>
                       <li>
@@ -985,8 +980,236 @@ const UserListRegularPage = () => {
                   </Col>
                 </Form>
               </div>
+
+
+              <div className={`tab-pane ${modalTab === "2" ? "active" : ""}`} id="address">
+                <Form className="row gy-4" onSubmit={handleSubmit(onEditAddress)}>
+
+                <Col md="12">
+                    <div className="form-group">
+                      <label className="form-label">Address Line</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="address"
+                        defaultValue={selectedEditUser?.address}
+                        placeholder="Enter Address line"
+                        ref={register({ required: "This field is required" })}
+                      />
+                      {errors.address && <span className="invalid">{errors.address.message}</span>}
+                    </div>
+                  </Col>
+
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="address-county">
+                        Country
+                      </label>
+                      <RSelect
+                        options={countryOptions}
+                        placeholder="Select a country"
+                        defaultValue={[
+                          {
+                            value: "Tunisia",
+                            label: "Tunisia",
+                          },
+                        ]}
+                        onChange={(e) => setFormData({ ...formData, country: e.value })}
+                      />
+                    </div>
+                  </Col>
+                  
+
+
+                <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          Update Address information
+                        </Button>
+                      </li>
+                      <li>
+                        <a
+                          href="#cancel"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </a>
+                      </li>
+                    </ul>
+                  </Col>
+                          
+                </Form>
+              </div>
+
+              <div className={`tab-pane ${modalTab === "3" ? "active" : ""}`} id="address">
+                <Form className="row gy-4" onSubmit={handleSubmit(onEditRoles)}>
+
+                <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="roles">
+                       Roles
+                      </label>
+                      <RSelect
+                        options={filterRole}
+                        placeholder="Select a country"
+                        defaultValue={[
+                          {
+                            value: "ROLE_CLIENT",
+                            label: "Client",
+                          },
+                        ]}
+                        onChange={(e) => setFormData({ ...formData, country: e.value })}
+                      />
+                    </div>
+                  </Col>
+
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="roles">
+                       Add Role
+                      </label>
+                      <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          Update
+                        </Button>
+                      </li>
+                      </ul>
+                    </div>
+                  </Col>
+
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="roles">
+                       Roles
+                      </label>
+                      <RSelect
+                        options={filterRole}
+                        placeholder="Select a country"
+                        defaultValue={[
+                          {
+                            value: "ROLE_CLIENT",
+                            label: "Client",
+                          },
+                        ]}
+                        onChange={(e) => setFormData({ ...formData, country: e.value })}
+                      />
+                    </div>
+                  </Col>
+
+                  <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="roles">
+                       Remove Role
+                      </label>
+                      <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          Update
+                        </Button>
+                      </li>
+                      </ul>
+                    </div>
+                  </Col>
+
+                
+
+                 
+
+
+                <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                     
+                      <li>
+                        <a
+                          href="#cancel"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </a>
+                      </li>
+                    </ul>
+                  </Col>
+             
+                </Form>
+              </div>
+
+
+              <div className={`tab-pane ${modalTab === "4" ? "active" : ""}`} id="address">
+                <Form className="row gy-4" onSubmit={handleSubmit(onEditStatus)}>
+
+                <Col md="12">
+                    <div className="form-group">
+                      <label className="form-label">Status</label>
+                      <div className="form-control-wrap">
+                        <RSelect
+                          options={filterStatus}
+                          defaultValue={{
+                            value: selectedEditUser?.status,
+                            label: filterStatus.find((option) => option.value === selectedEditUser?.status)?.label,
+                          }}
+                          onChange={(e) => setFormData({ ...formData, status: e.value })}
+                        />
+                      </div>
+                    </div>
+                  </Col>
+
+                  <Col md="12">
+                    <div className="form-group">
+                      <label className="form-label">Email is Verified</label>
+                      <div className="form-control-wrap">
+                        <RSelect
+                          options={EmailVerifiedOptions}
+                          defaultValue={{
+                            value: selectedEditUser?.isVerified,
+                            label: selectedEditUser?.isVerified ? "Is verified" : "Not verified",
+                          }}
+                          onChange={(e) => setFormData({ ...formData, status: e.value })}
+                        />
+                      </div>
+                    </div>
+                  </Col>
+
+
+                <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          Update Status information
+                        </Button>
+                      </li>
+                      <li>
+                        <a
+                          href="#cancel"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </a>
+                      </li>
+                    </ul>
+                  </Col>
+                          
+                </Form>
+              </div>
+
+
             </div>
-          </ModalBody>
+          </div>
+        </ModalBody>
+
         </Modal>
 
       </Content>

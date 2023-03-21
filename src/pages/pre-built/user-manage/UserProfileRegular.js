@@ -14,7 +14,7 @@ import {
   Button,
   RSelect,
 } from "../../../components/Component";
-import { countryOptions, userData } from "./UserData";
+import { countryOptions } from "./UserData";
 import { getDateStructured } from "../../../utils/Utils";
 import { useAppSelector } from "../../../app/store";
 

@@ -178,13 +178,22 @@ const UserDetailsPage = () => {
                         <span>Projects</span>
                       </a>
                     </li>
+
+                    <li className="nav-item">
+                      <a
+                        className="nav-link disabled"
+                        href="#documents"
+                        onClick={(ev) => {
+                          ev.preventDefault();
+                        }}
+                      >
+                        <Icon name="pen2"></Icon>
+                        <span>Edit User</span>
+                      </a>
+                    </li>
         
                 
-                    <li className="nav-item nav-item-trigger d-xxl-none">
-                      <Button className={`toggle btn-icon btn-trigger ${sideBar && "active"}`} onClick={toggle}>
-                        <Icon name="user-list-fill"></Icon>
-                      </Button>
-                    </li>
+                    
                   </ul>
 
                   <div className="card-inner">
@@ -244,16 +253,17 @@ const UserDetailsPage = () => {
                           </div>
                           <div className="profile-ud-item">
                               <div className="profile-ud wider">
+                                <span className="profile-ud-label">Address</span>
+                                <span className="profile-ud-value">{user.address}</span>
+                              </div>
+                            </div>
+                          <div className="profile-ud-item">
+                              <div className="profile-ud wider">
                                 <span className="profile-ud-label">Country</span>
                                 <span className="profile-ud-value">Tunisia</span>
                               </div>
                             </div>
-                            <div className="profile-ud-item">
-                              <div className="profile-ud wider">
-                                <span className="profile-ud-label">Nationality</span>
-                                <span className="profile-ud-value">Tunisian</span>
-                              </div>
-                            </div>
+                            
                         </div>
                       </Block><Block>
                           <BlockHead className="nk-block-head-line">
