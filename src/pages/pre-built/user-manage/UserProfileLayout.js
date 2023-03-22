@@ -27,6 +27,7 @@ const UserProfileLayout = () => {
   const [profileName, setProfileName] = useState("Abu Bin Ishtiak");
   const [showPersonalInformation,setShowPersonalInformation] = useState(true);
   const [showNotificationPanel,setShowNotificationPanel] = useState(false);
+  const [showSettingsPanel,setShowSettingsPanel] = useState(false);
 
   // function to change the design view under 990 px
   const viewChange = () => {
@@ -116,7 +117,7 @@ const UserProfileLayout = () => {
                 </div>
                 <div className="card-inner p-0">
                   <ul className="link-list-menu">
-                    <li onClick={() => {updateSm(false);setShowNotificationPanel(false);setShowPersonalInformation(true)}}>
+                    <li onClick={() => {updateSm(false);setShowNotificationPanel(false);setShowPersonalInformation(true);setShowSettingsPanel(false);}}>
                       <Link
                         className={
                           showPersonalInformation === true ? "active" : ""
@@ -126,7 +127,19 @@ const UserProfileLayout = () => {
                         <span>Personal Information</span>
                       </Link>
                     </li>
-                    <li onClick={() => {updateSm(false);setShowNotificationPanel(true);setShowPersonalInformation(false)}}>
+                    <li onClick={() => {updateSm(false);setShowNotificationPanel(false);setShowPersonalInformation(false);
+                    setShowSettingsPanel(true);
+                    }}>
+                      <Link
+                        className={
+                          showSettingsPanel === true ?  "active" : ""
+                        }
+                      >
+                        <Icon name="bell-fill"></Icon>
+                        <span>Settings</span>
+                      </Link>
+                    </li>
+                    <li onClick={() => {updateSm(false);setShowNotificationPanel(true);setShowPersonalInformation(false);setShowSettingsPanel(false);}}>
                       <Link
                         className={
                           showNotificationPanel === true ?  "active" : ""
@@ -136,6 +149,8 @@ const UserProfileLayout = () => {
                         <span>Notification</span>
                       </Link>
                     </li>
+
+
                     <li onClick={() => {}}>
                       <Link
                         
@@ -166,6 +181,7 @@ const UserProfileLayout = () => {
               {showPersonalInformation && <UserProfileRegularPage updateSm={updateSm} sm={sm} setProfileName={setProfileName} /> }
               {showNotificationPanel && <UserProfileNotificationPage updateSm={updateSm} sm={sm} />}
               {/* {showActivityPanel && <UserProfileActivityPage updateSm={updateSm} sm={sm} />} */}
+              {showSettingsPanel && <UserProfileSettingPage updateSm={updateSm} sm={sm}/>}
               
               {/* <Routes>
               <Route element ={<AuthProtectedRoutes/>}>

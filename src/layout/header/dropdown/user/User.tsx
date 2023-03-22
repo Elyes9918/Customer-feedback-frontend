@@ -32,6 +32,18 @@ const User = () => {
 
   };
 
+  const handleRoleDesignation = (arr) => {
+
+    if(arr !== undefined){
+    if(arr.includes("ROLE_ADMIN")){ return "Administrator"}
+    else if(arr.includes("ROLE_GESTIONNAIRE")){ return "Gestionnaire"}
+    else if(arr.includes("ROLE_MEMBER")){ return "Member"}
+    else if(arr.includes("ROLE_CLIENT")){ return "Client"}
+    else return "Client"
+  }
+
+  }
+
   return (
     <Dropdown isOpen={open} className="user-dropdown" toggle={toggle}>
       <DropdownToggle
@@ -45,7 +57,7 @@ const User = () => {
         <div className="user-toggle">
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">{user.id}</div>
+            <div className="user-status">{handleRoleDesignation(user.roles)}</div>
             <div className="user-name dropdown-indicator">{user.firstName} {user.lastName}</div>
           </div>
         </div>
@@ -64,11 +76,8 @@ const User = () => {
         </div>
         <div className="dropdown-inner">
           <LinkList>
-            <LinkItem link="/user-profile-regular" icon="user-alt" onClick={toggle}>
+            <LinkItem link="/user-profile" icon="user-alt" onClick={toggle}>
               View Profile
-            </LinkItem>
-            <LinkItem link="/user-profile-setting" icon="setting-alt" onClick={toggle}>
-              Account Setting
             </LinkItem>
             <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>
               Login Activity

@@ -46,7 +46,7 @@ const Login = () => {
         await dispatch(LoginUserAction(user))
           .unwrap()
           .then(() => {
-            navigate(`/main`);
+            navigate(`/dashboard`);
             window.location.reload();
           });
       } catch (error) {

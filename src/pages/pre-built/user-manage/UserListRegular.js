@@ -44,7 +44,7 @@ import EditUserModal from "./EditUserModal"
 const UserListRegularPage = () => {
   // const { contextData } = useContext(UserContext);
 
-  const { list, listStatus } = useAppSelector((state) => state.user);
+  const { list, status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   const [data, setData] = useState(list);
@@ -56,29 +56,19 @@ const UserListRegularPage = () => {
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
   const [selectedEditUser,setSelectedEditUser] = useState();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    balance: "",
-    phone: "",
-    status: "Active",
-  }); 
+
+
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(5);
   const [sort, setSortState] = useState("");
 
   const [modal, setModal] = useState(false);
-  const [modalTab, setModalTab] = useState("1");
   const [shouldReRenderModal, setShouldReRenderModal] = useState(false);
-
-
-
 
   const [selectedRole,setSelectedRole] = useState();
   const [selectedStatus,setSelectedStatus] = useState();
-  const [filterClicked, setFilterClicked] = useState(false);
-  const [startIconDate, setStartIconDate] = useState(new Date());
+
 
 
   const filterStatus = [
@@ -93,11 +83,6 @@ const UserListRegularPage = () => {
     { value: "ROLE_MEMBER", label: "Member" },
     { value: "ROLE_CLIENT", label: "Client" },
   ];
-
-  const EmailVerifiedOptions = [
-    {value:true,label:"Is verified"},
-    {value:false,label:"Not verified"}
-  ]
 
 
     // unselects the data on mount
@@ -125,10 +110,10 @@ const UserListRegularPage = () => {
   // Changing state value when searching name
   useEffect(() => {
     if (onSearchText !== "") {
-      const filteredObject = list.filter((item) => {
+      const filteredObject = data.filter((item) => {
         return (
-          item.firstName.toLowerCase().includes(onSearchText.toLowerCase()) ||
-          item.email.toLowerCase().includes(onSearchText.toLowerCase())
+          item?.email.toLowerCase().includes(onSearchText.toLowerCase()) ||
+          item?.country.toLowerCase().includes(onSearchText.toLowerCase())
         );
       });
       setData([...filteredObject]);
@@ -142,61 +127,11 @@ const UserListRegularPage = () => {
     setActionText(e.value);
   };
 
-  // onChange function for searching name
+ // onChange function for searching name
   const onFilterChange = (e) => {
     setSearchText(e.target.value);
   };
 
-
-  // function to reset the form
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      email: "",
-      balance: "",
-      phone: "",
-      status: "Active",
-    });
-  };
-
-
-
-  // submit function to update a new item
-  const onEditSubmit = (submitData) => {
-    const { name, email, phone } = submitData;
-    
-    setModal(false);
-    resetForm();
-  };
-
-  const onEditPersonal = (data) => {
-
-    setModal(false);
-  }
-
-  const onEditAddress = (data) => {
-
-    setModal(false);
-  }
-
-  const onEditRoles = (data) => {
-
-    setModal(false);
-  }
-
-  const onEditStatus = (data) => {
-
-    setModal(false);
-  }
-
-
-
-
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal(false);
-    resetForm();
-  };
 
   // function that loads the want to editted data
   const onEditClick = (user) => {
@@ -277,8 +212,6 @@ const UserListRegularPage = () => {
 
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const { errors, register, handleSubmit } = useForm();
 
 
   const reformulate = (num) =>{
@@ -560,6 +493,7 @@ const UserListRegularPage = () => {
                     <input
                       type="text"
                       className="border-transparent form-focus-none form-control"
+                      id="searchText"
                       placeholder="Search by user or email"
                       value={onSearchText}
                       onChange={(e) => onFilterChange(e)}
@@ -714,7 +648,7 @@ const UserListRegularPage = () => {
                               <TooltipComponent
                                 tag="a"
                                 containerClassName="btn btn-trigger btn-icon"
-                                id={"edit" + item.id}
+                                id={"edit-" + item.id}
                                 icon="edit-alt-fill"
                                 direction="top"
                                 text="Edit"
@@ -741,7 +675,7 @@ const UserListRegularPage = () => {
                                 </DropdownToggle>
                                 <DropdownMenu end>
                                   <ul className="link-list-opt no-bdr">
-                                    <li onClick={() => onEditClick(item.id)}>
+                                    <li onClick={() => onEditClick(item)}>
                                       <DropdownItem
                                         tag="a"
                                         href="#edit"

@@ -37,23 +37,7 @@ const UserProfileSettingPage = ({ sm, updateSm }) => {
       <Block>
         <Card className="card-bordered">
           <div className="card-inner-group">
-            <div className="card-inner">
-              <div className="between-center flex-wrap flex-md-nowrap g-3">
-                <div className="nk-block-text">
-                  <h6>Save my Activity Logs</h6>
-                  <p>You can save your all activity logs including unusual activity detected.</p>
-                </div>
-                <div className="nk-block-actions">
-                  <ul className="align-center gx-3">
-                    <li className="order-md-last">
-                      <div className="custom-control custom-switch me-n2">
-                        <InputSwitch checked id="activity-log" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          
             <div className="card-inner">
               <div className="between-center flex-wrap g-3">
                 <div className="nk-block-text">
@@ -74,22 +58,7 @@ const UserProfileSettingPage = ({ sm, updateSm }) => {
                 </div>
               </div>
             </div>
-            <div className="card-body">
-              <div className="between-center flex-wrap flex-md-nowrap g-3">
-                <div className="nk-block-text">
-                  <h6>
-                    2 Factor Auth &nbsp; <Badge className="ms-0" color="success">Enabled</Badge>
-                  </h6>
-                  <p>
-                    Secure your account with 2FA security. When it is activated you will need to enter not only your
-                    password, but also a special code using app. You will receive this code via mobile application.{" "}
-                  </p>
-                </div>
-                <div className="nk-block-actions">
-                  <Button color="primary">Disable</Button>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </Card>
       </Block>

@@ -31,15 +31,20 @@ function App() {
         {/* Authentication Protected Routes */}
         <Route element ={<AuthProtectedRoutes/>}>
 
-          <Route path="/main" element={<Layout/>}/>  
+          <Route path="/dashboard" element={<Layout/>}/>  
           
           <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
             <Route path="/user-list" element={<Layout/>}/>
             <Route path="/user-details/:userId" element={<Layout/>}/>
-            <Route path="/user-profile" element={<Layout/>}/>
-            <Route path="/*" element={<Navigate to="/main" replace/>}/>
-
+            <Route path="/*" element={<Navigate to="/dashboard" replace/>}/>
           </Route>
+
+          <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,CLIENT,GESTIONNAIRE,MEMBRE'/>}>
+
+            <Route path="/user-profile" element={<Layout/>}/>
+          </Route>
+
+
 
         </Route>
 

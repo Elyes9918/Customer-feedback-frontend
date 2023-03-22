@@ -4,6 +4,7 @@ import {
   ModalBody,
   Form,
   Label,
+  Alert,
 } from "reactstrap";
 import {
   Icon,
@@ -14,23 +15,211 @@ import {
 import DatePicker from "react-datepicker";
 import { countryOptions } from "../../../utils/CountryOptions";
 import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
+import { UpdateUserAction, unAssignRoleAction } from "../../../features/userSlice";
+import { Spinner } from "reactstrap";
+import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
+import currentUser from "../../../utils/currentUser";
+
 
 
 
 
 const EditUserModal = ({isModalOpen,userToEdit}) => {
 
-    const [modal, setModal] = useState(false);
-    const [modalTab, setModalTab] = useState("1");
-    // const [selectedEditUser,setSelectedEditUser] = useState(userToEdit);
-    const { errors, register, handleSubmit } = useForm();
-    const [startIconDate, setStartIconDate] = useState(new Date());
+  const {status} = useAppSelector((state)=>state.user);
+  const dispatch = useAppDispatch();
+
+  const [modal, setModal] = useState(false);
+  const [modalTab, setModalTab] = useState("1");
+
+  const PForm = useForm();
+  const AForm = useForm();
+  const SForm = useForm();
+  const PassForm = useForm();
+  const EForm = useForm();
+
+  const [loading, setLoading] = useState(false);
+  const [loadingDiff, setLoadingDiff] = useState(false);
+  const [startIconDate, setStartIconDate] = useState(new Date());
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [roleToRemove,setRoleToRemove] = useState(null);
+  const [roleToAdd,setRoleToAdd] = useState(null);
+  const [selectedStatus,setSelectedStatus] = useState(null);
+  const [selectedEmailVerif,setSelectedEmailVerif] = useState(null);
+  const [errorVal, setError] = useState("");
+  const [successVal,setSuccessVal] =useState("");
 
 
-    useEffect(() => {
-        setModal(isModalOpen);
-    }, [isModalOpen]);
+
+  useEffect(() => {
+      
+      setModal(isModalOpen);
+  }, [isModalOpen]);
+  
+  const formatDate = (date) => {
+    if(date!==undefined){
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? "0" + day : day}/${
+      month < 10 ? "0" + month : month
+    }/${year}`;
+  }
+  };
+  
+
+  const onEditPersonal = (data) => {
+    setLoading(true);
+    const user = {
+      id:userToEdit.id,
+      firstName:data?.firstName,
+      lastName:data?.lastName,
+      birthDate:formatDate(startIconDate),
+      phoneNumber:data?.phoneNumber,
+      company:data?.company
+    }
+
+    dispatch(UpdateUserAction(user)).then(()=>{
+      setLoading(false);
+      setSuccessVal("Updated Succesfully")
+      // setModal(false);
+      // window.location.reload(false);
+    })
     
+  }
+
+  const onEditAddress = (data) => {
+    setLoading(true);
+    const user = {
+      id:userToEdit.id,
+      address:data?.address,
+      country:selectedCountry,
+    }
+
+    dispatch(UpdateUserAction(user)).then(()=>{
+      setLoading(false);
+      setSuccessVal("Updated Succesfully")
+      // setModal(false);
+      // window.location.reload(false);
+    })
+
+    // setModal(false);
+  }
+
+
+  const addRole = () =>{
+    setLoadingDiff(true);
+    const user = {
+      id:userToEdit.id,
+      roles:[roleToAdd]
+    }
+
+    dispatch(UpdateUserAction(user)).then(()=>{
+      setLoadingDiff(false);
+      setSuccessVal("Updated Succesfully")
+    })
+
+  }
+
+
+  const removeRole = () =>{
+
+    setLoading(true);
+    const user = {
+      id:userToEdit.id,
+      role:roleToRemove
+      
+    }
+
+    dispatch(unAssignRoleAction(user)).then(()=>{
+      setLoading(false);
+      setSuccessVal("Updated Succesfully")
+      // setModal(false);
+      // window.location.reload(false);
+    })
+    
+  }
+
+  const onEditStatus = (data) => {
+    setLoading(true);
+    const user = {
+      id:userToEdit.id,
+      status:selectedStatus,
+      isVerified:selectedEmailVerif
+    }
+
+    dispatch(UpdateUserAction(user)).then(()=>{
+      setLoading(false);
+      setSuccessVal("Updated Succesfully")
+      // setModal(false);
+      // window.location.reload(false);
+    })
+
+    // setModal(false);
+  }
+
+  const onEditEmail = async (data) => {
+    setLoadingDiff(true);
+    const user = {
+      id:userToEdit.id,
+      email:data?.email
+    }
+
+    await dispatch(UpdateUserAction(user)).unwrap().then(()=>{
+      setLoadingDiff(false);
+      setSuccessVal("Updated Succesfully")
+      // setModal(false);
+      // window.location.reload(false);
+    }).catch(()=>{
+      setError("Email is already taken...");
+      setLoadingDiff(false);
+    });
+
+    
+
+  }
+
+  const onEditPassword =  async (data) => {
+
+    setLoading(true);
+    const user = {
+      id:userToEdit.id,
+      password:data?.nPassword
+    }
+
+    if(data?.nPassword !== data?.cPassword){
+      setError("Passwords do not match...");
+      setLoading(false);
+    }else{
+      await dispatch(UpdateUserAction(user)).unwrap().then(()=>{
+        setLoading(false);
+        setSuccessVal("Updated Succesfully")
+        // setModal(false);
+        // window.location.reload(false);
+      }).catch(()=>{
+        setError("Something went wrong...");
+        setLoading(false);
+      });
+    }
+   
+
+    
+
+  }
+
+
+  // function to close the form modal
+  const onFormCancel = () => {
+    setModal(false);
+  };
+
+  const VerifyIfCurrentUser = () => {
+    if(userToEdit!==undefined){
+      return (userToEdit.id !== currentUser().id)
+    }
+  }
+
   const filterStatus = [
     { value: "1", label: "Active" },
     { value: "0", label: "Inactive" },
@@ -49,33 +238,6 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
     {value:false,label:"Not verified"}
   ]
 
-  const onEditPersonal = (data) => {
-
-    setModal(false);
-  }
-
-  const onEditAddress = (data) => {
-
-    setModal(false);
-  }
-
-  const onEditRoles = (data) => {
-
-    setModal(false);
-  }
-
-  const onEditStatus = (data) => {
-
-    setModal(false);
-  }
-
-
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal(false);
-  };
-
-
 
 
     return (
@@ -86,6 +248,9 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
             onClick={(ev) => {
               ev.preventDefault();
               setModal(false);
+              if(successVal){
+                window.location.reload(false);  
+              }
             }}
             className="close"
           >
@@ -100,6 +265,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   onClick={(ev) => {
                     ev.preventDefault();
                     setModalTab("1");
+                    setError("");setSuccessVal("")
                   }}
                   href="#personal"
                 >
@@ -112,62 +278,88 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   onClick={(ev) => {
                     ev.preventDefault();
                     setModalTab("2");
+                    setError("");setSuccessVal("")
+
                   }}
                   href="#address"
                 >
                   Address
                 </a>
               </li>
+              <RolesWithPermession rolesRequired={"ADMIN"}>
               <li className="nav-item">
                 <a
                   className={`nav-link ${modalTab === "3" && "active"}`}
                   onClick={(ev) => {
                     ev.preventDefault();
                     setModalTab("3");
+                    setError("");setSuccessVal("")
+
                   }}
                   href="#address"
                 >
                   Roles
                 </a>
               </li>
+
               <li className="nav-item">
                 <a
                   className={`nav-link ${modalTab === "4" && "active"}`}
                   onClick={(ev) => {
                     ev.preventDefault();
                     setModalTab("4");
+                    setError("");setSuccessVal("")
+
                   }}
                   href="#address"
                 >
                   Status
                 </a>
               </li>
+              </RolesWithPermession>
+
+
+                {VerifyIfCurrentUser() &&
+              <li className="nav-item">
+                <a
+                  className={`nav-link ${modalTab === "5" && "active"}`}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    setModalTab("5");
+                    setError("");setSuccessVal("")
+
+                  }}
+                  href="#address"
+                >
+                  Sensitive Information
+                </a>
+              </li>
+              }
             </ul>
             <div className="tab-content">
+              
+            {errorVal && (
+              <div className="mb-3">
+                <Alert color="danger" className="alert-icon">
+                  {" "}
+                  <Icon name="alert-circle" /> {errorVal}{" "}
+                </Alert>
+              </div>
+            )}
+                  
+            {successVal && (
+              <div className="mb-3">
+                <Alert color="success" className="alert-icon">
+                  {" "}
+                  <Icon name="alert-circle" /> {successVal}{" "}
+                </Alert>
+              </div>
+            )}
 
 
               <div className={`tab-pane ${modalTab === "1" ? "active" : ""}`} id="personal">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditPersonal)}>
-                <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Email</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="email"
-                        defaultValue={userToEdit?.email}
-                        placeholder="Enter email"
-                        ref={register({
-                          required: "This field is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "invalid email address",
-                          },
-                        })}
-                      />
-                      {errors.email && <span className="invalid">{errors.email.message}</span>}
-                    </div>
-                  </Col>
+                <form className="row gy-4" onSubmit={PForm.handleSubmit(onEditPersonal)}>
+                
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label">First name</label>
@@ -177,9 +369,9 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         name="firstName"
                         defaultValue={userToEdit?.firstName}
                         placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
+                        ref={PForm.register({ required: "This field is required" })}
                       />
-                      {errors.firstName && <span className="invalid">{errors.firstName.message}</span>}
+                      {PForm.errors.firstName && <span className="invalid">{PForm.errors.firstName.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
@@ -191,9 +383,9 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         name="lastName"
                         defaultValue={userToEdit?.lastName}
                         placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
+                        ref={PForm.register({ required: "This field is required" })}
                       />
-                      {errors.lastName && <span className="invalid">{errors.lastName.message}</span>}
+                      {PForm.errors.lastName && <span className="invalid">{PForm.errors.lastName.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
@@ -218,9 +410,9 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         name="phoneNumber"
                         defaultValue={userToEdit?.phoneNumber}
                         placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
+                        ref={PForm.register({ required: "This field is required" })}
                       />
-                      {errors.phoneNumber && <span className="invalid">{errors.phoneNumber.message}</span>}
+                      {PForm.errors.phoneNumber && <span className="invalid">{PForm.errors.phoneNumber.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
@@ -229,25 +421,26 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                       <input
                         className="form-control"
                         type="text"
-                        name="name"
+                        name="company"
                         defaultValue={userToEdit?.company}
                         placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
+                        ref={PForm.register({ required: "This field is required" })}
                       />
-                      {errors.company && <span className="invalid">{errors.company.message}</span>}
+                      {PForm.errors.company && <span className="invalid">{PForm.errors.company.message}</span>}
                     </div>
-                  </Col>
+                  </Col>  
                   
               
                 
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
-                        <Button color="primary" size="md" type="submit">
-                          Update Personal information
+                        <Button type="submit" color="primary" size="md" >
+                          {loading ? <Spinner size="sm" color="light" /> : "Update Personal information"}
                         </Button>
                       </li>
-                      <li>
+                      {!successVal && 
+                        <li>
                         <a
                           href="#cancel"
                           onClick={(ev) => {
@@ -258,15 +451,16 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         >
                           Cancel
                         </a>
-                      </li>
+                      </li>}
+                      
                     </ul>
                   </Col>
-                </Form>
+                </form>
               </div>
 
 
               <div className={`tab-pane ${modalTab === "2" ? "active" : ""}`} id="address">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditAddress)}>
+                <Form className="row gy-4" onSubmit={AForm.handleSubmit(onEditAddress)}>
 
                 <Col md="12">
                     <div className="form-group">
@@ -277,9 +471,9 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         name="address"
                         defaultValue={userToEdit?.address}
                         placeholder="Enter Address line"
-                        ref={register({ required: "This field is required" })}
+                        ref={AForm.register({ required: "This field is required" })}
                       />
-                      {errors.address && <span className="invalid">{errors.address.message}</span>}
+                      {AForm.errors.address && <span className="invalid">{AForm.errors.address.message}</span>}
                     </div>
                   </Col>
 
@@ -293,11 +487,11 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         placeholder="Select a country"
                         defaultValue={[
                           {
-                            value: "Tunisia",
-                            label: "Tunisia",
+                            value: userToEdit?.country,
+                            label: countryOptions.find((option) => option.value === userToEdit?.country)?.label,
                           },
                         ]}
-                        // onChange={(e) => setFormData({ ...formData, country: e.value })}
+                        onChange={(e)=>setSelectedCountry(e.value)}
                       />
                     </div>
                   </Col>
@@ -308,10 +502,11 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update Address information
+                          {loading ? <Spinner size="sm" color="light" /> : "Update Address information"}
                         </Button>
                       </li>
-                      <li>
+                      {!successVal && 
+                        <li>
                         <a
                           href="#cancel"
                           onClick={(ev) => {
@@ -322,19 +517,19 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         >
                           Cancel
                         </a>
-                      </li>
+                      </li>}
                     </ul>
                   </Col>
                           
                 </Form>
               </div>
 
-              <div className={`tab-pane ${modalTab === "3" ? "active" : ""}`} id="address">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditRoles)}>
+              <div className={`tab-pane ${modalTab === "3" ? "active" : ""}`} id="Role">
+                <Form className="row gy-4" >
 
                 <Col md="6">
                     <div className="form-group">
-                      <label className="form-label" htmlFor="roles">
+                      <label className="form-label" htmlFor="addingRole">
                        Roles
                       </label>
                       <RSelect
@@ -342,33 +537,38 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         placeholder="Select a country"
                         defaultValue={[
                           {
-                            value: "ROLE_CLIENT",
-                            label: "Client",
+                            label: "Select a role",
                           },
                         ]}
-                        // onChange={(e) => setFormData({ ...formData, country: e.value })}
+                        onChange={(e) => setRoleToAdd(e.value)}
                       />
                     </div>
                   </Col>
 
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label" htmlFor="roles">
+                      <label className="form-label" htmlFor="addingRole">
                        Add Role
                       </label>
                       <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
-                        <Button color="primary" size="md" type="submit">
-                          Update
+                        <Button color="primary" size="md" onClick={addRole} disabled={!roleToAdd}>
+                          {loadingDiff ? <Spinner size="sm" color="light" /> : "Add"}
                         </Button>
                       </li>
                       </ul>
                     </div>
                   </Col>
+                  </Form>
+
+                  <div style={{marginTop: '18px'}}></div>
+
+
+                  <Form className="row gy-4" >
 
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label" htmlFor="roles">
+                      <label className="form-label" htmlFor="removingRole">
                        Roles
                       </label>
                       <RSelect
@@ -376,39 +576,35 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         placeholder="Select a country"
                         defaultValue={[
                           {
-                            value: "ROLE_CLIENT",
-                            label: "Client",
+                            label: "Select a role",
                           },
                         ]}
-                        // onChange={(e) => setFormData({ ...formData, country: e.value })}
+                        onChange={(e) => setRoleToRemove(e.value)}
                       />
                     </div>
                   </Col>
 
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label" htmlFor="roles">
+                      <label className="form-label" htmlFor="removingRole">
                        Remove Role
                       </label>
                       <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
-                        <Button color="primary" size="md" type="submit">
-                          Update
+                        <Button color="primary" size="md" onClick={removeRole} disabled={!roleToRemove}>
+                        {loading ? <Spinner size="sm" color="light" /> : "Remove"}
                         </Button>
                       </li>
                       </ul>
                     </div>
                   </Col>
-
-                
-
-                 
 
 
                 <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                      
-                      <li>
+                    {!successVal && 
+                        <li>
                         <a
                           href="#cancel"
                           onClick={(ev) => {
@@ -419,7 +615,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         >
                           Cancel
                         </a>
-                      </li>
+                      </li>}
                     </ul>
                   </Col>
              
@@ -427,8 +623,8 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
               </div>
 
 
-              <div className={`tab-pane ${modalTab === "4" ? "active" : ""}`} id="address">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditStatus)}>
+              <div className={`tab-pane ${modalTab === "4" ? "active" : ""}`} id="Status">
+                <Form className="row gy-4" onSubmit={SForm.handleSubmit(onEditStatus)}>
 
                 <Col md="12">
                     <div className="form-group">
@@ -440,7 +636,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                             value: userToEdit?.status,
                             label: filterStatus.find((option) => option.value === userToEdit?.status)?.label,
                           }}
-                        //   onChange={(e) => setFormData({ ...formData, status: e.value })}
+                          onChange={(e) => setSelectedStatus(e.value)}
                         />
                       </div>
                     </div>
@@ -456,7 +652,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                             value: userToEdit?.isVerified,
                             label: userToEdit?.isVerified ? "Is verified" : "Not verified",
                           }}
-                        //   onChange={(e) => setFormData({ ...formData, status: e.value })}
+                          onChange={(e) => setSelectedEmailVerif(e.value)}
                         />
                       </div>
                     </div>
@@ -467,10 +663,11 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update Status information
+                          {loading ? <Spinner size="sm" color="light" /> : "Update Status information"}
                         </Button>
                       </li>
-                      <li>
+                      {!successVal && 
+                        <li>
                         <a
                           href="#cancel"
                           onClick={(ev) => {
@@ -481,11 +678,108 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         >
                           Cancel
                         </a>
-                      </li>
+                      </li>}
                     </ul>
                   </Col>
                           
                 </Form>
+              </div>
+
+              <div className={`tab-pane ${modalTab === "5" ? "active" : ""}`} id="Password">
+                <div  >
+                
+                <Form className="row gy-4" onSubmit={EForm.handleSubmit(onEditEmail)}>
+                <Col md="12">
+                    <div className="form-group">
+                      <label className="form-label">Email</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="email"
+                        defaultValue={userToEdit?.email}
+                        placeholder="Enter email"
+                        ref={EForm.register({
+                          required: "This field is required",
+                          pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: "invalid email address",
+                          },
+                        })}
+                      />
+                      {EForm.errors.email && <span className="invalid">{EForm.errors.email.message}</span>}
+                    </div>
+                  </Col>
+
+                  <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          {loadingDiff ? <Spinner size="sm" color="light" /> : "Change Email"}
+                        </Button>
+                      </li>
+                      
+                    </ul>
+                  </Col>
+                  </Form>
+                  <div style={{marginTop: '18px'}}></div>
+                  <Form className="row gy-4" onSubmit={PassForm.handleSubmit(onEditPassword)}>
+                <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">New Password</label>
+                      <input
+                        className="form-control"
+                        type="password" 
+                        name="nPassword"
+                        placeholder="Enter your new password"
+                        ref={PassForm.register({ required: "This field is required" })}
+                      />
+                      {PassForm.errors.nPassword && <span className="invalid">{PassForm.errors.nPassword.message}</span>}
+                    </div>
+                  </Col>
+
+                  
+                <Col md="6">
+                    <div className="form-group">
+                      <label className="form-label">Confirm Password</label>
+                      <input
+                        className="form-control"
+                        type="password"
+                        name="cPassword"
+                        placeholder="Confirm your new password"
+                        ref={PassForm.register({ required: "This field is required" })}
+                      />
+                      {PassForm.errors.cPassword && <span className="invalid">{PassForm.errors.cPassword.message}</span>}
+                    </div>
+                  </Col>
+
+
+                <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          {loading ? <Spinner size="sm" color="light" /> : "Change Password"}
+                        </Button>
+                      </li>
+                      {!successVal && 
+                        <li>
+                        <a
+                          href="#cancel"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </a>
+                      </li>}
+                    </ul>
+                  </Col>
+                  </Form>
+
+                 
+                          
+                </div>
               </div>
 
 

@@ -1,12 +1,12 @@
 const menu = [
   {
     heading: "Panels",
-    role:"ADMIN"
+    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
   },
   {
     icon: "users-fill",
     text: "User Management",
-    role: "ADMIN",
+    role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBRE",
     active: false,
     subMenu: [
       {
@@ -14,12 +14,6 @@ const menu = [
         link: "/user-list",
         role:"ADMIN"
       },
-      {
-        text: "User Profile",
-        link: "/user-profile",
-        role:"ADMIN"
-      },
-
     ],
   },
   {

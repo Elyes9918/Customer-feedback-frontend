@@ -9,7 +9,7 @@ const user : IUser = {};
 
 const initialState = {
     list,
-    listStatus: ApiStatus.ideal,
+    status: ApiStatus.ideal,
     LoginUserFormStatus:ApiStatus.ideal,
     user
 }
@@ -83,45 +83,59 @@ const userSlice = createSlice({
 
     //  GetUserList Action
     builder.addCase(getUserListAction.pending,(state)=>{
-        state.listStatus = ApiStatus.loading
+        state.status = ApiStatus.loading
     });
 
     builder.addCase(getUserListAction.fulfilled,(state,action)=>{
-        state.listStatus=ApiStatus.ideal;
+        state.status=ApiStatus.ideal;
         state.list=action.payload;
     });
 
     builder.addCase(getUserListAction.rejected, (state) => {
-        state.listStatus = ApiStatus.error;
+        state.status = ApiStatus.error;
       });
 
     // GetUserById Action 
     builder.addCase(GetUserByIdAction.pending,(state)=>{
-        state.listStatus = ApiStatus.loading
+        state.status = ApiStatus.loading
     });
 
     builder.addCase(GetUserByIdAction.fulfilled,(state,action)=>{
-        state.listStatus=ApiStatus.ideal;
+        state.status=ApiStatus.ideal;
         state.user=action.payload;
     });
 
     builder.addCase(GetUserByIdAction.rejected, (state) => {
-        state.listStatus = ApiStatus.error;
+        state.status = ApiStatus.error;
       });
 
 
     //  GetUserByEmail Action
     builder.addCase(getUserByEmailAction.pending,(state)=>{
-        state.listStatus = ApiStatus.loading
+        state.status = ApiStatus.loading
     });
 
     builder.addCase(getUserByEmailAction.fulfilled,(state,action)=>{
-        state.listStatus=ApiStatus.ideal;
+        state.status=ApiStatus.ideal;
         state.user=action.payload;
     });
 
     builder.addCase(getUserByEmailAction.rejected, (state) => {
-        state.listStatus = ApiStatus.error;
+        state.status = ApiStatus.error;
+      });
+
+
+    //Update user
+    builder.addCase(UpdateUserAction.pending,(state)=>{
+        state.status = ApiStatus.loading
+    });
+
+    builder.addCase(UpdateUserAction.fulfilled,(state)=>{
+        state.status=ApiStatus.ideal;
+    });
+
+    builder.addCase(UpdateUserAction.rejected, (state) => {
+        state.status = ApiStatus.error;
       });
 
 

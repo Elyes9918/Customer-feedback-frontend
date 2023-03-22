@@ -7,6 +7,7 @@ export interface IUser {
     password?: string;
     createdAt?: string;
     modifiedAt?:string;
+    lastLogin?:string;
     firstName?:string;
     lastName?:string;
     birthDate?:string;
@@ -14,6 +15,7 @@ export interface IUser {
     address?:string;
     phoneNumber?:string
     company?:string;
+    country?:string;
     projectsId?: number[];
     feedbacksId?: number[];
     roles?: string[];

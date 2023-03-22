@@ -31,9 +31,7 @@ const UserDetailsPage = () => {
 
   let { userId } = useParams();
 
-  console.log(userId)
-
-  const {user,listStatus} = useAppSelector((state)=>state.user);
+  const {user,status} = useAppSelector((state)=>state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -210,13 +208,13 @@ const UserDetailsPage = () => {
                       </BlockHead>
                     </Block>
 
-                      {listStatus === ApiStatus.loading &&   
+                      {status === ApiStatus.loading &&   
                       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
                         <Spinner type="grow" color="primary" />
 
                       </div> }
 
-                      {listStatus === ApiStatus.ideal && 
+                      {status === ApiStatus.ideal && 
 
                       <>
                       <Block>
@@ -266,7 +264,7 @@ const UserDetailsPage = () => {
                           <div className="profile-ud-item">
                               <div className="profile-ud wider">
                                 <span className="profile-ud-label">Country</span>
-                                <span className="profile-ud-value">Tunisia</span>
+                                <span className="profile-ud-value">{user.country}</span>
                               </div>
                             </div>
                             
