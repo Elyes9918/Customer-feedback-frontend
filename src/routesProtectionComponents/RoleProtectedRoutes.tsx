@@ -35,7 +35,7 @@ const RoleProtectedRoutes = (props: ProtectedRouteRole) => {
         return 0;        
     }
 
-    return isAllowed() ? <Outlet/> : <Navigate to="/main"  replace/>;
+    return isAllowed() ? <Outlet/> : <Navigate to="/dashboard"  replace/>;
 
 };
 

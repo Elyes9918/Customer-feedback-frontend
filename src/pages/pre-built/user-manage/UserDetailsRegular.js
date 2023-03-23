@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Modal, ModalBody, Badge, Spinner } from "reactstrap";
+import { Card, Modal, ModalBody, Spinner } from "reactstrap";
 import {
   Button,
   Block,
@@ -9,15 +9,10 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
-  Col,
-  Row,
-  OverlineTitle,
-  Sidebar,
-  UserAvatar,
+
 } from "../../../components/Component";
-import { useHistory } from "react-router";
 import Content from "../../../layout/content/Content";
-import { currentTime, findUpper, monthNames, todaysDate } from "../../../utils/Utils";
+import { currentTime, monthNames, todaysDate } from "../../../utils/Utils";
 import { notes } from "./UserData";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
@@ -127,7 +122,7 @@ const UserDetailsPage = () => {
                       User ID: <span className="text-base">{user.id}</span>
                     </li>
                     <li>
-                      Last Login: <span className="text-base">{user.modifiedAt}</span>
+                      Last Login: <span className="text-base">{user.lastLogin}</span>
                     </li>
                   </ul>
                 </BlockDes>
@@ -291,7 +286,7 @@ const UserDetailsPage = () => {
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
                                 <span className="profile-ud-label">Last login</span>
-                                <span className="profile-ud-value">{user.modifiedAt}</span>
+                                <span className="profile-ud-value">{user.lastLogin}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
@@ -408,229 +403,7 @@ const UserDetailsPage = () => {
                   userToEdit={user} 
                   />
 
-                {/* <Sidebar toggleState={sideBar}>
-                  <div className="card-inner">
-                    <div className="user-card user-card-s2 mt-5 mt-xxl-0">
-                      <UserAvatar className="lg" theme="primary" text={findUpper(user.name)} />
-                      <div className="user-info">
-                        <Badge tag="div" className="ucap" pill color="outline-light">{user.role}</Badge>
-                        <h5>{user.name}</h5>
-                        <span className="sub-text">{user.email}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-inner card-inner-sm">
-                    <ul className="btn-toolbar justify-center gx-1">
-                      <li>
-                        <Button
-                          href="#tool"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="btn-trigger btn-icon"
-                        >
-                          <Icon name="shield-off"></Icon>
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          href="#mail"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="btn-trigger btn-icon"
-                        >
-                          <Icon name="mail"></Icon>
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          href="#download"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="btn-trigger btn-icon"
-                        >
-                          <Icon name="download-cloud"></Icon>
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          href="#bookmark"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="btn-trigger btn-icon"
-                        >
-                          <Icon name="bookmark"></Icon>
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="btn-trigger btn-icon text-danger"
-                        >
-                          <Icon name="na"></Icon>
-                        </Button>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="card-inner">
-                    <div className="overline-title-alt mb-2">In Account</div>
-                    <div className="profile-balance">
-                      <div className="profile-balance-group gx-4">
-                        <div className="profile-balance-sub">
-                          <div className="profile-balance-amount">
-                            <div className="number">
-                              2,500.00 <small className="currency currency-usd">USD</small>
-                            </div>
-                          </div>
-                          <div className="profile-balance-subtitle">Invested Amount</div>
-                        </div>
-                        <div className="profile-balance-sub">
-                          <span className="profile-balance-plus text-soft">
-                            <Icon className="ni-plus"></Icon>
-                          </span>
-                          <div className="profile-balance-amount">
-                            <div className="number">1,643.76</div>
-                          </div>
-                          <div className="profile-balance-subtitle">Profit Earned</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-inner">
-                    <Row className="text-center">
-                      <Col size="4">
-                        <div className="profile-stats">
-                          <span className="amount">{user.tasks}</span>
-                          <span className="sub-text">Total Order</span>
-                        </div>
-                      </Col>
-                      <Col size="4">
-                        <div className="profile-stats">
-                          <span className="amount">{user.projects}</span>
-                          <span className="sub-text">Complete</span>
-                        </div>
-                      </Col>
-                      <Col size="4">
-                        <div className="profile-stats">
-                          <span className="amount">{user.performed}</span>
-                          <span className="sub-text">Progress</span>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                  <div className="card-inner">
-                    <h6 className="overline-title-alt mb-2">Additional</h6>
-                    <Row className="g-3">
-                      <Col size="6">
-                        <span className="sub-text">User ID:</span>
-                        <span>UD003054</span>
-                      </Col>
-                      <Col size="6">
-                        <span className="sub-text">Last Login:</span>
-                        <span>{user.lastLogin} 01:02 PM</span>
-                      </Col>
-                      <Col size="6">
-                        <span className="sub-text">KYC Status:</span>
-                        <span
-                          className={`lead-text text-${
-                            user.kycStatus === "success"
-                              ? "success"
-                              : user.kycStatus === "pending"
-                              ? "info"
-                              : user.kycStatus === "warning"
-                              ? "warning"
-                              : "secondary"
-                          }`}
-                        >
-                          {user.kycStatus.toUpperCase()}
-                        </span>
-                      </Col>
-                      <Col size="6">
-                        <span className="sub-text">Register At:</span>
-                        <span>Nov 24, 2019</span>
-                      </Col>
-                    </Row>
-                  </div>
-                  <div className="card-inner">
-                    <OverlineTitle tag="h6" className="mb-3">
-                      Groups
-                    </OverlineTitle>
-                    <ul className="g-1">
-                      <li className="btn-group">
-                        <Button
-                          color="light"
-                          size="xs"
-                          className="btn-dim"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                        >
-                          investor
-                        </Button>
-                        <Button
-                          color="light"
-                          size="xs"
-                          className="btn-icon btn-dim"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                        >
-                          <Icon className="ni-cross"></Icon>
-                        </Button>
-                      </li>
-                      <li className="btn-group">
-                        <Button
-                          color="light"
-                          size="xs"
-                          className="btn-dim"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                        >
-                          support
-                        </Button>
-                        <Button
-                          color="light"
-                          size="xs"
-                          className="btn-icon btn-dim"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                        >
-                          <Icon className="ni-cross"></Icon>
-                        </Button>
-                      </li>
-                      <li className="btn-group">
-                        <Button
-                          color="light"
-                          size="xs"
-                          className="btn-dim"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                        >
-                          another tag
-                        </Button>
-                        <Button
-                          color="light"
-                          size="xs"
-                          className="btn-icon btn-dim"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                        >
-                          <Icon className="ni-cross"></Icon>
-                        </Button>
-                      </li>
-                    </ul>
-                  </div>
-                </Sidebar> */}
+               
                 {sideBar && <div className="toggle-overlay" onClick={() => toggle()}></div>}
               </div>
             </Card>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Router,Routes } from 'react-router-dom';
+import { Navigate, Route,Routes } from 'react-router-dom';
 import Login from './pages/auth/Login';
 import ResetPassword from './pages/auth/ResetPassword';
 import Register from './pages/auth/Register';
@@ -8,6 +8,8 @@ import UnProtectedRoutes from './routesProtectionComponents/UnProtectedRoutes';
 import Layout from './layout/Layout';
 import RoleProtectedRoutes from './routesProtectionComponents/RoleProtectedRoutes';
 import currentAccessToken from './utils/currentAccessToken';
+import WizardRegistration from './pages/auth/WizardRegistration';
+import WizardProtectionRoute from './routesProtectionComponents/WizardProtectionRoute';
 
 function App() {
 
@@ -19,11 +21,7 @@ function App() {
       }
     }
     
-    
-
   return (
-
-      // Remove access Token and user if token is expired
 
 
         <Routes>
@@ -31,22 +29,24 @@ function App() {
         {/* Authentication Protected Routes */}
         <Route element ={<AuthProtectedRoutes/>}>
 
-          <Route path="/dashboard" element={<Layout/>}/>  
-          
-          <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
-            <Route path="/user-list" element={<Layout/>}/>
-            <Route path="/user-details/:userId" element={<Layout/>}/>
-            <Route path="/*" element={<Navigate to="/dashboard" replace/>}/>
-          </Route>
+            <Route path="/dashboard" element={<Layout/>}/>  
+      
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
+              <Route path="/user-list" element={<Layout/>}/>
+              <Route path="/user-details/:userId" element={<Layout/>}/>
+              <Route path="/*" element={<Navigate to="/dashboard" replace/>}/>
+            </Route>
 
-          <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,CLIENT,GESTIONNAIRE,MEMBRE'/>}>
-
-            <Route path="/user-profile" element={<Layout/>}/>
-          </Route>
-
-
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,CLIENT,GESTIONNAIRE,MEMBRE'/>}>
+              <Route path="/user-profile" element={<Layout/>}/>
+            </Route>
 
         </Route>
+
+        <Route element ={<WizardProtectionRoute/>}>
+          <Route path="/regwizard" element={<WizardRegistration/>}/>
+        </Route>
+
 
 
         {/* Unprotected Routes */}

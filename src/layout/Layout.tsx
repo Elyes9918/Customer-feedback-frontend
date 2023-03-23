@@ -3,18 +3,19 @@ import Sidebar from "./sidebar/Sidebar";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import classNames from "classnames";
-import { useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 
 
 import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular";
-import { UserContextProvider } from "../pages/pre-built/user-manage/UserContext";
 
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
+import currentUser from "../utils/currentUser";
 
 
 
 const Layout = () => {
+
   //Sidebar
   const [mobileView, setMobileView] = useState(false);
   const [visibility, setVisibility] = useState(false);
@@ -29,7 +30,7 @@ const Layout = () => {
     document.body.className = `nk-body bg-lighter npc-default has-sidebar no-touch nk-nio-theme ${
       themeState.skin === "dark" ? "dark-mode" : ""
     }`;
-  }, [themeState.skin]);
+  },  [themeState.skin]);
 
   useEffect(() => {
     viewChange();
@@ -78,6 +79,7 @@ const Layout = () => {
   const isUserDetails = useMatch('/user-details/:userId');
   const isUserProfile = useMatch('/user-profile')
 
+  
 
 
   return (
@@ -98,7 +100,7 @@ const Layout = () => {
 
                 {isUserList &&  <UserListRegularPage/> }
                 {isUserDetails &&  <UserDetailsPage/>}
-                {isUserProfile && <UserContextProvider> <UserProfileLayout/> </UserContextProvider>}
+                {isUserProfile &&  <UserProfileLayout/>}
 
             
 

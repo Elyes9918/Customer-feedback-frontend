@@ -3,11 +3,7 @@ import {
   DropdownMenu,
   DropdownToggle,
   UncontrolledDropdown,
-  Modal,
-  ModalBody,
   DropdownItem,
-  Form,
-  Label,
   Spinner,
 } from "reactstrap";
 import {
@@ -31,13 +27,10 @@ import {
   RSelect,
 } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
-import { bulkActionOptions, findUpper } from "../../../utils/Utils";
+import { bulkActionOptions } from "../../../utils/Utils";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector,RootState } from "../../../app/store";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { getUserListAction } from "../../../features/userSlice";
-import DatePicker from "react-datepicker";
-import { countryOptions } from "../../../utils/CountryOptions";
 import EditUserModal from "./EditUserModal"
 
 

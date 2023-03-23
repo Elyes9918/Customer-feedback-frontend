@@ -23,13 +23,18 @@ import validateEmail from "../../utils/EmailValidation";
 import { IUserForm } from "../../types/User";
 
 
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
+  
 
   const navigate = useNavigate();
   const dispatch = useAppThunkDispatch();
+
+  
+
 
   const onFormSubmit = async (data:IUserForm) => {
     setLoading(true);

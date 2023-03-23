@@ -3,4 +3,6 @@ export interface IjwtPayload {
     exp?: number;
     roles?: string[];
     username?: string;
+    isVerified?:boolean;
+    id?:string;
   }

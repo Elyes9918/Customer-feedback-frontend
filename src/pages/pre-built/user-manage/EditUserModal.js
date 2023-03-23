@@ -39,16 +39,18 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
   const PassForm = useForm();
   const EForm = useForm();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
+   const [errorVal, setError] = useState("");
+  const [successVal,setSuccessVal] =useState("");
   const [loadingDiff, setLoadingDiff] = useState(false);
+  
   const [startIconDate, setStartIconDate] = useState(new Date());
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [roleToRemove,setRoleToRemove] = useState(null);
   const [roleToAdd,setRoleToAdd] = useState(null);
   const [selectedStatus,setSelectedStatus] = useState(null);
   const [selectedEmailVerif,setSelectedEmailVerif] = useState(null);
-  const [errorVal, setError] = useState("");
-  const [successVal,setSuccessVal] =useState("");
+
 
 
 

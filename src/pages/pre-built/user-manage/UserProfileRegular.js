@@ -9,13 +9,8 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
-  Row,
-  Col,
   Button,
-  RSelect,
 } from "../../../components/Component";
-import { countryOptions } from "./UserData";
-import { getDateStructured } from "../../../utils/Utils";
 import { useAppSelector } from "../../../app/store";
 import EditUserModal from "./EditUserModal";
 

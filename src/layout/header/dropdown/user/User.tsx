@@ -7,6 +7,7 @@ import {currentUser} from "../../../../utils/currentUser";
 import {currentAccessToken} from "../../../../utils/currentAccessToken";
 import {  RootState, useAppSelector,useAppDispatch} from "../../../../app/store";
 import { getUserByEmailAction } from "../../../../features/userSlice";
+import { findUpper } from "../../../../utils/Utils";
 
 
 
@@ -55,7 +56,8 @@ const User = () => {
         }}
       >
         <div className="user-toggle">
-          <UserAvatar icon="user-alt" className="sm" />
+          {/* <UserAvatar icon="user-alt" className="sm" /> */}
+          <UserAvatar className="sm" text={findUpper(user.firstName+" "+user.lastName)} theme="primary" />
           <div className="user-info d-none d-md-block">
             <div className="user-status">{handleRoleDesignation(user.roles)}</div>
             <div className="user-name dropdown-indicator">{user.firstName} {user.lastName}</div>
@@ -65,9 +67,7 @@ const User = () => {
       <DropdownMenu end className="dropdown-menu-md dropdown-menu-s1">
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
-            <div className="user-avatar">
-              <span>AB</span>
-            </div>
+            <UserAvatar  text={findUpper(user.firstName+" "+user.lastName)} theme="primary" />
             <div className="user-info">
               <span className="lead-text">{user.firstName} {user.lastName}</span>
               <span className="sub-text">{user.email}</span>

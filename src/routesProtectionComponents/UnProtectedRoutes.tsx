@@ -14,7 +14,7 @@ const useAuth = () =>{
 
 const UnProtectedRoutes = () => {
     const isAuth = useAuth();
-    return isAuth ? <Outlet/> : <Navigate to="/main"  replace/>;
+    return isAuth ? <Outlet/> : <Navigate to="/dashboard"  replace/>;
 
 };
 

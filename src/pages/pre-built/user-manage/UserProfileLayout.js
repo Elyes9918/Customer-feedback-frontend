@@ -3,15 +3,26 @@ import Content from "../../../layout/content/Content";
 import UserProfileRegularPage from "./UserProfileRegular";
 import UserProfileSettingPage from "./UserProfileSetting";
 import UserProfileNotificationPage from "./UserProfileNotification";
-import UserProfileActivityPage from "./UserProfileActivity";
-import { Route, Routes, Link } from "react-router-dom";
-import { Icon, UserAvatar } from "../../../components/Component";
+import { Link } from "react-router-dom";
+import {  UserAvatar } from "../../../components/Component";
 import { findUpper } from "../../../utils/Utils";
 import { Card, DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle } from "reactstrap";
-import currentUser from "../../../utils/currentUser";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { GetUserByIdAction, getUserByEmailAction } from "../../../features/userSlice";
+import {  getUserByEmailAction } from "../../../features/userSlice";
 import currentAccessToken from "../../../utils/currentAccessToken";
+import DatePicker from "react-datepicker";
+import { Modal, ModalBody } from "reactstrap";
+import {
+  Block,
+  BlockBetween,
+  BlockDes,
+  BlockHead,
+  BlockHeadContent,
+  BlockTitle,
+  Icon,
+  Button,
+} from "../../../components/Component";
+import EditUserModal from "./EditUserModal";
 
 
 
@@ -28,6 +39,9 @@ const UserProfileLayout = () => {
   const [showPersonalInformation,setShowPersonalInformation] = useState(true);
   const [showNotificationPanel,setShowNotificationPanel] = useState(false);
   const [showSettingsPanel,setShowSettingsPanel] = useState(false);
+
+  const [modal, setModal] = useState(false);
+  const [shouldReRenderModal, setShouldReRenderModal] = useState(false);
 
   // function to change the design view under 990 px
   const viewChange = () => {
@@ -178,10 +192,167 @@ const UserProfileLayout = () => {
               {sm && mobileView && <div className="toggle-overlay" onClick={() => updateSm(!sm)}></div>}
 
 
-              {showPersonalInformation && <UserProfileRegularPage updateSm={updateSm} sm={sm} setProfileName={setProfileName} /> }
+              {(showPersonalInformation && user) && 
+
+
+        
+
+                <React.Fragment>
+                <BlockHead size="lg">
+                  <BlockBetween>
+                    <BlockHeadContent>
+                      <BlockTitle tag="h4">Personal Information</BlockTitle>
+                      <BlockDes>
+                        <p>Information related to your account on our platform Customer feedback.</p>
+                      </BlockDes>
+                    </BlockHeadContent>
+                    <BlockHeadContent className="align-self-start d-lg-none">
+                      <Button
+                        className={`toggle btn btn-icon btn-trigger mt-n1 ${sm ? "active" : ""}`}
+                        onClick={() => updateSm(!sm)}
+                      >
+                        <Icon name="menu-alt-r"></Icon>
+                      </Button>
+                    </BlockHeadContent>
+                  </BlockBetween>
+                </BlockHead>
+
+                <Block>
+                  <div className="nk-data data-list">
+                    <div className="data-head">
+                      <h6 className="overline-title">Basics</h6>
+                    </div>
+                    <div className="data-item" onClick={() => setModal(true)}>
+                      <div className="data-col">
+                        <span className="data-label">Full Name</span>
+                        <span className="data-value">{user.firstName} {user.lastName}</span>
+                      </div>
+                      <div className="data-col data-col-end">
+                        <span className="data-more">
+                          <Icon name="forward-ios"></Icon>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="data-item" >
+                      <div className="data-col">
+                        <span className="data-label">Email</span>
+                        <span className="data-value">{user.email}</span>
+                      </div>
+                      <div className="data-col data-col-end">
+                        <span className="data-more disable">
+                          <Icon name="lock-alt"></Icon>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="data-item" onClick={() => setModal(true)}>
+                      <div className="data-col">
+                        <span className="data-label">Company</span>
+                        <span className="data-value">{user.company}</span>
+                      </div>
+                      <div className="data-col data-col-end">
+                        <span className="data-more">
+                          <Icon name="forward-ios"></Icon>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="data-item" onClick={() => setModal(true)}>
+                      <div className="data-col">
+                        <span className="data-label">Phone Number</span>
+                        <span className="data-value text-soft">{user.phoneNumber}</span>
+                      </div>
+                      <div className="data-col data-col-end">
+                        <span className="data-more">
+                          <Icon name="forward-ios"></Icon>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="data-item" onClick={() => setModal(true)}>
+                      <div className="data-col">
+                        <span className="data-label">Date of Birth</span>
+                        <span className="data-value">{user.birthDate}</span>
+                      </div>
+                      <div className="data-col data-col-end">
+                        <span className="data-more">
+                          <Icon name="forward-ios"></Icon>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="data-item" onClick={() => setModal(true)}>
+                      <div className="data-col">
+                        <span className="data-label">Address</span>
+                        <span className="data-value">
+                          {user.address}
+                          <br />
+                        {user.country}
+                        </span>
+                      </div>
+                      <div className="data-col data-col-end">
+                        <span className="data-more">
+                          <Icon name="forward-ios"></Icon>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="nk-data data-list">
+                    <div className="data-head">
+                      <h6 className="overline-title">Account details</h6>
+                    </div>
+                    
+                    <div className="data-item">
+                      <div className="data-col">
+                        <span className="data-label">Last Login</span>
+                        <span className="data-value">{user.lastLogin}</span>
+                      </div>
+                    </div>
+
+                      <div className="data-item">
+                      <div className="data-col">
+                        <span className="data-label">Last modified at</span>
+                        <span className="data-value">{user.modifiedAt}</span>
+                      </div>
+                      </div>
+
+                      <div className="data-item">
+                      <div className="data-col">
+                        <span className="data-label">Created At</span>
+                        <span className="data-value">{user.createdAt}</span>
+                      </div>
+                      </div>
+
+                    {/* <div className="data-item">
+                      <div className="data-col">
+                        <span className="data-label">Timezone</span>
+                        <span className="data-value">Bangladesh (GMT +6)</span>
+                      </div>
+                      <div className="data-col data-col-end">
+                        <a
+                          href="#link"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                          }}
+                          className="link link-primary"
+                        >
+                          Change
+                        </a>
+                      </div>
+                    </div> */}
+                  </div>
+                </Block>
+                    {/* Modal is Here */}
+                    <EditUserModal 
+                            key={shouldReRenderModal}
+                            isModalOpen={modal} 
+                            userToEdit={user} 
+                            />
+
+                </React.Fragment>
+
+              
+              }
+        
               {showNotificationPanel && <UserProfileNotificationPage updateSm={updateSm} sm={sm} />}
               {/* {showActivityPanel && <UserProfileActivityPage updateSm={updateSm} sm={sm} />} */}
-              {showSettingsPanel && <UserProfileSettingPage updateSm={updateSm} sm={sm}/>}
+              {showSettingsPanel && <UserProfileSettingPage updateSm={updateSm} sm={sm} user={user}/>}
               
               {/* <Routes>
               <Route element ={<AuthProtectedRoutes/>}>

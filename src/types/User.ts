@@ -28,6 +28,7 @@ export interface IUserForm{
   email?:string;
   password?:string;
   token?:string;
+  lastLogin?:string;
 }
 
 export interface RegisterUser{

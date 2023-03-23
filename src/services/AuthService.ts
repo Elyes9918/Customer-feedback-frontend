@@ -22,3 +22,4 @@ export const ChangePasswordApi = async(data:IUserForm)=>{
     const url = `${baseURL}/api/reset-password/reset/${data.token}`;
     return await axios.post<IUser>(url,data)
 }
+

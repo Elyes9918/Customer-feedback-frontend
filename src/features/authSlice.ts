@@ -1,9 +1,8 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiStatus } from "../../src/types/ApiStatus";
-import { IUserForm } from "../../src/types/User";
+import {  IUserForm } from "../../src/types/User";
 import { ChangePasswordApi, LoginUserApi, RegisterUserApi, ResetPasswordRequestApi } from "../services/AuthService";
 import { IjwtPayload } from "../../src/types/Jwt";
-import { getUserByEmailAction } from "./userSlice";
 
 const jwtpayload : IjwtPayload = {} as any;
 
@@ -13,21 +12,21 @@ const initialState = {
     jwtpayload
 }
 
+
 export const LoginUserAction = createAsyncThunk(
     "auth/loginUserAction",
     async (data:IUserForm)=> {
        await LoginUserApi(data).then((response)=>{
             const AccessToken = JSON.stringify(response.data.token);
             localStorage.setItem("accessToken",AccessToken);
-            // getUserByEmailAction(data.email)
-        
-    
             return response.data;
         }).catch((error)=>{
             throw error
         });
     }
 )
+
+
 
 export const LogoutUserAction = createAsyncThunk(
     "auth/logoutUserAction",
@@ -57,6 +56,9 @@ export const RegisterUserAction = createAsyncThunk(
         await RegisterUserApi(data);
     }
 )
+
+
+
 
 
 const authSlice = createSlice({
