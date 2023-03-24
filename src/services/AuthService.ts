@@ -13,6 +13,11 @@ export const LoginUserApi = async (data: IUserForm) => {
     return await axios.post<IUser>(url, data);
 };
 
+export const RefreshTokenApi = async (data: IUserForm) => {
+    const url = `${baseURL}/api/token/refresh`;
+    return await axios.post<IUser>(url, data);
+};
+
 export const ResetPasswordRequestApi = async(data:IUserForm)=>{
     const url = `${baseURL}/api/reset-password`;
     return await axios.post<IUser>(url, data);

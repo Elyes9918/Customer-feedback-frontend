@@ -300,6 +300,7 @@ const PersonalForm = (props) => {
         const user = {
             id:currentAccessToken().id,
             isVerified:true,
+            roles:["ROLE_CLIENT"],
           }
       
           dispatch(UpdateUserAction(user)).then(()=>{

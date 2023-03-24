@@ -1,7 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiStatus } from "../../src/types/ApiStatus";
-import {  IUserForm } from "../../src/types/User";
-import { ChangePasswordApi, LoginUserApi, RegisterUserApi, ResetPasswordRequestApi } from "../services/AuthService";
+import {  IUser, IUserForm } from "../../src/types/User";
+import { ChangePasswordApi, LoginUserApi, RefreshTokenApi, RegisterUserApi, ResetPasswordRequestApi } from "../services/AuthService";
 import { IjwtPayload } from "../../src/types/Jwt";
 
 const jwtpayload : IjwtPayload = {} as any;
@@ -18,11 +18,27 @@ export const LoginUserAction = createAsyncThunk(
     async (data:IUserForm)=> {
        await LoginUserApi(data).then((response)=>{
             const AccessToken = JSON.stringify(response.data.token);
+            const refresh_token = JSON.stringify(response.data.refresh_token);
             localStorage.setItem("accessToken",AccessToken);
+            localStorage.setItem("refresh_token",refresh_token);
             return response.data;
         }).catch((error)=>{
             throw error
         });
+    }
+)
+
+export const RefreshTokenAction = createAsyncThunk(
+    "auth/refreshTokenAction",
+    async(data:IUserForm)=>{
+        await RefreshTokenApi(data).then((response)=>{
+            const AccessToken = JSON.stringify(response.data.token);
+            const refresh_token = JSON.stringify(response.data.refresh_token);
+            localStorage.setItem("accessToken",AccessToken);
+            localStorage.setItem("refresh_token",refresh_token);
+        }).catch((error)=>{
+            throw error
+        })
     }
 )
 

@@ -1,0 +1,12 @@
+{
+    "login":"Connexion",
+    "home": "Acceuil",
+    "contact": "Contact",
+    "about": "A propos",
+    "page": {
+        "welcome": {
+            "home": "Bienvenue dans la page d'acceuil",
+            "contact": "Bienvenue dans la page de contact"
+        }
+     }
+}

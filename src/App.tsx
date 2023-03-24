@@ -1,4 +1,4 @@
-import { Navigate, Route,Routes } from 'react-router-dom';
+import { Navigate, Route,Routes, useNavigate } from 'react-router-dom';
 import Login from './pages/auth/Login';
 import ResetPassword from './pages/auth/ResetPassword';
 import Register from './pages/auth/Register';
@@ -10,16 +10,29 @@ import RoleProtectedRoutes from './routesProtectionComponents/RoleProtectedRoute
 import currentAccessToken from './utils/currentAccessToken';
 import WizardRegistration from './pages/auth/WizardRegistration';
 import WizardProtectionRoute from './routesProtectionComponents/WizardProtectionRoute';
+import { useAppDispatch } from './app/store';
+import { RefreshTokenAction } from './features/authSlice';
 
 function App() {
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
     if(localStorage.getItem("accessToken")){
       const token = currentAccessToken();
-      if (token.exp * 1000 < Date.now()) {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("currentUser");
+      if (token.exp * 1000  < Date.now()) {
+        // localStorage.removeItem("accessToken");
+        // localStorage.removeItem("currentUser");
+        const user = {
+          refresh_token:JSON.parse(localStorage.getItem('refresh_token') || '{}'),
+        }
+        dispatch(RefreshTokenAction(user)).then(()=>{
+          // navigate("/dashboard")
+          window.location.reload();
+        })
       }
     }
+
     
   return (
 

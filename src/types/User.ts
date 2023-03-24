@@ -20,6 +20,7 @@ export interface IUser {
     feedbacksId?: number[];
     roles?: string[];
     token?:IjwtPayload;
+    refresh_token?:string;
     isVerified?:number;
     checked?:boolean;
   }
@@ -29,6 +30,7 @@ export interface IUserForm{
   password?:string;
   token?:string;
   lastLogin?:string;
+  refresh_token?:string;
 }
 
 export interface RegisterUser{

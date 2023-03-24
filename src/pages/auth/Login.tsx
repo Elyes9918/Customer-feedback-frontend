@@ -21,10 +21,14 @@ import { useAppThunkDispatch,} from "../../app/store";
 import { LoginUserAction } from "../../features/authSlice";
 import validateEmail from "../../utils/EmailValidation";
 import { IUserForm } from "../../types/User";
+import {useTranslation} from 'react-i18next'
+
 
 
 
 const Login = () => {
+  const {t} = useTranslation()
+
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
@@ -80,7 +84,7 @@ const Login = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">Sign-In</BlockTitle>
+                <BlockTitle tag="h4">{t('login')}</BlockTitle>
                 <BlockDes>
                   <p>Please enter your credentials .</p>
                 </BlockDes>

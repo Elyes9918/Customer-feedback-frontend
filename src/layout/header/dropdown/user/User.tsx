@@ -30,7 +30,7 @@ const User = () => {
   const handleSignout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("currentUser");
-
+    localStorage.removeItem("refresh_token");
   };
 
   const handleRoleDesignation = (arr) => {

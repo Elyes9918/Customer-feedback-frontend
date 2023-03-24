@@ -1,0 +1,12 @@
+{
+    "login":"Sign in",
+    "home": "Home",
+    "contact": "Contact",
+    "about": "About",
+    "page": {
+       "welcome": {
+           "home": "welcome to home page",
+           "contact": "welcome to contact page"
+       }
+    }
+  }
