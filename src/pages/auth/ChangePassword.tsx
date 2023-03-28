@@ -16,7 +16,7 @@ import {
 } from "../../components/Component";
 import { Form,  Spinner, Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { Link,useNavigate,useParams } from "react-router-dom";
+import { Link,useMatch,useNavigate,useParams } from "react-router-dom";
 import {useState,useEffect}  from 'react';
 import { useAppDispatch } from '../../app/store';
 import { ChangeUserPasswordAction } from '../../features/authSlice';
@@ -33,6 +33,10 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const isNewPassword = useMatch('/newPassword/:resetToken');
+  const isChangePassword = useMatch('/changePassword/:resetToken');
+
 
 
   const onFormSubmit = async (data) => {
@@ -70,7 +74,9 @@ const Login = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">Reset-Password</BlockTitle>
+                {isNewPassword && <BlockTitle tag="h4">Set your password</BlockTitle>}
+                {isChangePassword && <BlockTitle tag="h4">Reset-Password</BlockTitle>}
+                
                 <BlockDes>
                   <p>Please enter your new password .</p>
                 </BlockDes>

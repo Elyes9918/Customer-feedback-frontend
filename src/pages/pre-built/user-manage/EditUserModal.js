@@ -27,6 +27,24 @@ import currentUser from "../../../utils/currentUser";
 
 const EditUserModal = ({isModalOpen,userToEdit}) => {
 
+  const filterStatus = [
+    { value: "1", label: "Active" },
+    { value: "0", label: "Inactive" },
+    { value: "2", label: "Suspended" },
+  ];
+  
+   const filterRole = [
+    { value: "ROLE_ADMIN", label: "Admin" },
+    { value: "ROLE_GESTIONNAIRE", label: "Gestionnaire" },
+    { value: "ROLE_MEMBER", label: "Member" },
+    { value: "ROLE_CLIENT", label: "Client" },
+  ];
+
+  const EmailVerifiedOptions = [
+    {value:true,label:"Is verified"},
+    {value:false,label:"Not verified"}
+  ]
+
   const {status} = useAppSelector((state)=>state.user);
   const dispatch = useAppDispatch();
 
@@ -36,6 +54,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
   const PForm = useForm();
   const AForm = useForm();
   const SForm = useForm();
+  const RForm = useForm();
   const PassForm = useForm();
   const EForm = useForm();
 
@@ -51,13 +70,25 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
   const [selectedStatus,setSelectedStatus] = useState(null);
   const [selectedEmailVerif,setSelectedEmailVerif] = useState(null);
 
+  const [hasRoleAdmin,setHasRoleAdmin] = useState(false);
+  const [hasRoleGestionnaire,setHasRoleGestionnaire] = useState(false);
+  const [hasRoleMember,setHasRoleMember] = useState(false);
+  const [hasRoleClient,setHasRoleClient] = useState(false);
+
 
 
 
   useEffect(() => {
+
+    if(userToEdit && userToEdit.roles){
+      setHasRoleAdmin(userToEdit?.roles?.includes("ROLE_ADMIN"));
+      setHasRoleGestionnaire(userToEdit?.roles?.includes("ROLE_GESTIONNAIRE"));
+      setHasRoleMember(userToEdit?.roles?.includes("ROLE_MEMBER"));
+      setHasRoleClient(userToEdit?.roles?.includes("ROLE_CLIENT"));
+    }
       
       setModal(isModalOpen);
-  }, [isModalOpen]);
+  }, [isModalOpen,userToEdit]);
   
   const formatDate = (date) => {
     if(date!==undefined){
@@ -143,6 +174,40 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
     
   }
 
+  const stringRoles = () => {
+    let rString = "";
+    if(hasRoleAdmin){
+      rString+="ROLE_ADMIN,"
+    }
+    if(hasRoleGestionnaire){
+      rString+="ROLE_GESTIONNAIRE,"
+    }
+    if(hasRoleMember){
+      rString+="ROLE_MEMBER,"
+    }
+    if(hasRoleClient){
+      rString+="ROLE_CLIENT,"
+    }
+
+    return rString;
+
+  }
+
+  const updateRoles = () => {
+
+    setLoading(true);
+    const user = {
+      id:userToEdit.id,
+      roles:stringRoles()
+    }
+
+    dispatch(UpdateUserAction(user)).then(()=>{
+      setLoading(false);
+      setSuccessVal("Updated Succesfully")
+    })
+
+  }
+
   const onEditStatus = (data) => {
     setLoading(true);
     const user = {
@@ -222,23 +287,9 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
     }
   }
 
-  const filterStatus = [
-    { value: "1", label: "Active" },
-    { value: "0", label: "Inactive" },
-    { value: "2", label: "Suspended" },
-  ];
-  
-   const filterRole = [
-    { value: "ROLE_ADMIN", label: "Admin" },
-    { value: "ROLE_GESTIONNAIRE", label: "Gestionnaire" },
-    { value: "ROLE_MEMBER", label: "Member" },
-    { value: "ROLE_CLIENT", label: "Client" },
-  ];
+ 
 
-  const EmailVerifiedOptions = [
-    {value:true,label:"Is verified"},
-    {value:false,label:"Not verified"}
-  ]
+  
 
 
 
@@ -259,7 +310,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
             <Icon name="cross-sm"></Icon>
           </a>
           <div className="p-2">
-            <h5 className="title">Update User</h5>
+            <h5 className="title">Update  : {userToEdit?.email}</h5>
             <ul className="nk-nav nav nav-tabs">
               <li className="nav-item">
                 <a
@@ -527,9 +578,63 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
               </div>
 
               <div className={`tab-pane ${modalTab === "3" ? "active" : ""}`} id="Role">
-                <Form className="row gy-4" >
+                <Form className="row gy-4" onSubmit={RForm.handleSubmit(updateRoles)}>
 
-                <Col md="6">
+                <Col sm="12" >
+                <div className="preview-block">
+                  <span className="form-label" style={{ marginBottom: '30px' }} >Roles</span>
+                  <p></p>
+                  <div className="custom-control custom-checkbox">
+                    <input type="checkbox" className="custom-control-input" id="customCheck1"
+                      defaultChecked={userToEdit?.roles?.includes("ROLE_ADMIN")}
+                      value={hasRoleAdmin}
+                      onChange={() => setHasRoleAdmin(!hasRoleAdmin)}
+                      // onChange={handleChange}
+                    />
+                    <label className="custom-control-label" htmlFor="customCheck1"  style={{ marginRight: '50px' }}
+                    >
+                      Admin
+                    </label>
+                    </div>
+             
+                    <div className="custom-control custom-checkbox">
+                    <input type="checkbox" className="custom-control-input" id="customCheck2" 
+                      defaultChecked={userToEdit?.roles?.includes("ROLE_GESTIONNAIRE")}
+                      value={hasRoleGestionnaire}
+                      onChange={() => setHasRoleGestionnaire(!hasRoleGestionnaire)}
+                    />
+                    <label className="custom-control-label" htmlFor="customCheck2" style={{ marginRight: '50px' }}>
+                      Gestionnaire
+                    </label >
+                    </div>
+
+
+                    <div className="custom-control custom-checkbox">
+                    <input type="checkbox" className="custom-control-input" id="customCheck3"
+                      defaultChecked={userToEdit?.roles?.includes("ROLE_MEMBER")}
+                      value={hasRoleMember}
+                      onChange={() => setHasRoleMember(!hasRoleMember)}
+                     />
+                    <label className="custom-control-label" htmlFor="customCheck3" style={{ marginRight: '50px' }}>
+                      Member
+                    </label >
+                    </div>
+
+
+                    <div className="custom-control custom-checkbox">
+                    <input type="checkbox" className="custom-control-input" id="customCheck4" 
+                      defaultChecked={userToEdit?.roles?.includes("ROLE_CLIENT")}
+                      value={hasRoleClient}
+                      onChange={() => setHasRoleClient(!hasRoleClient)}
+                    />
+                    <label className="custom-control-label" htmlFor="customCheck4" style={{ marginRight: '50px' }}>
+                      Client
+                    </label >
+                  </div>
+                </div>
+              </Col>
+
+                {/* <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="addingRole">
                        Roles
@@ -599,11 +704,16 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                       </li>
                       </ul>
                     </div>
-                  </Col>
+                  </Col> */}
 
 
                 <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                    <li>
+                        <Button color="primary" size="md" type="submit">
+                        {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                        </Button>
+                      </li>
                      
                     {!successVal && 
                         <li>
@@ -655,6 +765,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                             label: userToEdit?.isVerified ? "Is verified" : "Not verified",
                           }}
                           onChange={(e) => setSelectedEmailVerif(e.value)}
+                          isDisabled={userToEdit?.isVerified}
                         />
                       </div>
                     </div>

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 
 const AuthFooter = () => {
+  const {t} = useTranslation()
 
   const [selectedLanguage,setSelectedLanguage] = useState("English")
 
@@ -33,17 +34,17 @@ const AuthFooter = () => {
             <ul className="nav nav-sm justify-content-center justify-content-lg-end">
               <li className="nav-item">
                 <Link className="nav-link" target="_blank" to={`${process.env.PUBLIC_URL}/auths/terms`}>
-                  Terms &amp; Condition
+                {t('page.AuthFooter.Terms')} &amp; {t('page.AuthFooter.Conditions')}
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" target="_blank" to={`${process.env.PUBLIC_URL}/auths/terms`}>
-                  Privacy Policy
+                {t('page.AuthFooter.PP')}
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" target="_blank" to={`${process.env.PUBLIC_URL}/auths/faq`}>
-                  Help
+                {t('page.AuthFooter.Help')}
                 </Link>
               </li>
               <li className="nav-item ">
@@ -96,7 +97,7 @@ const AuthFooter = () => {
           </Col>
           <Col lg="6">
             <div className="nk-block-content text-center text-lg-start">
-              <p className="text-soft">&copy; 2023 Wevioo. All Rights Reserved.</p>
+              <p className="text-soft">&copy; {t('page.AuthFooter.Wevioo')}</p>
             </div>
           </Col>
         </Row>

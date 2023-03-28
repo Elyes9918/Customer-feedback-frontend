@@ -1,7 +1,6 @@
-import { Navigate, Route,Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route,Routes } from 'react-router-dom';
 import Login from './pages/auth/Login';
 import ResetPassword from './pages/auth/ResetPassword';
-import Register from './pages/auth/Register';
 import ChangePassword from './pages/auth/ChangePassword';
 import AuthProtectedRoutes from './routesProtectionComponents/AuthProtectedRoutes';
 import UnProtectedRoutes from './routesProtectionComponents/UnProtectedRoutes';
@@ -9,14 +8,12 @@ import Layout from './layout/Layout';
 import RoleProtectedRoutes from './routesProtectionComponents/RoleProtectedRoutes';
 import currentAccessToken from './utils/currentAccessToken';
 import WizardRegistration from './pages/auth/WizardRegistration';
-import WizardProtectionRoute from './routesProtectionComponents/WizardProtectionRoute';
 import { useAppDispatch } from './app/store';
 import { RefreshTokenAction } from './features/authSlice';
 
 function App() {
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
     if(localStorage.getItem("accessToken")){
       const token = currentAccessToken();
@@ -27,7 +24,6 @@ function App() {
           refresh_token:JSON.parse(localStorage.getItem('refresh_token') || '{}'),
         }
         dispatch(RefreshTokenAction(user)).then(()=>{
-          // navigate("/dashboard")
           window.location.reload();
         })
       }
@@ -56,19 +52,17 @@ function App() {
 
         </Route>
 
-        <Route element ={<WizardProtectionRoute/>}>
-          <Route path="/regwizard" element={<WizardRegistration/>}/>
-        </Route>
-
-
 
         {/* Unprotected Routes */}
         <Route element ={<UnProtectedRoutes/>}>
 
           <Route path="/login" element={<Login/>}/>  
-          <Route path="/register" element={<Register/>}/>        
+          <Route path="/register-client" element={<WizardRegistration/>}/>   
+          <Route path="/register-member" element={<WizardRegistration/>}/>    
           <Route path="/resetPassword" element={<ResetPassword/>}/>    
-          <Route path="/resetPassword/changePassword/:resetToken" element={<ChangePassword/>}/>   
+          <Route path="/changePassword/:resetToken" element={<ChangePassword/>}/>   
+          <Route path="/newPassword/:resetToken" element={<ChangePassword/>}/>   
+
           <Route path="/*" element={<Navigate to="/login" replace/>} />  
           
         </Route>

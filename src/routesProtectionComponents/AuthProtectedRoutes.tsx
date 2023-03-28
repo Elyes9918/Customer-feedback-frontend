@@ -19,15 +19,7 @@ const AuthProtectedRoutes = () => {
     const isAuth = useAuth();
 
     if(isAuth===true){
-        const getToken = () => JSON.parse(localStorage.getItem('accessToken') || '{}');
-        const decodedJwt = jwt_decode<IjwtPayload>(getToken() || '') || null;
-
-        if(decodedJwt.isVerified===false){
-           return <Navigate to="/regwizard" />;
-        }
-        if(decodedJwt.isVerified===true){
-            return <Outlet/>;
-        }
+        return <Outlet/>;
 
     }else if(isAuth===false){
        return  <Navigate to="/login"  replace/>;

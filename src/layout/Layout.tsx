@@ -3,14 +3,14 @@ import Sidebar from "./sidebar/Sidebar";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import classNames from "classnames";
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 
 
 import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular";
 
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
-import currentUser from "../utils/currentUser";
+import AnalyticsHomePage from "../pages/Analytics";
 
 
 
@@ -78,6 +78,7 @@ const Layout = () => {
   const isUserList = useMatch('/user-list');
   const isUserDetails = useMatch('/user-details/:userId');
   const isUserProfile = useMatch('/user-profile')
+  const isDashBoard = useMatch('/dashboard')
 
   
 
@@ -98,6 +99,7 @@ const Layout = () => {
             <Header sidebarToggle={toggleSidebar} fixed setVisibility={setVisibility} theme={themeState.header} />
             {/* <Pages /> */}
 
+                {isDashBoard && <AnalyticsHomePage/>}
                 {isUserList &&  <UserListRegularPage/> }
                 {isUserDetails &&  <UserDetailsPage/>}
                 {isUserProfile &&  <UserProfileLayout/>}

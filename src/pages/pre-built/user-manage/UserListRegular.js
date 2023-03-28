@@ -137,8 +137,13 @@ const UserListRegularPage = () => {
   const suspendUser = (id) => {
     let newData = data;
     let index = newData.findIndex((item) => item.id === id);
-    newData[index].status = "Suspend";
+    newData[index].status = "2";
     setData([...data, ...newData]);
+    // Edit User
+    // const user = {
+    //   id:id,
+    //   status:2
+    // }
   };
 
   // function to change the check property of an item

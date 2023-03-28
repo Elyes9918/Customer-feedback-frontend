@@ -20,10 +20,13 @@ import {useState}  from 'react';
 import validateEmail from '../../utils/EmailValidation'
 import {  useAppDispatch } from '../../app/store';
 import { resetUserPasswordAction } from '../../features/authSlice';
+import { useTranslation } from "react-i18next";
 
 
 
-const Login = () => {
+const ResetPassword = () => {
+  const {t} = useTranslation()
+
   const [loading, setLoading] = useState(false);
   const [errorVal, setError] = useState("");
   const [successVal, setSuccessVal] = useState("");
@@ -42,11 +45,11 @@ const Login = () => {
 
     if(validateEmail(data?.email)){
       dispatch(resetUserPasswordAction(user)).then(()=>{
-        setLoading(false)
-        setSuccessVal("Please check your mail box")
+        setLoading(false);
+        setSuccessVal( `${t('page.ResetPassword.SuccRP')}` );
       })
     }else{
-      setError("Email is not valid, Please try again.")
+      setError(`${t('page.ResetPassword.ErrENotValid')}`)
       setLoading(false)
     }
 
@@ -70,9 +73,9 @@ const Login = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">Reset password</BlockTitle>
+                <BlockTitle tag="h4">{t('page.ResetPassword.RP')}</BlockTitle>
                 <BlockDes>
-                  <p>If you forgot your password, well, then we’ll email you instructions to reset your password.</p>
+                  <p>{t('page.ResetPassword.IfYouFo')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -104,9 +107,9 @@ const Login = () => {
                     type="text"
                     id="default-01"
                     name="email"
-                    ref={register({ required: "This field is required" })}
+                    ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                     defaultValue=""
-                    placeholder="Enter your email address"
+                    placeholder={t('page.Login.EYEAddress')}
                     className="form-control-lg form-control"
                   />
                   {errors.email && <span className="invalid">{errors.email.message}</span>}
@@ -115,13 +118,13 @@ const Login = () => {
 
               <div className="form-group">
                 <Button size="lg" className="btn-block" type="submit" color="primary">
-                  {loading ? <Spinner size="sm" color="light" /> : "Send reset link"}
+                  {loading ? <Spinner size="sm" color="light" /> : `${t('page.ResetPassword.SendRL')}` }
                 </Button>
               </div>
             </Form>
             <div className="form-note-s2 text-center pt-4">
               <Link to="/login">
-                <strong>Return to login</strong>
+                <strong>{t('page.ResetPassword.Log')}</strong>
               </Link>
             </div>
      
@@ -133,4 +136,4 @@ const Login = () => {
     </React.Fragment>
   );
 };
-export default Login;
+export default ResetPassword;

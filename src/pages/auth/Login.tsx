@@ -48,7 +48,7 @@ const Login = () => {
     };
     
     if(!validateEmail(user.email)){
-      setError("Invalid email format, Please try again");
+      setError(`${t('page.ResetPassword.ErrENotValid')}`);
       setLoading(false);
     }else{
       try {
@@ -59,7 +59,7 @@ const Login = () => {
             window.location.reload();
           });
       } catch (error) {
-        setError("Invalid credentials, Please try again");
+        setError(`${t('page.Login.InvalidCreds')}`);
           setLoading(false);
       }
     }
@@ -80,13 +80,13 @@ const Login = () => {
               <img className="logo-dark logo-img logo-img-lg" src={LogoDark} alt="logo-dark" />
             </Link>
           </div>
-
+          
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">{t('login')}</BlockTitle>
+                <BlockTitle tag="h4">{t('page.Login.SignIn')}</BlockTitle>
                 <BlockDes>
-                  <p>Please enter your credentials .</p>
+                  <p>{t('page.Login.PEYC')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -110,9 +110,10 @@ const Login = () => {
                     type="text"
                     id="default-01"
                     name="email"
-                    ref={register({ required: "This field is required" })}
+                    ref={register({ required: `${t('page.Login.TfIsReq')}` })}
+
                     defaultValue=""
-                    placeholder="Enter your email address"
+                    placeholder={t('page.Login.EYEAddress')}
                     className="form-control-lg form-control"
                   />
                   {errors.email && <span className="invalid">{errors.email.message}</span>}
@@ -121,10 +122,10 @@ const Login = () => {
               <div className="form-group">
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="password">
-                    Password
+                  {t('page.Login.Password')}
                   </label>
                   <Link className="link link-primary link-sm" to='/resetpassword'>
-                    Forgot password?
+                  {t('page.Login.ForgotPassword')}
                   </Link>
                 </div>
                 <div className="form-control-wrap">
@@ -145,8 +146,8 @@ const Login = () => {
                     id="password"
                     name="password"
                     defaultValue=""
-                    ref={register({ required: "This field is required" })}
-                    placeholder="Enter your password"
+                    ref={register({ required: `${t('page.Login.TfIsReq')}` })}
+                    placeholder={t('page.Login.EYPassword')}
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                   />
                   {errors.password && <span className="invalid">{errors.password.message}</span>}
@@ -160,8 +161,25 @@ const Login = () => {
             </Form>
             <div className="form-note-s2 text-center pt-4">
               {" "}
-              New on our platform? <Link to="/register"><strong>Create an account</strong></Link>
+              {t('page.Login.NewOnOur')}<strong> {t('page.Login.CreateAnAcc')}</strong>
             </div>
+            <div className="text-center pt-4 pb-4">
+              <h6 className="overline-title overline-title-sap">
+                <span>{t('page.Login.As')}</span>
+              </h6>
+            </div>
+            <ul className="nav justify-center gx-4">
+              <li className="nav-item">
+                <Link to="/register-client">
+                  <strong>{t('page.Login.WClient')}</strong>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/register-member">
+                  <strong>{t('page.Login.WMember')}</strong>
+                </Link>
+              </li>
+            </ul>
      
            
           </PreviewCard>

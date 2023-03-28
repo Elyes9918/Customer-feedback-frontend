@@ -1,12 +1,46 @@
 {
-    "login":"Connexion",
-    "home": "Acceuil",
-    "contact": "Contact",
-    "about": "A propos",
-    "page": {
-        "welcome": {
-            "home": "Bienvenue dans la page d'acceuil",
-            "contact": "Bienvenue dans la page de contact"
+    "page":{
+        "Login":{
+            "SignIn":"S'inscrire",
+            "PEYC":"Veuillez saisir vos données d'identification.",
+            "Password":"Mot de passe",
+            "EYEAddress":"Entrez votre adresse électronique",
+            "EYPassword":"Entrez votre mot de passe",
+            "ForgotPassword":"Mot de passe oublié ?",
+            "NewOnOur":"Nouveau sur notre plateforme ?",
+            "CreateAnAcc":"Créer un compte",
+            "As":"COMME",
+            "WClient":"Wevioo-Client",
+            "WMember":"Wevioo-Membre",
+            "TfIsReq":"Ce champ est obligatoire",
+            "InvalidCreds":"Informations d'identification non valides, veuillez réessayer"
+
+        },
+        "AuthFooter":{
+            "Terms":"Termes",
+            "Conditions":"Conditions",
+            "PP":"Politique de confidentialité",
+            "Help":"Aide",
+            "Wevioo":"2023 Wevioo. Tous droits réservés."
+        
+        },
+        "ChangePassword":{
+
+        },
+        
+        "ResetPassword":{
+            "RP":"Réinitialiser le mot de passe",
+            "IfYouFo":"Si vous avez oublié votre mot de passe, un courriel vous sera envoyé pour vous donner les instructions nécessaires à la réinitialisation de votre mot de passe.",
+            "RetuLog":"Retour à la connexion",
+            "ErrENotValid":"L'e-mail n'est pas valide, veuillez réessayer.",
+            "SuccRP":"Veuillez vérifier votre boîte aux mails",
+            "Log":"Connexion",
+            "SendRL":"Envoyer le lien de réinitialisation"
+
+        },
+        "WizardRegistration":{
+
         }
-     }
+
+    }
 }

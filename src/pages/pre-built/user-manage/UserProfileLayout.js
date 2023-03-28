@@ -29,13 +29,12 @@ import EditUserModal from "./EditUserModal";
 const UserProfileLayout = () => {
 
   const token = currentAccessToken();
-  const {user,listStatus} = useAppSelector((state)=>state.user)
+  const {cUser,listStatus} = useAppSelector((state)=>state.user)
   const dispatch = useAppDispatch();
   const [fullName,setFullName]=useState("");
 
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
-  const [profileName, setProfileName] = useState("Abu Bin Ishtiak");
   const [showPersonalInformation,setShowPersonalInformation] = useState(true);
   const [showNotificationPanel,setShowNotificationPanel] = useState(false);
   const [showSettingsPanel,setShowSettingsPanel] = useState(false);
@@ -82,10 +81,10 @@ const UserProfileLayout = () => {
               <div className="card-inner-group">
                 <div className="card-inner">
                   <div className="user-card">
-                    <UserAvatar text={findUpper(user.firstName+" "+user.lastName)} theme="primary" />
+                    <UserAvatar text={findUpper(cUser.firstName+" "+cUser.lastName)} theme="primary" />
                     <div className="user-info">
-                      <span className="lead-text">{user.firstName} {user.lastName}</span>
-                      <span className="sub-text">{user.email}</span>
+                      <span className="lead-text">{cUser.firstName} {cUser.lastName}</span>
+                      <span className="sub-text">{cUser.email}</span>
                     </div>
                     <div className="user-action">
                       <UncontrolledDropdown>
@@ -192,7 +191,7 @@ const UserProfileLayout = () => {
               {sm && mobileView && <div className="toggle-overlay" onClick={() => updateSm(!sm)}></div>}
 
 
-              {(showPersonalInformation && user) && 
+              {(showPersonalInformation && cUser) && 
 
 
         
@@ -225,7 +224,7 @@ const UserProfileLayout = () => {
                     <div className="data-item" onClick={() => setModal(true)}>
                       <div className="data-col">
                         <span className="data-label">Full Name</span>
-                        <span className="data-value">{user.firstName} {user.lastName}</span>
+                        <span className="data-value">{cUser.firstName} {cUser.lastName}</span>
                       </div>
                       <div className="data-col data-col-end">
                         <span className="data-more">
@@ -236,7 +235,7 @@ const UserProfileLayout = () => {
                     <div className="data-item" >
                       <div className="data-col">
                         <span className="data-label">Email</span>
-                        <span className="data-value">{user.email}</span>
+                        <span className="data-value">{cUser.email}</span>
                       </div>
                       <div className="data-col data-col-end">
                         <span className="data-more disable">
@@ -247,7 +246,7 @@ const UserProfileLayout = () => {
                     <div className="data-item" onClick={() => setModal(true)}>
                       <div className="data-col">
                         <span className="data-label">Company</span>
-                        <span className="data-value">{user.company}</span>
+                        <span className="data-value">{cUser.company}</span>
                       </div>
                       <div className="data-col data-col-end">
                         <span className="data-more">
@@ -258,7 +257,7 @@ const UserProfileLayout = () => {
                     <div className="data-item" onClick={() => setModal(true)}>
                       <div className="data-col">
                         <span className="data-label">Phone Number</span>
-                        <span className="data-value text-soft">{user.phoneNumber}</span>
+                        <span className="data-value text-soft">{cUser.phoneNumber}</span>
                       </div>
                       <div className="data-col data-col-end">
                         <span className="data-more">
@@ -269,7 +268,7 @@ const UserProfileLayout = () => {
                     <div className="data-item" onClick={() => setModal(true)}>
                       <div className="data-col">
                         <span className="data-label">Date of Birth</span>
-                        <span className="data-value">{user.birthDate}</span>
+                        <span className="data-value">{cUser.birthDate}</span>
                       </div>
                       <div className="data-col data-col-end">
                         <span className="data-more">
@@ -281,9 +280,9 @@ const UserProfileLayout = () => {
                       <div className="data-col">
                         <span className="data-label">Address</span>
                         <span className="data-value">
-                          {user.address}
+                          {cUser.address}
                           <br />
-                        {user.country}
+                        {cUser.country}
                         </span>
                       </div>
                       <div className="data-col data-col-end">
@@ -301,21 +300,21 @@ const UserProfileLayout = () => {
                     <div className="data-item">
                       <div className="data-col">
                         <span className="data-label">Last Login</span>
-                        <span className="data-value">{user.lastLogin}</span>
+                        <span className="data-value">{cUser.lastLogin}</span>
                       </div>
                     </div>
 
                       <div className="data-item">
                       <div className="data-col">
                         <span className="data-label">Last modified at</span>
-                        <span className="data-value">{user.modifiedAt}</span>
+                        <span className="data-value">{cUser.modifiedAt}</span>
                       </div>
                       </div>
 
                       <div className="data-item">
                       <div className="data-col">
                         <span className="data-label">Created At</span>
-                        <span className="data-value">{user.createdAt}</span>
+                        <span className="data-value">{cUser.createdAt}</span>
                       </div>
                       </div>
 
@@ -342,7 +341,7 @@ const UserProfileLayout = () => {
                     <EditUserModal 
                             key={shouldReRenderModal}
                             isModalOpen={modal} 
-                            userToEdit={user} 
+                            userToEdit={cUser} 
                             />
 
                 </React.Fragment>
@@ -352,7 +351,7 @@ const UserProfileLayout = () => {
         
               {showNotificationPanel && <UserProfileNotificationPage updateSm={updateSm} sm={sm} />}
               {/* {showActivityPanel && <UserProfileActivityPage updateSm={updateSm} sm={sm} />} */}
-              {showSettingsPanel && <UserProfileSettingPage updateSm={updateSm} sm={sm} user={user}/>}
+              {showSettingsPanel && <UserProfileSettingPage updateSm={updateSm} sm={sm} user={cUser}/>}
               
               {/* <Routes>
               <Route element ={<AuthProtectedRoutes/>}>

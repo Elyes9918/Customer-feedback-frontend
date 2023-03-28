@@ -1,12 +1,44 @@
 {
-    "login":"Sign in",
-    "home": "Home",
-    "contact": "Contact",
-    "about": "About",
-    "page": {
-       "welcome": {
-           "home": "welcome to home page",
-           "contact": "welcome to contact page"
-       }
+    "page":{
+        "Login":{
+            "SignIn":"Sign in",
+            "PEYC":"Please enter your credentials .",
+            "Password":"Password",
+            "EYEAddress":"Enter your email address",
+            "EYPassword":"Enter your password",
+            "ForgotPassword":"Forgot password?",
+            "NewOnOur":"New on our platform?",
+            "CreateAnAcc":"Create an account",
+            "As":"AS",
+            "WClient":"Wevioo-Client",
+            "WMember":"Wevioo-Member",
+            "TfIsReq":"This field is required",
+            "InvalidCreds":"Invalid credentials, Please try again"
+        },
+        "AuthFooter":{
+            "Terms":"Terms",
+            "Conditions":"Conditions",
+            "PP":"Privacy Policy",
+            "Help":"Help",
+            "Wevioo":"2023 Wevioo. All Rights Reserved."
+        },
+        "ChangePassword":{
+
+        },
+        "ResetPassword":{
+            "RP":"Reset Password",
+            "IfYouFo":"If you forgot your password, well, An email will be sent to give you instructions to reset your password.",
+            "RetuLog":"Return to login",
+            "ErrENotValid":"Email is not valid, Please try again.",
+            "SuccRP":"Please check your mail box",
+            "Log":"Login",
+            "SendRL":"Send reset link"
+
+        },
+        "WizardRegistration":{
+            
+        }
+
     }
+
   }

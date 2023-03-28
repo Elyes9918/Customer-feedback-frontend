@@ -6,12 +6,14 @@ import { IUser } from "../../src/types/User";
 
 const list : IUser[] = [];
 const user : IUser = {};
+const cUser : IUser = {};
 
 const initialState = {
     list,
     status: ApiStatus.ideal,
     LoginUserFormStatus:ApiStatus.ideal,
-    user
+    user,
+    cUser
 }
 
 export const getUserListAction = createAsyncThunk(
@@ -117,7 +119,7 @@ const userSlice = createSlice({
 
     builder.addCase(getUserByEmailAction.fulfilled,(state,action)=>{
         state.status=ApiStatus.ideal;
-        state.user=action.payload;
+        state.cUser=action.payload;
     });
 
     builder.addCase(getUserByEmailAction.rejected, (state) => {

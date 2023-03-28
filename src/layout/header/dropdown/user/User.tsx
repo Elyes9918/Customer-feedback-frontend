@@ -15,14 +15,14 @@ const User = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
 
-  const { user } = useAppSelector((state: RootState) => state.user);
+
+  const { cUser } = useAppSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
   const accesToken = currentAccessToken();
   //const cUser = currentUser();
 
 
   useEffect(()=>{
-    // CurrentUser();
     dispatch(getUserByEmailAction(accesToken.username));
 
   },[])
@@ -57,20 +57,20 @@ const User = () => {
       >
         <div className="user-toggle">
           {/* <UserAvatar icon="user-alt" className="sm" /> */}
-          <UserAvatar className="sm" text={findUpper(user.firstName+" "+user.lastName)} theme="primary" />
+          <UserAvatar className="sm" text={findUpper(cUser?.firstName+" "+cUser?.lastName)} theme="primary" />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">{handleRoleDesignation(user.roles)}</div>
-            <div className="user-name dropdown-indicator">{user.firstName} {user.lastName}</div>
+            <div className="user-status">{handleRoleDesignation(cUser?.roles)}</div>
+            <div className="user-name dropdown-indicator">{cUser?.firstName} {cUser?.lastName}</div>
           </div>
         </div>
       </DropdownToggle>
       <DropdownMenu end className="dropdown-menu-md dropdown-menu-s1">
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
-            <UserAvatar  text={findUpper(user.firstName+" "+user.lastName)} theme="primary" />
+            <UserAvatar  text={findUpper(cUser?.firstName+" "+cUser?.lastName)} theme="primary" />
             <div className="user-info">
-              <span className="lead-text">{user.firstName} {user.lastName}</span>
-              <span className="sub-text">{user.email}</span>
+              <span className="lead-text">{cUser?.firstName} {cUser?.lastName}</span>
+              <span className="sub-text">{cUser?.email}</span>
             </div>
           </div>
         </div>

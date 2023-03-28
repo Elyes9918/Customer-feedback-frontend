@@ -14,24 +14,27 @@ import {
   RSelect,
 } from "../../components/Component";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import {useState}  from 'react';
 import { Col, Row, Spinner } from "reactstrap";
 import { Steps, Step } from "react-step-builder";
 import DatePicker from "react-datepicker";
 import { countryOptions } from "../../utils/CountryOptions";
-import { useAppDispatch, useAppSelector } from "../../app/store";
-import { UpdateUserAction } from "../../features/userSlice";
-import currentUser from "../../utils/currentUser";
-import currentAccessToken from "../../utils/currentAccessToken";
+import { useAppDispatch,  } from "../../app/store";
+import { RegisterUserAction } from "../../features/authSlice";
 
 
 const PersonalForm = (props) => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const isRegisterClient = useMatch('/register-client');
+    const isRegisterMember = useMatch('/register-member');
+
 
     const [loading,setLoading]=useState(false);
 
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const [startIconDate, setStartIconDate] = useState(new Date());
 
     const formatDate = (date) => {
@@ -49,29 +52,79 @@ const PersonalForm = (props) => {
     const { errors, handleSubmit, register } = useForm();
   
     const submitForm = (data) => {
-        setLoading(true);
-        const user = {
-        id:currentAccessToken().id,
+
+      setLoading(true);
+  
+      if(isRegisterMember){
+      const userMember = {
+        email:data?.email,
         firstName:data?.firstName,
         lastName:data?.lastName,
         birthDate:formatDate(startIconDate),
         phoneNumber:data?.phoneNumber,
-        company:data?.company
+        company:"Wevioo",
+        address:data?.address,
+        country:selectedCountry,
         }
+        console.log(userMember);
 
+        dispatch(RegisterUserAction(userMember)).then(()=>{
+          setLoading(false);
+          props.next();
+        })
 
-    dispatch(UpdateUserAction(user)).then(()=>{
-      setLoading(false);
-      props.next();
-    })
+      }
+
+      if(isRegisterClient){
+        const userClient = {
+        email:data?.email,
+        firstName:data?.firstName,
+        lastName:data?.lastName,
+        birthDate:formatDate(startIconDate),
+        phoneNumber:data?.phoneNumber,
+        company:data?.company,
+        address:data?.address,
+        country:selectedCountry,
+        }
+        dispatch(RegisterUserAction(userClient)).then(()=>{
+          setLoading(false);
+          props.next();
+        })
+
+      }
+      
 
 
       
     };
+
+    const handleClickBack = () =>{
+      navigate("/login")
+    }
   
     return (
       <form className="content clearfix" onSubmit={handleSubmit(submitForm)}>
         <Row className="gy-4">
+          <Col md="6">
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                className="form-control"
+                type="text"
+                name="email"
+                placeholder="Enter your email"
+                ref={register({
+                  required: "This field is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "invalid email address",
+                  },
+                })}
+              />
+              {errors.email && <span className="invalid">{errors.email.message}</span>}
+            </div>
+          </Col>
+
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="first-name">
@@ -82,6 +135,7 @@ const PersonalForm = (props) => {
                   type="text"
                   id="first-name"
                   className="form-control"
+                  placeholder="Enter your first name"
                   name="firstName"
                   ref={register({ required: true })}
                   defaultValue={""}
@@ -100,6 +154,7 @@ const PersonalForm = (props) => {
                   type="text"
                   id="last-name"
                   className="form-control"
+                  placeholder="Enter your last name"
                   ref={register({ required: true })}
                   name="lastName"
                   defaultValue={""}
@@ -135,6 +190,7 @@ const PersonalForm = (props) => {
                 <input
                   type="number"
                   id="phone-no"
+                  placeholder="Enter your phone number"
                   className="form-control"
                   ref={register({ required: true })}
                   name="phoneNumber"
@@ -144,6 +200,7 @@ const PersonalForm = (props) => {
               </div>
             </div>
           </Col>
+          {isRegisterClient &&
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="company">
@@ -152,61 +209,18 @@ const PersonalForm = (props) => {
               <div className="form-control-wrap">
                 <input
                   type="text"
+                  placeholder="Enter your company"
+                  name="company"
                   id="company"
                   className="form-control"
                   ref={register({ required: true })}
-                  name="company"
                   defaultValue={""}
                 />
                 {errors.company && <span className="invalid">This field is required</span>}
               </div>
             </div>
           </Col>
-        </Row>
-        <div className="actions clearfix">
-          <ul>
-            <li>
-              <Button color="primary" type="submit">
-                {loading ? <Spinner size="sm" color="light" /> : "Next"}
-              </Button>
-            </li>
-          </ul>
-        </div>
-      </form>
-    );
-  };
-
-  const AddressForm = (props) => {
-
-   
-    const dispatch = useAppDispatch();
-
-    const [loading,setLoading]=useState(false);
-
-    const [selectedCountry, setSelectedCountry] = useState(null);
-    
-
-    const { errors, handleSubmit, register } = useForm();
-  
-    const submitForm = (data) => {
-
-    setLoading(true);
-    const user = {
-      id:currentAccessToken().id,
-      address:data?.address,
-      country:selectedCountry,
-    }
-
-    dispatch(UpdateUserAction(user)).then(()=>{
-      setLoading(false);
-      props.next();
-    })
-
-    };
-  
-    return (
-      <form className="content clearfix" onSubmit={handleSubmit(submitForm)}>
-        <Row className="gy-4">
+          }
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="Address">
@@ -216,6 +230,7 @@ const PersonalForm = (props) => {
                 <input
                   type="text"
                   id="address"
+                  placeholder="Enter your address line"
                   className="form-control"
                   name="address"
                   ref={register({ required: true })}
@@ -240,7 +255,7 @@ const PersonalForm = (props) => {
                     label: "Tunisia",
                     },
                 ]}
-                onChange={(e)=>setSelectedCountry(e.value)}
+                onChange={(e)=>{setSelectedCountry(e.value)}}
                 />
               </div>
             </div>
@@ -249,14 +264,14 @@ const PersonalForm = (props) => {
         <div className="actions clearfix">
           <ul>
             <li>
-                <Button color="primary" type="submit">
+              <Button color="primary" type="submit">
                 {loading ? <Spinner size="sm" color="light" /> : "Submit"}
-                </Button>
+              </Button>
             </li>
             <li>
-                <Button color="primary" onClick={props.prev}>
-                Previous
-                </Button>
+              <Button color="primary"   onClick={handleClickBack}>
+                Back to Login
+              </Button>
             </li>
           </ul>
         </div>
@@ -264,6 +279,7 @@ const PersonalForm = (props) => {
     );
   };
 
+  
   const Header = (props) => {
     return (
       <div className="steps clearfix">
@@ -273,15 +289,10 @@ const PersonalForm = (props) => {
               <span className="number">01</span> <h5>Step 1</h5>
             </a>
           </li>
-          <li className={props.current >= 2 ? "done" : ""}>
-            <a href="#wizard-01-h-1" onClick={(ev) => ev.preventDefault()}>
-              <span className="number">02</span> <h5>Step 2</h5>
-            </a>
-          </li>
-          <li className={props.current === 3 ? "last done" : "last"}>
+          <li className={props.current === 2 ? "last done" : "last"}>
             <a href="#wizard-01-h-2" onClick={(ev) => ev.preventDefault()}>
               <span className="current-info audible">current step: </span>
-              <span className="number">03</span> <h5>Step 3</h5>
+              <span className="number">02</span> <h5>Step 2</h5>
             </a>
           </li>
         </ul>
@@ -296,27 +307,28 @@ const PersonalForm = (props) => {
 
     const handleClick = (e) =>{
         e.preventDefault();
+        navigate("/login")
 
-        const user = {
-            id:currentAccessToken().id,
-            isVerified:true,
-            roles:["ROLE_CLIENT"],
-          }
+        // const user = {
+        //     id:currentAccessToken().id,
+        //     isVerified:true,
+        //     roles:["ROLE_CLIENT"],
+        //   }
       
-          dispatch(UpdateUserAction(user)).then(()=>{
-            localStorage.removeItem("accessToken")
-            navigate("/login")
-          })
+        //   dispatch(UpdateUserAction(user)).then(()=>{
+        //     localStorage.removeItem("accessToken")
+        //     navigate("/login")
+        //   })
 
     }
 
 
     return (
       <div className="d-flex justify-content-center align-items-center p-3">
-        <BlockTitle tag="h6" className="text-center">
-          Congratulations you have finished configuring your account, <a href="/dashboard" onClick={handleClick}>Click here</a> to reconnect again with your account setup.
+        <BlockTitle tag="h6" className="text-center" >
+          Congratulations you have finished configuring your account,An email has been sent to our team to help validate your account,<a href="/dashboard" onClick={handleClick}>Click here</a> to get redirected to our login page.
         </BlockTitle>
-      </div>
+      </div>  
     );
   };
   
@@ -340,9 +352,9 @@ const WizardRegistration = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">Finish Configuring your account</BlockTitle>
+                <BlockTitle tag="h4">Sign up</BlockTitle> 
                 <BlockDes>
-                  <p>Please enter your credentials .</p>
+                  <p>Please fill in the required information to complete your sign-up and unlock all the benefits of our service.</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -351,7 +363,6 @@ const WizardRegistration = () => {
             <div className="nk-wizard nk-wizard-simple is-alter wizard clearfix">
               <Steps config={config}>
                 <Step component={PersonalForm} />
-                <Step component={AddressForm} />
                 <Step component={Success} />
               </Steps>
             </div>
