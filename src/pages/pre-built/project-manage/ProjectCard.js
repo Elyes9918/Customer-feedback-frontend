@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Content from "../../../layout/content/Content";
 import DatePicker from "react-datepicker";
 import {
@@ -32,8 +32,14 @@ import {
   Badge
 } from "reactstrap";
 import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
+import { getProjectListAction } from "../../../features/projectSlice";
 
 const ProjectCardPage = () => {
+
+  const { list, status } = useAppSelector((state) => state.project);
+  const dispatch = useAppDispatch();
+
   const [sm, updateSm] = useState(false);
   const [modal, setModal] = useState({
     add: false,
@@ -53,6 +59,12 @@ const ProjectCardPage = () => {
     totalTask: 0,
     date: new Date(),
   });
+
+  useEffect(()=>{
+    dispatch(getProjectListAction()).then((updatedList)=>{
+      console.log(updatedList.payload);
+    });
+  },[])
 
   // OnChange function to get the input data
   const onInputChange = (e) => {
