@@ -35,39 +35,44 @@ function App() {
 
         <Routes>
 
-        {/* Authentication Protected Routes */}
-        <Route element ={<AuthProtectedRoutes/>}>
+          {/* Authentication Protected Routes */}
+          <Route element ={<AuthProtectedRoutes/>}>
 
-            <Route path="/dashboard" element={<Layout/>}/>  
-      
-            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
-              <Route path="/user-list" element={<Layout/>}/>
-              <Route path="/user-details/:userId" element={<Layout/>}/>
+              <Route path="/dashboard" element={<Layout/>}/>  
+        
+              {/* UserManage */}
+              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
+                <Route path="/user-list" element={<Layout/>}/>
+                <Route path="/user-details/:userId" element={<Layout/>}/>
+              </Route>
+              {/* ProjectManage */}
+              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
+                <Route path="/projects" element={<Layout/>}/>
+              </Route>
+
+
+              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,CLIENT,GESTIONNAIRE,MEMBRE'/>}>
+                <Route path="/user-profile" element={<Layout/>}/>
+              </Route>
+
               <Route path="/*" element={<Navigate to="/dashboard" replace/>}/>
-            </Route>
 
-            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,CLIENT,GESTIONNAIRE,MEMBRE'/>}>
-              <Route path="/user-profile" element={<Layout/>}/>
-            </Route>
-
-        </Route>
+          </Route>
 
 
-        {/* Unprotected Routes */}
-        <Route element ={<UnProtectedRoutes/>}>
+          {/* Unprotected Routes */}
+          <Route element ={<UnProtectedRoutes/>}>
 
-          <Route path="/login" element={<Login/>}/>  
-          <Route path="/register-client" element={<WizardRegistration/>}/>   
-          <Route path="/register-member" element={<WizardRegistration/>}/>    
-          <Route path="/resetPassword" element={<ResetPassword/>}/>    
-          <Route path="/changePassword/:resetToken" element={<ChangePassword/>}/>   
-          <Route path="/newPassword/:resetToken" element={<ChangePassword/>}/>   
+            <Route path="/login" element={<Login/>}/>  
+            <Route path="/register-client" element={<WizardRegistration/>}/>   
+            <Route path="/register-member" element={<WizardRegistration/>}/>    
+            <Route path="/resetPassword" element={<ResetPassword/>}/>    
+            <Route path="/changePassword/:resetToken" element={<ChangePassword/>}/>   
+            <Route path="/newPassword/:resetToken" element={<ChangePassword/>}/>   
 
-          <Route path="/*" element={<Navigate to="/login" replace/>} />  
-          
-        </Route>
-
-
+            <Route path="/*" element={<Navigate to="/login" replace/>} />  
+            
+          </Route>
 
         </Routes>
      

@@ -22,9 +22,11 @@ import DatePicker from "react-datepicker";
 import { countryOptions } from "../../utils/CountryOptions";
 import { useAppDispatch,  } from "../../app/store";
 import { RegisterUserAction } from "../../features/authSlice";
+import { useTranslation } from "react-i18next";
 
 
 const PersonalForm = (props) => {
+    const {t}= useTranslation();
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -114,10 +116,10 @@ const PersonalForm = (props) => {
                 name="email"
                 placeholder="Enter your email"
                 ref={register({
-                  required: "This field is required",
+                  required: `${t('page.Login.TfIsReq')}`,
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "invalid email address",
+                    message: `${t('page.WR.EError')}`,
                   },
                 })}
               />
@@ -128,38 +130,38 @@ const PersonalForm = (props) => {
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="first-name">
-                First name
+              {t('page.WR.FirstName')}
               </label>
               <div className="form-control-wrap">
                 <input
                   type="text"
                   id="first-name"
                   className="form-control"
-                  placeholder="Enter your first name"
+                  placeholder={t('page.WR.EnterYFN')}
                   name="firstName"
                   ref={register({ required: true })}
                   defaultValue={""}
                 />
-                {errors.firstName && <span className="invalid">This field is required</span>}
+                {errors.firstName && <span className="invalid">{t('page.Login.TfIsReq')}</span>}
               </div>
             </div>
           </Col>
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="last-name">
-                Last name
+              {t('page.WR.LastName')}
               </label>
               <div className="form-control-wrap">
                 <input
                   type="text"
                   id="last-name"
                   className="form-control"
-                  placeholder="Enter your last name"
+                  placeholder={t('page.WR.EnterYLN')}
                   ref={register({ required: true })}
                   name="lastName"
                   defaultValue={""}
                 />
-                {errors.lastName && <span className="invalid">This field is required</span>}
+                {errors.lastName && <span className="invalid">{t('page.Login.TfIsReq')}</span>}
               </div>
             </div>
           </Col>
@@ -169,7 +171,7 @@ const PersonalForm = (props) => {
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="birthdate">
-                Birth date
+              {t('page.WR.BirthDate')}
               </label>
               <div className="form-control-wrap">
                         <DatePicker
@@ -184,19 +186,19 @@ const PersonalForm = (props) => {
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="phone-no">
-                Phone number
+              {t('page.WR.PhoneNum')}
               </label>
               <div className="form-control-wrap">
                 <input
                   type="number"
                   id="phone-no"
-                  placeholder="Enter your phone number"
+                  placeholder={t('page.WR.EnterYPN')}
                   className="form-control"
                   ref={register({ required: true })}
                   name="phoneNumber"
                   defaultValue={""}
                 />
-                {errors.phoneNumber && <span className="invalid">This field is required</span>}
+                {errors.phoneNumber && <span className="invalid">{t('page.Login.TfIsReq')}</span>}
               </div>
             </div>
           </Col>
@@ -204,19 +206,19 @@ const PersonalForm = (props) => {
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="company">
-                Company
+              {t('page.WR.Company')}
               </label>
               <div className="form-control-wrap">
                 <input
                   type="text"
-                  placeholder="Enter your company"
+                  placeholder={t('page.WR.EnterYC')}
                   name="company"
                   id="company"
                   className="form-control"
                   ref={register({ required: true })}
                   defaultValue={""}
                 />
-                {errors.company && <span className="invalid">This field is required</span>}
+                {errors.company && <span className="invalid">{t('page.Login.TfIsReq')}</span>}
               </div>
             </div>
           </Col>
@@ -224,26 +226,26 @@ const PersonalForm = (props) => {
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="Address">
-                Address
+              {t('page.WR.Address')}
               </label>
               <div className="form-control-wrap">
                 <input
                   type="text"
                   id="address"
-                  placeholder="Enter your address line"
+                  placeholder={t('page.WR.EnterYAD')}
                   className="form-control"
                   name="address"
                   ref={register({ required: true })}
                   defaultValue={""}
                 />
-                {errors.address && <span className="invalid">This field is required</span>}
+                {errors.address && <span className="invalid">{t('page.Login.TfIsReq')}</span>}
               </div>
             </div>
           </Col>
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="Country">
-                Country
+              {t('page.WR.Country')}
               </label>
               <div className="form-control-wrap">
               <RSelect
@@ -265,12 +267,12 @@ const PersonalForm = (props) => {
           <ul>
             <li>
               <Button color="primary" type="submit">
-                {loading ? <Spinner size="sm" color="light" /> : "Submit"}
+                {loading ? <Spinner size="sm" color="light" /> : `${t('page.WR.Submit')}`}
               </Button>
             </li>
             <li>
               <Button color="primary"   onClick={handleClickBack}>
-                Back to Login
+              {t('page.WR.BToLogin')}
               </Button>
             </li>
           </ul>
@@ -281,18 +283,20 @@ const PersonalForm = (props) => {
 
   
   const Header = (props) => {
+    const {t}= useTranslation();
+
     return (
       <div className="steps clearfix">
         <ul>
           <li className={props.current >= 1 ? "first done" : "first"}>
             <a href="#wizard-01-h-0" onClick={(ev) => ev.preventDefault()}>
-              <span className="number">01</span> <h5>Step 1</h5>
+              <span className="number">01</span> <h5>{t('page.WR.Step')} 1</h5>
             </a>
           </li>
           <li className={props.current === 2 ? "last done" : "last"}>
             <a href="#wizard-01-h-2" onClick={(ev) => ev.preventDefault()}>
               <span className="current-info audible">current step: </span>
-              <span className="number">02</span> <h5>Step 2</h5>
+              <span className="number">02</span> <h5>{t('page.WR.Step')} 2</h5>
             </a>
           </li>
         </ul>
@@ -301,6 +305,8 @@ const PersonalForm = (props) => {
   };
 
   const Success = (props) => {
+    const {t}= useTranslation();
+
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -326,7 +332,7 @@ const PersonalForm = (props) => {
     return (
       <div className="d-flex justify-content-center align-items-center p-3">
         <BlockTitle tag="h6" className="text-center" >
-          Congratulations you have finished configuring your account,An email has been sent to our team to help validate your account,<a href="/dashboard" onClick={handleClick}>Click here</a> to get redirected to our login page.
+        {t('page.WR.Congrats1')},<a href="/dashboard" onClick={handleClick}>{t('page.WR.ClickHere')}</a> {t('page.WR.Congrats2')}
         </BlockTitle>
       </div>  
     );
@@ -338,6 +344,8 @@ const PersonalForm = (props) => {
 
 
 const WizardRegistration = () => {
+  const {t}= useTranslation();
+
     return ( 
         <React.Fragment>
       <PageContainer>
@@ -352,9 +360,9 @@ const WizardRegistration = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">Sign up</BlockTitle> 
+                <BlockTitle tag="h4">{t('page.WR.SignUp')}</BlockTitle> 
                 <BlockDes>
-                  <p>Please fill in the required information to complete your sign-up and unlock all the benefits of our service.</p>
+                  <p>{t('page.WR.PlFillIn')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>

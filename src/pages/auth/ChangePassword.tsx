@@ -20,10 +20,12 @@ import { Link,useMatch,useNavigate,useParams } from "react-router-dom";
 import {useState,useEffect}  from 'react';
 import { useAppDispatch } from '../../app/store';
 import { ChangeUserPasswordAction } from '../../features/authSlice';
+import { useTranslation } from "react-i18next";
 
 
 
 const Login = () => {
+  const {t} = useTranslation()
 
   let { resetToken } = useParams();
 
@@ -51,7 +53,7 @@ const Login = () => {
         navigate('/login')
       })
     }else{
-      setError('Passwords do not match, Please try again')
+      setError(`${t('page.ChangePassword.ErrPDNMat')}`)
     }
   
     
@@ -61,7 +63,7 @@ const Login = () => {
   const { errors, register, handleSubmit } = useForm();
 
   return (
-    <React.Fragment>
+    <React.Fragment>  
       <PageContainer>
         <Block className="nk-block-middle nk-auth-body  wide-xs">
           <div className="brand-logo pb-4 text-center">
@@ -74,11 +76,11 @@ const Login = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                {isNewPassword && <BlockTitle tag="h4">Set your password</BlockTitle>}
-                {isChangePassword && <BlockTitle tag="h4">Reset-Password</BlockTitle>}
+                {isNewPassword && <BlockTitle tag="h4">{t('page.ChangePassword.NewPass')}</BlockTitle>}
+                {isChangePassword && <BlockTitle tag="h4">{t('page.ChangePassword.ChangePass')}</BlockTitle>}
                 
                 <BlockDes>
-                  <p>Please enter your new password .</p>
+                  <p>{t('page.ChangePassword.PleEnterNP')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -86,7 +88,7 @@ const Login = () => {
               <div className="mb-3">
                 <Alert color="danger" className="alert-icon">
                   {" "}
-                  <Icon name="alert-circle" /> Passwords do not match, Please try again{" "}
+                  <Icon name="alert-circle" /> {t('page.ChangePassword.ErrPDNMat')}{" "}
                 </Alert>
               </div>
             )}
@@ -95,7 +97,7 @@ const Login = () => {
               <div className="form-group">
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="password">
-                    Password
+                  {t('page.Login.Password')}
                   </label>
                   
                 </div>
@@ -117,8 +119,8 @@ const Login = () => {
                     id="password"
                     name="password"
                     defaultValue=""
-                    ref={register({ required: "This field is required" })}
-                    placeholder="Enter your password"
+                    ref={register({ required: `${t('page.Login.TfIsReq')}` })}
+                    placeholder= {t('page.Login.EYPassword')}
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                   />
                   {errors.password && <span className="invalid">{errors.password.message}</span>}
@@ -127,7 +129,7 @@ const Login = () => {
               <div className="form-group">
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="password">
-                    Confirm Password
+                  {t('page.ChangePassword.CYPassword')}
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -148,7 +150,7 @@ const Login = () => {
                     id="password"
                     name="cPassword"
                     defaultValue=""
-                    ref={register({ required: "This field is required" })}
+                    ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                     placeholder="Confirm your password"
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                   />
@@ -159,7 +161,7 @@ const Login = () => {
     
               <div className="form-group">
                 <Button size="lg" className="btn-block" type="submit" color="primary">
-                  {loading ? <Spinner size="sm" color="light" /> : "Confirm your new password"}
+                  {loading ? <Spinner size="sm" color="light" /> : `${t('page.ChangePassword.CNewPass')}`}
                 </Button>
               </div>
             </Form>

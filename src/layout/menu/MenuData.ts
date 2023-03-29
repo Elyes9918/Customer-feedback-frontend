@@ -1,11 +1,21 @@
 const menu = [
   {
+    heading: "Dashboard",
+    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
+  },
+  {
+    icon: "growth-fill",
+    text: "Analytics",
+    role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBRE",
+    link: "/dashboard",
+  },
+  {
     heading: "Panels",
     role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
   },
   {
     icon: "users-fill",
-    text: "User Management",
+    text: "User Manage",
     role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBRE",
     active: false,
     subMenu: [
@@ -18,14 +28,14 @@ const menu = [
   },
   {
     icon: "tile-thumb-fill",
-    text: "Project Management",
-    role:"MEMBER",
+    text: "Projects",
+    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE",
     active: false,
     subMenu: [
       {
-        text: "Project List",
-        link: "/project-list",
-        role:"MEMBER"
+        text: "Projects Cards",
+        link: "/projects",
+        role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
       },
     ],
   },

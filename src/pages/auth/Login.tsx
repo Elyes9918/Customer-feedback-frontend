@@ -155,7 +155,7 @@ const Login = () => {
               </div>
               <div className="form-group">
                 <Button size="lg" className="btn-block" type="submit" color="primary">
-                  {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
+                  {loading ? <Spinner size="sm" color="light" /> : `${t('page.Login.Log')}`}
                 </Button>
               </div>
             </Form>

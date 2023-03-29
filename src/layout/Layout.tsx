@@ -11,6 +11,8 @@ import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular"
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
 import AnalyticsHomePage from "../pages/Analytics";
+import { ProjectCard } from "../components/Component";
+import ProjectCardPage from "../pages/pre-built/project-manage/ProjectCard";
 
 
 
@@ -75,10 +77,19 @@ const Layout = () => {
     "nk-sidebar-active": visibility && mobileView,
   });
 
+  // Dashboard
+  const isDashBoard = useMatch('/dashboard')
+
+  // User Manage
   const isUserList = useMatch('/user-list');
   const isUserDetails = useMatch('/user-details/:userId');
   const isUserProfile = useMatch('/user-profile')
-  const isDashBoard = useMatch('/dashboard')
+
+  // Projects
+  const isProjectsCards = useMatch('/projects');
+
+  
+
 
   
 
@@ -103,6 +114,7 @@ const Layout = () => {
                 {isUserList &&  <UserListRegularPage/> }
                 {isUserDetails &&  <UserDetailsPage/>}
                 {isUserProfile &&  <UserProfileLayout/>}
+                {isProjectsCards && <ProjectCardPage/>}
 
             
 

@@ -13,7 +13,8 @@
             "WClient":"Wevioo-Client",
             "WMember":"Wevioo-Member",
             "TfIsReq":"This field is required",
-            "InvalidCreds":"Invalid credentials, Please try again"
+            "InvalidCreds":"Invalid credentials, Please try again",
+            "Log":"Sign in"
         },
         "AuthFooter":{
             "Terms":"Terms",
@@ -23,7 +24,12 @@
             "Wevioo":"2023 Wevioo. All Rights Reserved."
         },
         "ChangePassword":{
-
+            "ErrPDNMat":"Passwords do not match, Please try again",
+            "NewPass":"Set your password",
+            "ChangePass":"Reset-Password",
+            "PleEnterNP":"Please enter your new password .",
+            "CYPassword":"Confirm your password",
+            "CNewPass":"Confirm your new password"
         },
         "ResetPassword":{
             "RP":"Reset Password",
@@ -35,7 +41,29 @@
             "SendRL":"Send reset link"
 
         },
-        "WizardRegistration":{
+        "WR":{
+            "SignUp":"Sign up",
+            "PlFillIn":"Please fill in the required information to complete your sign-up and unlock all the benefits of our service.",
+            "Step":"STEP",
+            "FirstName":"First name",
+            "LastName":"Last name",
+            "BirthDate":"Birth date",
+            "PhoneNum":"Phone number",
+            "Company":"Company",
+            "Address":"Address",
+            "Country":"Country",
+            "BToLogin":"Back to Login",
+            "Submit":"Submit",
+            "Congrats1":"Congratulations you have finished configuring your account,An email has been sent to our team to help validate your account",
+            "Congrats2":"to get redirected to our login page.",
+            "ClickHere":"Click here",
+            "EnterYFN":"Enter your first name",
+            "EnterYLN":"Enter your last name",
+            "EnterYPN":"Enter your phone number",
+            "EnterYAD":"Enter your address",
+            "EnterYC":"Select your country",
+            "EError":"Invalid email address"
+
             
         }
 
