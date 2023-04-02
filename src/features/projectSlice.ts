@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ApiStatus } from "../types/ApiStatus";
 import { IProject } from "../types/Project"
-import { createProjectApi, deleteProjectApi, getProjectByIdApi, getProjectListApi, updateProjectApi } from "../services/ProjectService";
+import { createProjectApi, deleteProjectApi, getProjectByIdApi, getProjectListApi, updateProjectApi,getProjectsByIdUserApi } from "../services/ProjectService";
 
 
 const list : IProject[] = [];
@@ -26,6 +26,14 @@ export const getProjectListAction = createAsyncThunk(
     "project/getProjectListAction",
     async () => {
        const response = await getProjectListApi();
+       return response.data;
+    }
+);
+
+export const GetProjectsByIdUserAction = createAsyncThunk(
+    "project/GetProjectsByIdUserAction",
+    async (id:string) => {
+       const response = await getProjectsByIdUserApi(id);
        return response.data;
     }
 );
@@ -86,6 +94,22 @@ const projectSlice = createSlice({
         builder.addCase(getProjectListAction.rejected, (state) => {
             state.status = ApiStatus.error;
           });
+
+        
+        // GetProjectsByIdUserAction
+        builder.addCase(GetProjectsByIdUserAction.pending,(state)=>{
+            state.status = ApiStatus.loading
+        });
+    
+        builder.addCase(GetProjectsByIdUserAction.fulfilled,(state,action)=>{
+            state.status=ApiStatus.ideal;
+            state.list=action.payload;
+        });
+    
+        builder.addCase(GetProjectsByIdUserAction.rejected, (state) => {
+            state.status = ApiStatus.error;
+          });
+
           
         // GetProjectByIdAction
         builder.addCase(GetProjectByIdAction.pending,(state)=>{

@@ -14,7 +14,8 @@
             "WMember":"Wevioo-Member",
             "TfIsReq":"This field is required",
             "InvalidCreds":"Invalid credentials, Please try again",
-            "Log":"Sign in"
+            "Log":"Sign in",
+            "RememberMe":"Remember me"
         },
         "AuthFooter":{
             "Terms":"Terms",

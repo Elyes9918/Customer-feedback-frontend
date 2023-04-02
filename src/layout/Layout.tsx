@@ -13,6 +13,7 @@ import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
 import AnalyticsHomePage from "../pages/Analytics";
 import { ProjectCard } from "../components/Component";
 import ProjectCardPage from "../pages/pre-built/project-manage/ProjectCard";
+import ProjectDetailsPage from "../pages/pre-built/project-manage/ProjectDetailsRegular";
 
 
 
@@ -87,6 +88,9 @@ const Layout = () => {
 
   // Projects
   const isProjectsCards = useMatch('/projects');
+  const isMyProjects = useMatch('/my-projects');
+  const isProjectDetails = useMatch('/project-details/:projectId');
+
 
   
 
@@ -115,6 +119,8 @@ const Layout = () => {
                 {isUserDetails &&  <UserDetailsPage/>}
                 {isUserProfile &&  <UserProfileLayout/>}
                 {isProjectsCards && <ProjectCardPage/>}
+                {isProjectDetails && <ProjectDetailsPage/>}
+                {isMyProjects && <ProjectCardPage/> }
 
             
 

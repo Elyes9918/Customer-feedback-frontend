@@ -14,8 +14,8 @@
             "WMember":"Wevioo-Membre",
             "TfIsReq":"Ce champ est obligatoire",
             "InvalidCreds":"Informations d'identification non valides, veuillez réessayer",
-            "Log":"Connexion"
-
+            "Log":"Connexion",
+            "RememberMe":"Se souvenir de moi"
 
         },
         "AuthFooter":{

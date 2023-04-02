@@ -32,6 +32,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
+  const [rememberMe,setRememberMe] =useState(false);
   
 
   const navigate = useNavigate();
@@ -55,6 +56,9 @@ const Login = () => {
         await dispatch(LoginUserAction(user))
           .unwrap()
           .then(() => {
+            if(rememberMe===true){
+              localStorage.setItem("rememberMe",rememberMe.toString());
+            }
             navigate(`/dashboard`);
             window.location.reload();
           });
@@ -151,6 +155,15 @@ const Login = () => {
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                   />
                   {errors.password && <span className="invalid">{errors.password.message}</span>}
+                </div>
+              </div>
+              <div className="form-group">
+                <div className="custom-control  custom-checkbox">
+                  <input type="checkbox" className="custom-control-input" id="customCheck7"
+                  checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+                  <label className="custom-control-label" htmlFor="customCheck7">
+                    {t('page.Login.RememberMe')}
+                  </label>
                 </div>
               </div>
               <div className="form-group">

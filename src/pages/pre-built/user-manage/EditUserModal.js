@@ -22,9 +22,6 @@ import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPe
 import currentUser from "../../../utils/currentUser";
 
 
-
-
-
 const EditUserModal = ({isModalOpen,userToEdit}) => {
 
   const filterStatus = [
@@ -141,38 +138,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
   }
 
 
-  const addRole = () =>{
-    setLoadingDiff(true);
-    const user = {
-      id:userToEdit.id,
-      roles:[roleToAdd]
-    }
-
-    dispatch(UpdateUserAction(user)).then(()=>{
-      setLoadingDiff(false);
-      setSuccessVal("Updated Succesfully")
-    })
-
-  }
-
-
-  const removeRole = () =>{
-
-    setLoading(true);
-    const user = {
-      id:userToEdit.id,
-      role:roleToRemove
-      
-    }
-
-    dispatch(unAssignRoleAction(user)).then(()=>{
-      setLoading(false);
-      setSuccessVal("Updated Succesfully")
-      // setModal(false);
-      // window.location.reload(false);
-    })
-    
-  }
+  
 
   const stringRoles = () => {
     let rString = "";
@@ -634,79 +600,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                 </div>
               </Col>
 
-                {/* <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="addingRole">
-                       Roles
-                      </label>
-                      <RSelect
-                        options={filterRole}
-                        placeholder="Select a country"
-                        defaultValue={[
-                          {
-                            label: "Select a role",
-                          },
-                        ]}
-                        onChange={(e) => setRoleToAdd(e.value)}
-                      />
-                    </div>
-                  </Col>
-
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="addingRole">
-                       Add Role
-                      </label>
-                      <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" onClick={addRole} disabled={!roleToAdd}>
-                          {loadingDiff ? <Spinner size="sm" color="light" /> : "Add"}
-                        </Button>
-                      </li>
-                      </ul>
-                    </div>
-                  </Col>
-                  </Form>
-
-                  <div style={{marginTop: '18px'}}></div>
-
-
-                  <Form className="row gy-4" >
-
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="removingRole">
-                       Roles
-                      </label>
-                      <RSelect
-                        options={filterRole}
-                        placeholder="Select a country"
-                        defaultValue={[
-                          {
-                            label: "Select a role",
-                          },
-                        ]}
-                        onChange={(e) => setRoleToRemove(e.value)}
-                      />
-                    </div>
-                  </Col>
-
-                  <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="removingRole">
-                       Remove Role
-                      </label>
-                      <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" onClick={removeRole} disabled={!roleToRemove}>
-                        {loading ? <Spinner size="sm" color="light" /> : "Remove"}
-                        </Button>
-                      </li>
-                      </ul>
-                    </div>
-                  </Col> */}
-
-
+              
                 <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                     <li>

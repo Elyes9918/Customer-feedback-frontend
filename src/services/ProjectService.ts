@@ -15,12 +15,17 @@ const authAxios = axios.create({
 });
 
 export const createProjectApi = async (data: IProject) =>{
-    return await authAxios.post(apiProjectsURL);
+    return await authAxios.post(apiProjectsURL,data);
 }
 
 export const getProjectListApi = async () => {
     return await authAxios.get<IProject[]>(apiProjectsURL);
 };
+
+export const getProjectsByIdUserApi = async(id:string) => {
+    const url = `${apiProjectsURL}/user/${id}`;
+    return await authAxios.get<IProject[]>(url)
+}
 
 export const getProjectByIdApi = async(id:string) => {
     const url = `${apiProjectsURL}/${id}`;

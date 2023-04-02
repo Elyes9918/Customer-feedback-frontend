@@ -15,6 +15,8 @@ function App() {
 
   const dispatch = useAppDispatch();
 
+  if(localStorage.getItem("rememberMe")){
+
     if(localStorage.getItem("accessToken")){
       const token = currentAccessToken();
       if (token.exp * 1000  < Date.now()) {
@@ -28,6 +30,23 @@ function App() {
         })
       }
     }
+
+    
+  }else {
+    if(localStorage.getItem("accessToken")){
+      const token = currentAccessToken();
+      if (token.exp * 1000  < Date.now()) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("rememberMe");
+      }
+
+    }
+
+  }
+
+    
 
     
   return (
@@ -46,8 +65,10 @@ function App() {
                 <Route path="/user-details/:userId" element={<Layout/>}/>
               </Route>
               {/* ProjectManage */}
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
+              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE'/>}>
                 <Route path="/projects" element={<Layout/>}/>
+                <Route path="/my-projects" element={<Layout/>}/>
+                <Route path="/project-details/:projectId" element={<Layout/>}/>
               </Route>
 
 

@@ -31,6 +31,7 @@ const User = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("currentUser");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("rememberMe");
   };
 
   const handleRoleDesignation = (arr) => {

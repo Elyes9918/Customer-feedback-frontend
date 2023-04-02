@@ -25,12 +25,13 @@ import {
   DataTableItem,
   TooltipComponent,
   RSelect,
+  UserAvatar,
 } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
-import { bulkActionOptions } from "../../../utils/Utils";
+import { bulkActionOptions, findUpper } from "../../../utils/Utils";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { getUserListAction } from "../../../features/userSlice";
+import { UpdateUserAction, getUserListAction } from "../../../features/userSlice";
 import EditUserModal from "./EditUserModal"
 
 
@@ -135,15 +136,20 @@ const UserListRegularPage = () => {
 
   // function to change to suspend property for an item
   const suspendUser = (id) => {
-    let newData = data;
-    let index = newData.findIndex((item) => item.id === id);
-    newData[index].status = "2";
-    setData([...data, ...newData]);
-    // Edit User
-    // const user = {
-    //   id:id,
-    //   status:2
-    // }
+    const user = {
+      id:id,
+      status:2,
+    }
+
+    dispatch(UpdateUserAction(user)).then(()=>{
+      let newData = [...data]; // Create a new array using the spread operator
+      let index = newData.findIndex((item) => item.id === id);
+      newData[index] = { ...newData[index], status: 2 }; // Create a new object with updated status property
+      setData(newData);
+    })
+
+    
+    
   };
 
   // function to change the check property of an item
@@ -592,7 +598,11 @@ const UserListRegularPage = () => {
                         <DataTableRow>
                           <Link to={`${process.env.PUBLIC_URL}/user-details/${item.id}`}>
                             <div className="user-card">
-                             
+                            <UserAvatar className="sm"
+                                theme={item.avatarBg}
+                                text={findUpper(item.firstName+" "+item.lastName)}
+                                image={item.image}
+                              ></UserAvatar>
                               <div className="user-info">
                                 <span className="tb-lead">
                                   {item.email}{" "}

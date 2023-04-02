@@ -20,7 +20,7 @@ const menu = [
     active: false,
     subMenu: [
       {
-        text: "User List",
+        text: "Users List",
         link: "/user-list",
         role:"ADMIN"
       },
@@ -33,8 +33,13 @@ const menu = [
     active: false,
     subMenu: [
       {
-        text: "Projects Cards",
+        text: "Projects List",
         link: "/projects",
+        role:"ADMIN,GESTIONNAIRE,MEMBRE"
+      },
+      {
+        text: "My Projects",
+        link: "/my-projects",
         role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
       },
     ],
