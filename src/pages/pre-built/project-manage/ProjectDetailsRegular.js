@@ -37,11 +37,35 @@ const ProjectDetailsPage = () => {
 
   const [modal, setModal] = useState(false);
   const [shouldReRenderModal, setShouldReRenderModal] = useState(false);
+
+  const [gestUsers,setGestUsers] = useState();
+  const [membersUsers,setMembersUsers] = useState();
+  const [clientUsers,setClientUsers] = useState();
   
 
   // grabs the id of the url and loads the corresponding data
   useEffect(() => {
     dispatch(GetProjectByIdAction(projectId));
+
+    if(project!==null){
+      setGestUsers(project?.usersId?.filter((user) =>
+       user.roles.includes('ROLE_GESTIONNAIRE')).map((user) => ({
+          value: user?.id,
+          label: user.name
+        })));
+
+      setMembersUsers(project.usersId?.filter((user) =>
+       user.roles.includes('ROLE_MEMBER')).map((user) => ({
+        value: user?.id,
+        label: user.name
+      })));
+
+      setClientUsers(project.usersId?.filter((user) =>
+       user.roles.includes('ROLE_CLIENT')).map((user) => ({
+        value: user?.id,
+        label: user.name
+      })));
+    }
   }, []);
 
   // function to toggle sidebar
@@ -73,7 +97,16 @@ const ProjectDetailsPage = () => {
   const handleProjectEditModal = () =>{
         setModal(true);
         setShouldReRenderModal(!shouldReRenderModal);
+  }
 
+  const ReturnProjectStatus = (status) =>{
+    if(status==="0"){
+      return "Open"
+    }else if(status==="1"){
+      return "On Hold"
+    }else if(status==="2"){
+      return "Closed"
+    }
   }
 
   return (
@@ -124,19 +157,7 @@ const ProjectDetailsPage = () => {
               <div className="card-aside-wrap" id="user-detail-block">
                 <div className="card-content">
                   <ul className="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
-                    <li className="nav-item">
-                      <a
-                        className="nav-link disabled"
-                        href="#personal"
-                        onClick={(ev) => {
-                          ev.preventDefault();
-                        }}
-                      >
-                        <Icon name="user-circle"></Icon>
-                        <span>Personal</span>
-                      </a>
-                    </li>
-        
+                   
                     <li className="nav-item">
                       <a
                         className="nav-link active"
@@ -181,44 +202,102 @@ const ProjectDetailsPage = () => {
 
                       <>
                       <Block>
-                        <div className="profile-ud-list">
+                        <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Title</span>
+                              <span className="profile-ud-label">Title :</span>
                               <span className="profile-ud-value">{project.title}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Client</span>
+                              <span className="profile-ud-label">Client :</span>
                               <span className="profile-ud-value">{project.client}</span>
                             </div>
                           </div>
+
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Description</span>
-                              <span className="profile-ud-value">{project.description}</span>
+                              <span className="profile-ud-label">Status :</span>
+                              <span className="profile-ud-value">{ReturnProjectStatus(project.status)}</span>
                             </div>
                           </div>
-                         
+
+                          <div className="profile-ud-item">
+                            <div className="profile-ud wider">
+                              <span className="profile-ud-label">Lead :</span>
+                              <span className="profile-ud-value">{gestUsers[0].label}</span>
+                            </div>
+                          </div>
+
+                          <div className="profile-ud-item">
+                            <div className="profile-ud wider">
+                              <span className="profile-ud-label">Team Members :</span>
+                              <span className="profile-ud-value">
+                                <ul>
+                                  <li style={{ marginTop: '5px' }}>Elyes1</li>
+                                  <li style={{ marginTop: '5px' }}>Elyes2</li>
+                                  <li style={{ marginTop: '5px' }}>Elyes3</li>
+                                </ul>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="profile-ud-item">
+                            <div className="profile-ud wider">
+                              <span className="profile-ud-label">Clients :</span>
+                              <span className="profile-ud-value">
+                              <ul >
+                                  <li style={{ marginTop: '5px' }}>Elyes1</li>
+                                  <li style={{ marginTop: '5px' }}>Elyes2</li>
+                                  <li style={{ marginTop: '5px' }}>Elyes3</li>
+                                </ul>
+                              </span>
+                            </div>
+                          </div>
                             
+
+
+
+                          {/* <div className="profile-ud-item" style={{ flexBasis: '100%' }}>
+                            <div className="profile-ud wider">
+                              <span className="profile-ud-label">Description :</span>
+                              <strong style={{ textAlign: 'justify' }}>{project.description}</strong>
+                            </div>
+                          </div> */}
+
                         </div>
-                      </Block><Block>
+                      </Block>
+
+                      <Block>
                           <BlockHead className="nk-block-head-line">
-                            <BlockTitle tag="h6" className="overline-title text-base">
-                              Additional Information
+                            <BlockTitle tag="h4" className="overline-title text-base">
+                              Description :
                             </BlockTitle>
                           </BlockHead>
-                          <div className="profile-ud-list">
+                          <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
+                          <div className="profile-ud-item" style={{ flexBasis: '100%' }}>
+                            <p>{project.description}</p> 
+                            </div>
+                          </div>
+                      </Block>
+
+                      <Block>
+                          <BlockHead className="nk-block-head-line">
+                            <BlockTitle tag="h4" className="overline-title text-base">
+                              Additional Information :  
+                            </BlockTitle>
+                          </BlockHead>
+                          <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Date of creation</span>
+                                <span className="profile-ud-label">Date of creation :</span>
                                 <span className="profile-ud-value">{project.createdAt}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Last modified</span>
+                                <span className="profile-ud-label">Last modified :</span>
                                 <span className="profile-ud-value">{project.modifiedAt}</span>
                               </div>
                             </div>
@@ -328,7 +407,7 @@ const ProjectDetailsPage = () => {
                  <EditProjectModal 
                   key={shouldReRenderModal}
                   isModalOpen={modal} 
-                  userToEdit={project} 
+                  projectToEdit={project} 
                   />
 
                

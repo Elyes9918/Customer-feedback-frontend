@@ -103,7 +103,24 @@ const UserDetailsPage = () => {
   const handleUserEditModal = () =>{
         setModal(true);
         setShouldReRenderModal(!shouldReRenderModal);
+  }
 
+  const ReturnIsVerified = (status) =>{
+    if(status===0){
+      return "not Verified"
+    }else if(status===1){
+      return "is Verified"
+    }
+  }
+
+  const ReturnAccountStatus = (status) =>{
+    if(status==="0"){
+      return "Inactive"
+    }else if(status==="1"){
+      return "Active"
+    }else if(status==="2"){
+      return "Suspended"
+    }
   }
 
   return (
@@ -169,7 +186,7 @@ const UserDetailsPage = () => {
                       </a>
                     </li>
         
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                       <a
                         className="nav-link disabled"
                         href="#documents"
@@ -182,7 +199,7 @@ const UserDetailsPage = () => {
                         <Icon name="file-text"></Icon>
                         <span>Projects</span>
                       </a>
-                    </li>
+                    </li> */}
 
 
                     <li className="nav-item nav-item-trigger d-xxl-none">
@@ -213,52 +230,52 @@ const UserDetailsPage = () => {
 
                       <>
                       <Block>
-                        <div className="profile-ud-list">
+                        <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Email</span>
+                              <span className="profile-ud-label">Email :</span>
                               <span className="profile-ud-value">{user.email}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Full Name</span>
+                              <span className="profile-ud-label">Full Name :</span>
                               <span className="profile-ud-value">{user.firstName} {user.lastName}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Date of Birth</span>
+                              <span className="profile-ud-label">Date of Birth :</span>
                               <span className="profile-ud-value">{user.birthDate}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Company</span>
+                              <span className="profile-ud-label">Company :</span>
                               <span className="profile-ud-value">{user.company}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Mobile Number</span>
+                              <span className="profile-ud-label">Mobile Number :</span>
                               <span className="profile-ud-value">{user.phoneNumber}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Roles</span>
+                              <span className="profile-ud-label">Roles :</span>
                               <span className="profile-ud-value">{formatRoles(user.roles)}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Address</span>
+                                <span className="profile-ud-label">Address :</span>
                                 <span className="profile-ud-value">{user.address}</span>
                               </div>
                             </div>
                           <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Country</span>
+                                <span className="profile-ud-label">Country :</span>
                                 <span className="profile-ud-value">{user.country}</span>
                               </div>
                             </div>
@@ -270,28 +287,40 @@ const UserDetailsPage = () => {
                               Additional Information
                             </BlockTitle>
                           </BlockHead>
-                          <div className="profile-ud-list">
+                          <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
+                          <div className="profile-ud-item">
+                              <div className="profile-ud wider">
+                                <span className="profile-ud-label">Account :</span>
+                                <span className="profile-ud-value">{ReturnIsVerified(user.isVerified)}</span>
+                              </div>
+                            </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Date of creation</span>
+                                <span className="profile-ud-label">Status :</span>
+                                <span className="profile-ud-value">{ReturnAccountStatus(user.status)}</span>
+                              </div>
+                            </div>
+                            <div className="profile-ud-item">
+                              <div className="profile-ud wider">
+                                <span className="profile-ud-label">Date of creation :</span>
                                 <span className="profile-ud-value">{user.createdAt}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Last modified</span>
+                                <span className="profile-ud-label">Last modified :</span>
                                 <span className="profile-ud-value">{user.modifiedAt}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Last login</span>
+                                <span className="profile-ud-label">Last login :</span>
                                 <span className="profile-ud-value">{user.lastLogin}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Register Method</span>
+                                <span className="profile-ud-label">Register Method :</span>
                                 <span className="profile-ud-value">Email</span>
                               </div>
                             </div>

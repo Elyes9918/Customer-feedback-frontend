@@ -81,8 +81,6 @@ const AddProjectModal = ({isModalOpen}) => {
       ]
     }
 
-    console.log(project);
-
     dispatch(CreateProjectAction(project)).then(()=>{
       setLoading(false);
       setSuccessVal("Project created Succesfully")
@@ -118,14 +116,7 @@ const AddProjectModal = ({isModalOpen}) => {
           <div className="p-2">
             <h5 className="title">Add Project</h5>
             <div className="mt-4">
-              {errorVal && (
-                <div className="mb-3">
-                  <Alert color="danger" className="alert-icon">
-                    {" "}
-                    <Icon name="alert-circle" /> {errorVal}{" "}
-                  </Alert>
-                </div>
-              )}
+           
                     
               {successVal && (
                 <div className="mb-3">

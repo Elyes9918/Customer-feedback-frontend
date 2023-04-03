@@ -58,9 +58,11 @@
             "Congrats1":"Congratulations you have finished configuring your account,An email has been sent to our team to help validate your account",
             "Congrats2":"to get redirected to our login page.",
             "ClickHere":"Click here",
+            "EnterYE":"Enter your email",
             "EnterYFN":"Enter your first name",
             "EnterYLN":"Enter your last name",
             "EnterYPN":"Enter your phone number",
+            "EnterYourCompany":"Enter your company",
             "EnterYAD":"Enter your address",
             "EnterYC":"Select your country",
             "EError":"Invalid email address"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../../images/logo.png";
 import LogoDark from "../../images/wevioo-logo.png";
 import PageContainer from "../../layout/page-container/PageContainer";
@@ -38,6 +38,13 @@ const PersonalForm = (props) => {
 
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [startIconDate, setStartIconDate] = useState(new Date());
+    const [EmailInputSize,setEmailInputSize] = useState();
+
+
+    useEffect(()=>{
+      if(isRegisterClient) {setEmailInputSize(6)}
+      if(isRegisterMember) {setEmailInputSize(12)}
+    },[])
 
     const formatDate = (date) => {
         if(date!==undefined){
@@ -107,14 +114,15 @@ const PersonalForm = (props) => {
     return (
       <form className="content clearfix" onSubmit={handleSubmit(submitForm)}>
         <Row className="gy-4">
-          <Col md="6">
+          
+          <Col md={EmailInputSize}>
             <div className="form-group">
               <label className="form-label">Email</label>
               <input
                 className="form-control"
                 type="text"
                 name="email"
-                placeholder="Enter your email"
+                placeholder={t('page.WR.EnterYE')}
                 ref={register({
                   required: `${t('page.Login.TfIsReq')}`,
                   pattern: {
@@ -126,6 +134,27 @@ const PersonalForm = (props) => {
               {errors.email && <span className="invalid">{errors.email.message}</span>}
             </div>
           </Col>
+          {isRegisterClient &&
+          <Col md="6">
+            <div className="form-group">
+              <label className="form-label" htmlFor="company">
+              {t('page.WR.Company')}
+              </label>
+              <div className="form-control-wrap">
+                <input
+                  type="text"
+                  placeholder={t('page.WR.EnterYourCompany')}
+                  name="company"
+                  id="company"
+                  className="form-control"
+                  ref={register({ required: true })}
+                  defaultValue={""}
+                />
+                {errors.company && <span className="invalid">{t('page.Login.TfIsReq')}</span>}
+              </div>
+            </div>
+          </Col>
+          }
 
           <Col md="6">
             <div className="form-group">
@@ -202,27 +231,7 @@ const PersonalForm = (props) => {
               </div>
             </div>
           </Col>
-          {isRegisterClient &&
-          <Col md="6">
-            <div className="form-group">
-              <label className="form-label" htmlFor="company">
-              {t('page.WR.Company')}
-              </label>
-              <div className="form-control-wrap">
-                <input
-                  type="text"
-                  placeholder={t('page.WR.EnterYC')}
-                  name="company"
-                  id="company"
-                  className="form-control"
-                  ref={register({ required: true })}
-                  defaultValue={""}
-                />
-                {errors.company && <span className="invalid">{t('page.Login.TfIsReq')}</span>}
-              </div>
-            </div>
-          </Col>
-          }
+         
           <Col md="6">
             <div className="form-group">
               <label className="form-label" htmlFor="Address">

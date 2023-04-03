@@ -55,6 +55,7 @@ const ProjectCardPage = () => {
   const [shouldReRenderAddModal, setShouldReRenderAddModal] = useState(false);
 
   const [onSearchText, setSearchText] = useState("");
+  const [selectedFilterBy,setSelectedFilterBy] = useState();
 
 
   const isMyProjects = useMatch('/my-projects');
@@ -68,6 +69,7 @@ const ProjectCardPage = () => {
       dispatch(getProjectListAction()).then((updatedList)=>{
         console.log(updatedList.payload);
         setData(updatedList.payload);
+        console.log(updatedList.payload)
       });
     }else if (isMyProjects){
       dispatch(GetProjectsByIdUserAction(currentUser().id)).then((updatedList)=>{
@@ -97,9 +99,11 @@ const ProjectCardPage = () => {
 
 
    // function that loads the want to editted data
-   const onEditClick = () => {
+   const onEditClick = (project) => {
+    console.log(selectedFilterBy);
     setAddModal(false);
     setEditModal(true);
+    setSelectedEditProject(project);
     setShouldReRenderEditModal(!shouldReRenderEditModal);
   };
 
@@ -118,7 +122,7 @@ const ProjectCardPage = () => {
     // Changing state value when searching name
     useEffect(() => {
       if (onSearchText !== "") {
-        const filteredObject = data.filter((item) => {
+        const filteredObject = list.filter((item) => {
           return (
             item?.title.toLowerCase().includes(onSearchText.toLowerCase()) ||
             item?.client.toLowerCase().includes(onSearchText.toLowerCase())
@@ -129,6 +133,21 @@ const ProjectCardPage = () => {
         setData([...list]);
       }
     }, [onSearchText, setData]);
+
+    const randomColor = () =>{
+        const colors = ["orange", "blue", "pink", "purple"];
+        const randomIndex = Math.floor(Math.random() * colors.length);
+        return colors[randomIndex];
+    }
+
+    const HandleFilterDropDown = (status) => { 
+        const filteredObjects = list.filter((item)=>{
+            return(
+              item.status===status
+            );
+        })
+        setData([...filteredObjects]);
+    }
 
   return (
     <React.Fragment>
@@ -170,37 +189,40 @@ const ProjectCardPage = () => {
                         </DropdownToggle>
                         <DropdownMenu end>
                           <ul className="link-list-opt no-bdr">
-                            <li>
+                            <li key={1}>
                               <DropdownItem
                                 tag="a"
                                 href="#dropdownitem"
                                 onClick={(ev) => {
                                   ev.preventDefault();
-                                }}
-                              >
+                                  setSelectedFilterBy("Open");
+                                  HandleFilterDropDown("0");
+                                }}>
                                 <span>Open</span>
                               </DropdownItem>
                             </li>
-                            <li>
+                            <li key={2}>
                               <DropdownItem
                                 tag="a"
                                 href="#dropdownitem"
                                 onClick={(ev) => {
                                   ev.preventDefault();
-                                }}
-                              >
+                                  setSelectedFilterBy("Closed");
+                                  HandleFilterDropDown("2");
+                                }}>
                                 <span>Closed</span>
                               </DropdownItem>
                             </li>
-                            <li>
+                            <li key={3}>
                               <DropdownItem
                                 tag="a"
                                 href="#dropdownitem"
                                 onClick={(ev) => {
                                   ev.preventDefault();
-                                }}
-                              >
-                                <span>OnGoing</span>
+                                  setSelectedFilterBy("On Hold");
+                                  HandleFilterDropDown("1");
+                                }}>
+                                <span>On Hold</span>
                               </DropdownItem>
                             </li>
                           </ul>
@@ -237,7 +259,7 @@ const ProjectCardPage = () => {
         </div> 
         }
 
-        {status === ApiStatus.ideal && currentItems.length === 0 &&
+        {status === ApiStatus.ideal && currentItems.length === 0 && list.length !==0 &&
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
                 <Alert className="alert-icon" color="primary">
                   <Icon name="alert-circle" />
@@ -266,7 +288,7 @@ const ProjectCardPage = () => {
                           href="#title"
                           className="project-title"
                         >
-                          <UserAvatar className="sq" theme={item.avatarClass} text={findUpper(item.title)} />
+                          <UserAvatar className="sq" theme={"orange"} text={findUpper(item.title)} />
                           <div className="project-info">
                             <h6 className="title">{item.title}</h6>
                             <span className="sub-text">{item.client}</span>
@@ -282,7 +304,7 @@ const ProjectCardPage = () => {
                           </DropdownToggle>
                           <DropdownMenu end>
                             <ul className="link-list-opt no-bdr">
-                              <li onClick={() => onEditClick(item.id)}>
+                              <li onClick={() => onEditClick(item)}>
                                 <DropdownItem
                                   tag="a"
                                   href="#edit"
@@ -313,7 +335,7 @@ const ProjectCardPage = () => {
                         </UncontrolledDropdown>
                       </div>
                       <div className="project-details">
-                        {item.description.length > 90 ? item.description.substring(0, 89) + "... " : item.description}
+                        {item.description.length > 85 ? item.description.substring(0, 84) + "... " : item.description}
                       </div>
                       <div className="project-progress">
                         <div className="project-progress-details">
@@ -333,42 +355,40 @@ const ProjectCardPage = () => {
                       <div className="project-meta">
                         <ul className="project-users g-1">
                         
-                              <li key={1}>
+                        {item?.usersId?.slice(0, 2).map((user, idx) => {
+                            return (
+                              <li key={idx}>
                                 <UserAvatar
                                   className="sm"
-                                  text={findUpper("Joshua Wilson")}
-                                  theme={"orange"}
-                                />
-                              </li>
+                                  text={findUpper(user?.name)}
+                                  // theme={randomColor()}
+                                  theme={"primary"}
 
-                              <li key={1}>
-                                <UserAvatar
-                                  className="sm"
-                                  text={findUpper("Milagros Betts")}
-                                  theme={"purple"}
                                 />
                               </li>
-                      
-                          
+                            );
+                          })}
+                          {item?.usersId?.length > 2 && (
                             <li>
-                              <UserAvatar theme="light" className="sm" text={"+2"} />
+                              <UserAvatar theme="light" className="sm" text={`+${item?.usersId?.length - 2}`} />
                             </li>
+                          )}
                          
                         </ul>
                         <Badge
                           className="badge-dim"
                           color={
-                            days > 10
-                              ? "light"
-                              : days <= 10 && days >= 2
-                              ? "warning"
-                              : days === 1
+                            item.status === "0"
                               ? "danger"
-                              : days <= 0 && "success"
+                              : item.status === "1"
+                              ? "warning"
+                              : item.status === "2"
+                              ? "success" :  ""
+                      
                           }
                         >
-                          <Icon name="clock"></Icon>
-                          <span>{days <= 0 ? "Done" : days === 1 ? "Due Tomorrow" : days + " Days Left"}</span>
+                          <Icon name="hot-fill"></Icon>
+                          <span>{item.status=== "0" ? "Open" : item.status === "1" ? "On Hold" : item.status==="2" ? "CLOSED" :""}</span>
                         </Badge>
                       </div>
                     </ProjectCard>

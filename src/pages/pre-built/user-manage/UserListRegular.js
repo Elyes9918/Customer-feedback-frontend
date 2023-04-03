@@ -106,8 +106,10 @@ const UserListRegularPage = () => {
     if (onSearchText !== "") {
       const filteredObject = data.filter((item) => {
         return (
-          item?.email.toLowerCase().includes(onSearchText.toLowerCase()) ||
-          item?.country.toLowerCase().includes(onSearchText.toLowerCase())
+          item?.email?.toLowerCase().includes(onSearchText.toLowerCase()) ||
+          item?.country?.toLowerCase().includes(onSearchText.toLowerCase()) ||
+          item?.firstName?.toLowerCase().includes(onSearchText.toLowerCase()) ||
+          item?.lastName?.toLowerCase().includes(onSearchText.toLowerCase())
         );
       });
       setData([...filteredObject]);
@@ -395,6 +397,7 @@ const UserListRegularPage = () => {
                                       href="#reset"
                                       onClick={(ev) => {
                                         ev.preventDefault();
+                                        setData([...list])
                                       }}
                                       className="clickable"
                                     >
@@ -538,42 +541,7 @@ const UserListRegularPage = () => {
                     >
                       <Icon name="plus"></Icon>
                     </DropdownToggle>
-                    <DropdownMenu end className="dropdown-menu-xs">
-                      <ul className="link-tidy sm no-bdr">
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="bl" />
-                            <label className="custom-control-label" htmlFor="bl">
-                              Balance
-                            </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="ph" />
-                            <label className="custom-control-label" htmlFor="ph">
-                              Phone
-                            </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="vri" />
-                            <label className="custom-control-label" htmlFor="vri">
-                              Verified
-                            </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="st" />
-                            <label className="custom-control-label" htmlFor="st">
-                              Status
-                            </label>
-                          </div>
-                        </li>
-                      </ul>
-                    </DropdownMenu>
+                    
                   </UncontrolledDropdown>
                 </DataTableRow>
               </DataTableHead>

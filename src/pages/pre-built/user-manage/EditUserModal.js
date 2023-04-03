@@ -185,11 +185,8 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
     dispatch(UpdateUserAction(user)).then(()=>{
       setLoading(false);
       setSuccessVal("Updated Succesfully")
-      // setModal(false);
-      // window.location.reload(false);
     })
 
-    // setModal(false);
   }
 
   const onEditEmail = async (data) => {

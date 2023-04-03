@@ -61,10 +61,12 @@
             "Congrats1":"Félicitations, vous avez terminé la configuration de votre compte, un email a été envoyé à notre équipe pour valider votre compte.",
             "Congrats2":"pour être redirigé vers notre page de connexion.",
             "ClickHere":"Cliquez ici",
+            "EnterYE":"Entrez votre addresse électronique",
             "EnterYFN":"Entrez votre prénom",
             "EnterYLN":"Entrez votre nom de famille",
             "EnterYPN":"Entrez votre numéro de téléphone",
             "EnterYAD":"Entrez votre adresse",
+            "EnterYourCompany":"Entrez votre Société",
             "EnterYC":"Entrez votre pays",
             "EError":"Adresse e-mail invalide"
 
