@@ -7,4 +7,5 @@ export interface IProject {
     createdAt?:string;
     modifiedAt?:string;
     usersId?: string[];
+    creator?:string[];
   }

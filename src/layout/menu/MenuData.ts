@@ -1,22 +1,22 @@
 const menu = [
   {
     heading: "Dashboard",
-    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
+    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
   },
   {
     icon: "growth-fill",
     text: "Analytics",
-    role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBRE",
+    role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBER",
     link: "/dashboard",
   },
   {
     heading: "Panels",
-    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
+    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
   },
   {
     icon: "users-fill",
-    text: "User Manage",
-    role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBRE",
+    text: "User Board",
+    role: "ADMIN",
     active: false,
     subMenu: [
       {
@@ -28,22 +28,23 @@ const menu = [
   },
   {
     icon: "tile-thumb-fill",
-    text: "Projects",
-    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE",
+    text: "Project Board",
+    role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER",
     active: false,
     subMenu: [
       {
         text: "Projects List",
         link: "/projects",
-        role:"ADMIN,GESTIONNAIRE,MEMBRE"
+        role:"ADMIN,GESTIONNAIRE"
       },
       {
         text: "My Projects",
         link: "/my-projects",
-        role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBRE"
+        role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
       },
     ],
   },
+  
   
 ];
 export default menu;

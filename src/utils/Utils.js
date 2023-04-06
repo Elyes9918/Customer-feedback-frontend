@@ -155,3 +155,32 @@ export const monthNames = [
   "November",
   "December",
 ];
+
+export const formatDate = (inputDate) => {
+  const dateObj = new Date(inputDate);
+  
+  const monthName = monthNames[dateObj.getMonth()];
+
+  // Get the day, year, and time components
+  const day = dateObj.getDate();
+  const year = dateObj.getFullYear();
+  const time = dateObj.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+
+  // Combine the components into the desired format
+  const formattedDate = `${monthName} ${day}, ${year} at ${time}`;
+  
+  return formattedDate;
+};
+
+export function getColorString(str) {
+  const colors = ["blue", "orange", "pink", "purple", "primary"];
+  const firstLetter = str?.charAt(0).toLowerCase();
+  const charCode = firstLetter?.charCodeAt(0);
+  const groupIndex = Math.floor((charCode - 97) / 5);
+  const colorIndex = groupIndex % colors?.length;
+  return colors[colorIndex];
+}

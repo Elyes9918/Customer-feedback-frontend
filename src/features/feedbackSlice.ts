@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ApiStatus } from "../types/ApiStatus";
 import { IFeedback } from "../types/Feedback";
-import { createFeedbackApi, deleteFeedbackApi, getFeedbackByIdApi, getFeedbackListApi, updateFeedbackApi } from "../services/FeedbackService";
+import { createFeedbackApi, deleteFeedbackApi, getFeedbackByIdApi, getFeedbackListApi, getFeedbacksByIdUserApi, updateFeedbackApi } from "../services/FeedbackService";
 
 
 const list : IFeedback[] = [];
@@ -34,6 +34,14 @@ export const GetFeedbackByIdAction = createAsyncThunk(
     "feedback/GetFeedbackByIdAction",
     async (id:string) => {
        const response = await getFeedbackByIdApi(id);
+       return response.data;
+    }
+);
+
+export const GetFeedbackByUserIdAction = createAsyncThunk(
+    "feedback/GetFeedbackByUserIdAction",
+    async (id:string) => {
+       const response = await getFeedbacksByIdUserApi(id);
        return response.data;
     }
 );
@@ -98,6 +106,20 @@ const feedbackSlice = createSlice({
         });
     
         builder.addCase(GetFeedbackByIdAction.rejected, (state) => {
+            state.status = ApiStatus.error;
+          });
+
+        //   GetFeedbackByUserIdAction
+        builder.addCase(GetFeedbackByUserIdAction.pending,(state)=>{
+            state.status = ApiStatus.loading
+        });
+    
+        builder.addCase(GetFeedbackByUserIdAction.fulfilled,(state,action)=>{
+            state.status=ApiStatus.ideal;
+            state.list=action.payload;
+        });
+    
+        builder.addCase(GetFeedbackByUserIdAction.rejected, (state) => {
             state.status = ApiStatus.error;
           });
 

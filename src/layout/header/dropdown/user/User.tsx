@@ -7,7 +7,7 @@ import {currentUser} from "../../../../utils/currentUser";
 import {currentAccessToken} from "../../../../utils/currentAccessToken";
 import {  RootState, useAppSelector,useAppDispatch} from "../../../../app/store";
 import { getUserByEmailAction } from "../../../../features/userSlice";
-import { findUpper } from "../../../../utils/Utils";
+import { findUpper, getColorString } from "../../../../utils/Utils";
 
 
 
@@ -58,9 +58,10 @@ const User = () => {
       >
         <div className="user-toggle">
           {/* <UserAvatar icon="user-alt" className="sm" /> */}
-          <UserAvatar className="sm" text={findUpper(cUser?.firstName+" "+cUser?.lastName)} theme="primary" />
+          <UserAvatar className="sm" icon="user-alt" 
+          theme={getColorString(cUser?.firstName)}  />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">{handleRoleDesignation(cUser?.roles)}</div>
+            <div className="user-status" style={{ color: "#526484" }}>{handleRoleDesignation(cUser?.roles)}</div>
             <div className="user-name dropdown-indicator">{cUser?.firstName} {cUser?.lastName}</div>
           </div>
         </div>
@@ -68,7 +69,8 @@ const User = () => {
       <DropdownMenu end className="dropdown-menu-md dropdown-menu-s1">
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
-            <UserAvatar  text={findUpper(cUser?.firstName+" "+cUser?.lastName)} theme="primary" />
+            <UserAvatar  text={findUpper(cUser?.firstName+" "+cUser?.lastName)} 
+            theme={getColorString(cUser?.firstName)} />
             <div className="user-info">
               <span className="lead-text">{cUser?.firstName} {cUser?.lastName}</span>
               <span className="sub-text">{cUser?.email}</span>

@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { getUserListAction } from "../../../features/userSlice";
 import { CreateProjectAction } from "../../../features/projectSlice";
+import currentUser from "../../../utils/currentUser";
 
 
 const AddProjectModal = ({isModalOpen}) => {
@@ -78,7 +79,8 @@ const AddProjectModal = ({isModalOpen}) => {
         ...formData.team.map(user => user.value),
         ...formData.clients.map(user => user.value),
         ...(formData.lead ? [formData.lead.value] : [])
-      ]
+      ],
+      creatorId:currentUser().id,
     }
 
     dispatch(CreateProjectAction(project)).then(()=>{

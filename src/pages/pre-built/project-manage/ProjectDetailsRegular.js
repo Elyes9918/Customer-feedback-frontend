@@ -9,15 +9,17 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
+  UserAvatar,
 } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
-import { currentTime, monthNames, todaysDate } from "../../../utils/Utils";
+import { currentTime, findUpper, formatDate, monthNames, todaysDate } from "../../../utils/Utils";
 import { notes } from "../user-manage/UserData";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { ApiStatus } from "../../../types/ApiStatus";
 import { GetProjectByIdAction } from "../../../features/projectSlice";
 import EditProjectModal from "./EditProjectModal";
+import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
 
 
 
@@ -38,34 +40,34 @@ const ProjectDetailsPage = () => {
   const [modal, setModal] = useState(false);
   const [shouldReRenderModal, setShouldReRenderModal] = useState(false);
 
-  const [gestUsers,setGestUsers] = useState();
-  const [membersUsers,setMembersUsers] = useState();
-  const [clientUsers,setClientUsers] = useState();
+  const [gestUsers,setGestUsers] = useState([]);
+  const [membersUsers,setMembersUsers] = useState([]);
+  const [clientUsers,setClientUsers] = useState([]);
   
 
   // grabs the id of the url and loads the corresponding data
   useEffect(() => {
-    dispatch(GetProjectByIdAction(projectId));
-
-    if(project!==null){
-      setGestUsers(project?.usersId?.filter((user) =>
+    dispatch(GetProjectByIdAction(projectId)).then((data)=>{
+      setGestUsers(data?.payload?.usersId?.filter((user) =>
        user.roles.includes('ROLE_GESTIONNAIRE')).map((user) => ({
           value: user?.id,
           label: user.name
         })));
 
-      setMembersUsers(project.usersId?.filter((user) =>
+      setMembersUsers(data?.payload?.usersId?.filter((user) =>
        user.roles.includes('ROLE_MEMBER')).map((user) => ({
         value: user?.id,
         label: user.name
       })));
 
-      setClientUsers(project.usersId?.filter((user) =>
+      setClientUsers(data?.payload?.usersId?.filter((user) =>
        user.roles.includes('ROLE_CLIENT')).map((user) => ({
         value: user?.id,
         label: user.name
       })));
-    }
+
+    });
+
   }, []);
 
   // function to toggle sidebar
@@ -133,16 +135,15 @@ const ProjectDetailsPage = () => {
                   color="light"
                   outline
                   className="bg-white d-none d-sm-inline-flex"
-                  onClick={() => navigate("/projects")}
+                  onClick={() => navigate("/my-projects")}
                 >
                   <Icon name="arrow-left"></Icon>
                   <span>Back</span>
                 </Button>
                 <a
-                  href="#back"
+                  href="/my-projects"
                   onClick={(ev) => {
-                    ev.preventDefault();
-                    navigate("/projects");
+                    navigate("/my-projects");
                   }}
                   className="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"
                 >
@@ -173,12 +174,13 @@ const ProjectDetailsPage = () => {
                       </a>
                     </li>
 
-
+                    <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
                     <li className="nav-item nav-item-trigger d-xxl-none">
                       <Button  onClick={handleProjectEditModal}>
                         <Icon name="pen2"></Icon>
                       </Button>
                     </li>
+                    </RolesWithPermession>
         
                 
                     
@@ -198,7 +200,7 @@ const ProjectDetailsPage = () => {
 
                       </div> }
 
-                      {status === ApiStatus.ideal && 
+                      {status === ApiStatus.ideal &&
 
                       <>
                       <Block>
@@ -211,7 +213,7 @@ const ProjectDetailsPage = () => {
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Client :</span>
+                              <span className="profile-ud-label">Client Company :</span>
                               <span className="profile-ud-value">{project.client}</span>
                             </div>
                           </div>
@@ -219,14 +221,32 @@ const ProjectDetailsPage = () => {
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
                               <span className="profile-ud-label">Status :</span>
-                              <span className="profile-ud-value">{ReturnProjectStatus(project.status)}</span>
+                              <span className="profile-ud-value"
+                                style={{
+                                  color:
+                                    project.status === "0"
+                                      ? "red"
+                                      : project.status === "1"
+                                      ? "orange"
+                                      : project.status === "2"
+                                      ? "green"
+                                      : "black", // fallback color if status is not 0, 1, or 2
+                                }}>{ReturnProjectStatus(project.status)}
+                              </span>
                             </div>
                           </div>
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
                               <span className="profile-ud-label">Lead :</span>
-                              <span className="profile-ud-value">{gestUsers[0].label}</span>
+                              <span className="profile-ud-value">
+                                <RolesWithPermession rolesRequired="CLIENT">
+                                <div >{gestUsers[0]?.label}</div>
+                                </RolesWithPermession>
+                                <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
+                                <a href={`/user-details/${gestUsers[0]?.value}`}>{gestUsers[0]?.label}</a>
+                                </RolesWithPermession>
+                                </span>
                             </div>
                           </div>
 
@@ -235,9 +255,18 @@ const ProjectDetailsPage = () => {
                               <span className="profile-ud-label">Team Members :</span>
                               <span className="profile-ud-value">
                                 <ul>
-                                  <li style={{ marginTop: '5px' }}>Elyes1</li>
-                                  <li style={{ marginTop: '5px' }}>Elyes2</li>
-                                  <li style={{ marginTop: '5px' }}>Elyes3</li>
+                                {membersUsers?.map((user,idx) => {
+                                  return (
+                                    <li key={idx} style={{ marginTop: '5px' }}>
+                                      <RolesWithPermession rolesRequired="CLIENT">
+                                      <div >{user?.label}</div>
+                                      </RolesWithPermession>
+                                      <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
+                                      <a href={`/user-details/${user?.value}`}>{user?.label}</a>
+                                      </RolesWithPermession>
+                                    </li>
+                                  );
+                                })}
                                 </ul>
                               </span>
                             </div>
@@ -247,25 +276,25 @@ const ProjectDetailsPage = () => {
                             <div className="profile-ud wider">
                               <span className="profile-ud-label">Clients :</span>
                               <span className="profile-ud-value">
-                              <ul >
-                                  <li style={{ marginTop: '5px' }}>Elyes1</li>
-                                  <li style={{ marginTop: '5px' }}>Elyes2</li>
-                                  <li style={{ marginTop: '5px' }}>Elyes3</li>
+                                <ul>
+                                {clientUsers?.map((user,idx) => {
+                                  return (
+                                    <li key={idx} style={{ marginTop: '5px' }}>
+                                      <RolesWithPermession rolesRequired="CLIENT">
+                                      <div >{user?.label}</div>
+                                      </RolesWithPermession>
+                                      <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
+                                      <a href={`/user-details/${user?.value}`}>{user?.label}</a>
+                                      </RolesWithPermession>
+                                    </li>
+                                  );
+                                })}
                                 </ul>
                               </span>
                             </div>
                           </div>
-                            
 
-
-
-                          {/* <div className="profile-ud-item" style={{ flexBasis: '100%' }}>
-                            <div className="profile-ud wider">
-                              <span className="profile-ud-label">Description :</span>
-                              <strong style={{ textAlign: 'justify' }}>{project.description}</strong>
-                            </div>
-                          </div> */}
-
+                        
                         </div>
                       </Block>
 
@@ -292,25 +321,38 @@ const ProjectDetailsPage = () => {
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
                                 <span className="profile-ud-label">Date of creation :</span>
-                                <span className="profile-ud-value">{project.createdAt}</span>
+                                <span className="profile-ud-value">{formatDate(project.createdAt)}</span>
+                              </div>
+                            </div>
+                            <div className="profile-ud-item">
+                              <div className="profile-ud wider">
+                                <span className="profile-ud-label">Created by :</span>
+                                <span className="profile-ud-value">
+                                  <RolesWithPermession rolesRequired="CLIENT">
+                                    {project?.creator?.name}
+                                  </RolesWithPermession>
+                                      <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
+                                      <a href={`/user-details/${project?.creator?.id}`}>{project?.creator?.name}</a>
+                                      </RolesWithPermession>
+                                  
+                                  </span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
                                 <span className="profile-ud-label">Last modified :</span>
-                                <span className="profile-ud-value">{project.modifiedAt}</span>
+                                <span className="profile-ud-value">{formatDate(project.modifiedAt)}</span>
                               </div>
                             </div>
                            
-                            
                           </div>
                         </Block>
                         </>
                     }
                     
-
+                    <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
                     <div className="nk-divider divider md"></div>
-
+                    
                     <Block>
                       <BlockHead size="sm">
                         <BlockBetween>
@@ -357,6 +399,8 @@ const ProjectDetailsPage = () => {
                         ))}
                       </div>
                     </Block>
+                    </RolesWithPermession>
+
                   </div>
                 </div>
 

@@ -14,6 +14,7 @@ import AnalyticsHomePage from "../pages/Analytics";
 import { ProjectCard } from "../components/Component";
 import ProjectCardPage from "../pages/pre-built/project-manage/ProjectCard";
 import ProjectDetailsPage from "../pages/pre-built/project-manage/ProjectDetailsRegular";
+import Kanban from "../pages/pre-built/feedback-manage/Kanban";
 
 
 
@@ -91,6 +92,10 @@ const Layout = () => {
   const isMyProjects = useMatch('/my-projects');
   const isProjectDetails = useMatch('/project-details/:projectId');
 
+  // Feedbacks
+  const isFeedbacksProject = useMatch('/feedbacks/:projectId');
+  const isFeedbackDetails = useMatch('/feedback-details/:feedbackId');
+
 
   
 
@@ -121,6 +126,8 @@ const Layout = () => {
                 {isProjectsCards && <ProjectCardPage/>}
                 {isProjectDetails && <ProjectDetailsPage/>}
                 {isMyProjects && <ProjectCardPage/> }
+                {isFeedbacksProject && <Kanban/>}
+                {/* {isFeedbackDetails && } */}
 
             
 

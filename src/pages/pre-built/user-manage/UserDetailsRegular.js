@@ -12,13 +12,14 @@ import {
 
 } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
-import { currentTime, monthNames, todaysDate } from "../../../utils/Utils";
+import { currentTime, formatDate, monthNames, todaysDate } from "../../../utils/Utils";
 import { notes } from "./UserData";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { GetUserByIdAction } from "../../../features/userSlice";
 import { ApiStatus } from "../../../types/ApiStatus";
 import EditUserModal from "./EditUserModal"
+import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
 
 
 
@@ -201,12 +202,14 @@ const UserDetailsPage = () => {
                       </a>
                     </li> */}
 
+                    <RolesWithPermession rolesRequired="ADMIN">
+                      <li className="nav-item nav-item-trigger d-xxl-none">
+                        <Button  onClick={handleUserEditModal}>
+                          <Icon name="pen2"></Icon>
+                        </Button>
+                      </li>
+                    </RolesWithPermession>
 
-                    <li className="nav-item nav-item-trigger d-xxl-none">
-                      <Button  onClick={handleUserEditModal}>
-                        <Icon name="pen2"></Icon>
-                      </Button>
-                    </li>
         
                 
                     
@@ -303,19 +306,19 @@ const UserDetailsPage = () => {
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
                                 <span className="profile-ud-label">Date of creation :</span>
-                                <span className="profile-ud-value">{user.createdAt}</span>
+                                <span className="profile-ud-value">{formatDate(user.createdAt)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
                                 <span className="profile-ud-label">Last modified :</span>
-                                <span className="profile-ud-value">{user.modifiedAt}</span>
+                                <span className="profile-ud-value">{formatDate(user.modifiedAt)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
                                 <span className="profile-ud-label">Last login :</span>
-                                <span className="profile-ud-value">{user.lastLogin}</span>
+                                <span className="profile-ud-value">{formatDate(user.lastLogin)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">

@@ -16,7 +16,7 @@ import {
   PaginationComponent,
 } from "../../../components/Component";
 import { projectData } from "./ProjectData";
-import { findUpper, setDeadline, setDeadlineDays, calcPercentage } from "../../../utils/Utils";
+import { findUpper, setDeadline, setDeadlineDays, calcPercentage, getColorString } from "../../../utils/Utils";
 import {
   DropdownMenu,
   DropdownToggle,
@@ -31,14 +31,16 @@ import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { GetProjectsByIdUserAction, getProjectListAction } from "../../../features/projectSlice";
 import EditProjectModal from "./EditProjectModal";
 import AddProjectModal from "./AddProjectModal";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { ApiStatus } from "../../../types/ApiStatus";
 import currentUser from "../../../utils/currentUser";
+import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
 
 const ProjectCardPage = () => {
 
   const { list, status } = useAppSelector((state) => state.project);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [data, setData] = useState(list);
 
@@ -134,11 +136,7 @@ const ProjectCardPage = () => {
       }
     }, [onSearchText, setData]);
 
-    const randomColor = () =>{
-        const colors = ["orange", "blue", "pink", "purple"];
-        const randomIndex = Math.floor(Math.random() * colors.length);
-        return colors[randomIndex];
-    }
+    
 
     const HandleFilterDropDown = (status) => { 
         const filteredObjects = list.filter((item)=>{
@@ -283,18 +281,19 @@ const ProjectCardPage = () => {
                   <Col sm="6" lg="4" xxl="3" key={item.id}>
                     <ProjectCard>
                       <div className="project-head">
-                      <Link to={`${process.env.PUBLIC_URL}/project-details/${item.id}`}>
+                      <Link to={`/feedbacks/${item.id}`}>
                         <a
                           href="#title"
-                          className="project-title"
+                          className="project-title" 
                         >
-                          <UserAvatar className="sq" theme={"orange"} text={findUpper(item.title)} />
+                          <UserAvatar className="sq" theme={getColorString(item?.client)} text={findUpper(item.title)} />
                           <div className="project-info">
                             <h6 className="title">{item.title}</h6>
                             <span className="sub-text">{item.client}</span>
                           </div>
                         </a>
                         </Link>
+                        <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
                         <UncontrolledDropdown>
                           <DropdownToggle
                             tag="a"
@@ -304,6 +303,18 @@ const ProjectCardPage = () => {
                           </DropdownToggle>
                           <DropdownMenu end>
                             <ul className="link-list-opt no-bdr">
+                              <li onClick={() => navigate(`/project-details/${item.id}`) }>
+                                  <DropdownItem
+                                    tag="a"
+                                    href="#edit"
+                                    onClick={(ev) => {
+                                      ev.preventDefault();
+                                    }}
+                                  >
+                                    <Icon name="list-round"></Icon>
+                                    <span>Project details</span>
+                                  </DropdownItem>
+                                </li>
                               <li onClick={() => onEditClick(item)}>
                                 <DropdownItem
                                   tag="a"
@@ -333,6 +344,7 @@ const ProjectCardPage = () => {
                             </ul>
                           </DropdownMenu>
                         </UncontrolledDropdown>
+                        </RolesWithPermession>
                       </div>
                       <div className="project-details">
                         {item.description.length > 85 ? item.description.substring(0, 84) + "... " : item.description}
@@ -362,7 +374,7 @@ const ProjectCardPage = () => {
                                   className="sm"
                                   text={findUpper(user?.name)}
                                   // theme={randomColor()}
-                                  theme={"primary"}
+                                  theme={getColorString(user?.name)} 
 
                                 />
                               </li>

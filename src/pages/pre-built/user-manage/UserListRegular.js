@@ -28,7 +28,7 @@ import {
   UserAvatar,
 } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
-import { bulkActionOptions, findUpper } from "../../../utils/Utils";
+import { bulkActionOptions, findUpper, getColorString } from "../../../utils/Utils";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { UpdateUserAction, getUserListAction } from "../../../features/userSlice";
@@ -567,7 +567,7 @@ const UserListRegularPage = () => {
                           <Link to={`${process.env.PUBLIC_URL}/user-details/${item.id}`}>
                             <div className="user-card">
                             <UserAvatar className="sm"
-                                theme={item.avatarBg}
+                                theme={getColorString(item?.firstName)}
                                 text={findUpper(item.firstName+" "+item.lastName)}
                                 image={item.image}
                               ></UserAvatar>

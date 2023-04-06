@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../layout/content/Content";
-import UserProfileRegularPage from "./UserProfileRegular";
 import UserProfileSettingPage from "./UserProfileSetting";
 import UserProfileNotificationPage from "./UserProfileNotification";
 import { Link } from "react-router-dom";
 import {  UserAvatar } from "../../../components/Component";
-import { findUpper } from "../../../utils/Utils";
+import { findUpper, getColorString } from "../../../utils/Utils";
 import { Card, DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle } from "reactstrap";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import {  getUserByEmailAction } from "../../../features/userSlice";
@@ -67,6 +66,12 @@ const UserProfileLayout = () => {
   }, []);
 
 
+  const onEditClick = () => {
+    setModal(true);
+    setShouldReRenderModal(!shouldReRenderModal);
+  };
+
+
 
   return (
     <React.Fragment>
@@ -81,7 +86,8 @@ const UserProfileLayout = () => {
               <div className="card-inner-group">
                 <div className="card-inner">
                   <div className="user-card">
-                    <UserAvatar text={findUpper(cUser.firstName+" "+cUser.lastName)} theme="primary" />
+                    <UserAvatar text={findUpper(cUser.firstName+" "+cUser.lastName)} 
+                    theme={getColorString(cUser?.firstName)} />
                     <div className="user-info">
                       <span className="lead-text">{cUser.firstName} {cUser.lastName}</span>
                       <span className="sub-text">{cUser.email}</span>
@@ -142,6 +148,7 @@ const UserProfileLayout = () => {
                     </li>
                     <li onClick={() => {updateSm(false);setShowNotificationPanel(false);setShowPersonalInformation(false);
                     setShowSettingsPanel(true);
+
                     }}>
                       <Link
                         className={
@@ -221,7 +228,7 @@ const UserProfileLayout = () => {
                     <div className="data-head">
                       <h6 className="overline-title">Basics</h6>
                     </div>
-                    <div className="data-item" onClick={() => setModal(true)}>
+                    <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
                         <span className="data-label">Full Name</span>
                         <span className="data-value">{cUser.firstName} {cUser.lastName}</span>
@@ -243,7 +250,7 @@ const UserProfileLayout = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="data-item" onClick={() => setModal(true)}>
+                    <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
                         <span className="data-label">Company</span>
                         <span className="data-value">{cUser.company}</span>
@@ -254,7 +261,7 @@ const UserProfileLayout = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="data-item" onClick={() => setModal(true)}>
+                    <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
                         <span className="data-label">Phone Number</span>
                         <span className="data-value text-soft">{cUser.phoneNumber}</span>
@@ -265,7 +272,7 @@ const UserProfileLayout = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="data-item" onClick={() => setModal(true)}>
+                    <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
                         <span className="data-label">Date of Birth</span>
                         <span className="data-value">{cUser.birthDate}</span>
@@ -276,7 +283,7 @@ const UserProfileLayout = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="data-item" onClick={() => setModal(true)}>
+                    <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
                         <span className="data-label">Address</span>
                         <span className="data-value">
@@ -318,23 +325,7 @@ const UserProfileLayout = () => {
                       </div>
                       </div>
 
-                    {/* <div className="data-item">
-                      <div className="data-col">
-                        <span className="data-label">Timezone</span>
-                        <span className="data-value">Bangladesh (GMT +6)</span>
-                      </div>
-                      <div className="data-col data-col-end">
-                        <a
-                          href="#link"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="link link-primary"
-                        >
-                          Change
-                        </a>
-                      </div>
-                    </div> */}
+
                   </div>
                 </Block>
                     {/* Modal is Here */}
@@ -353,35 +344,7 @@ const UserProfileLayout = () => {
               {/* {showActivityPanel && <UserProfileActivityPage updateSm={updateSm} sm={sm} />} */}
               {showSettingsPanel && <UserProfileSettingPage updateSm={updateSm} sm={sm} user={cUser}/>}
               
-              {/* <Routes>
-              <Route element ={<AuthProtectedRoutes/>}>
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
-
-                    <Route
-                      exact
-                      path="/user-profile-regular"
-                      element={}
-                    ></Route>
-                    <Route
-                      exact
-                      path={`/user-profile-notification`}
-                      render={() => <UserProfileNotificationPage updateSm={updateSm} sm={sm} />}
-                    ></Route>
-                    <Route
-                      exact
-                      path={`/user-profile-activity`}
-                      render={() => <UserProfileActivityPage updateSm={updateSm} sm={sm} />}
-                    ></Route>
-                    <Route
-                      exact
-                      path={`/user-profile-setting`}
-                      render={() => <UserProfileSettingPage updateSm={updateSm} sm={sm} />}
-                    />
-
-                </Route>
-                </Route>
-
-              </Routes> */}
+              
             </div>
           </div>
         </Card>
