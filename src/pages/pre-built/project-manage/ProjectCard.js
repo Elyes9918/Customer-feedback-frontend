@@ -274,8 +274,11 @@ const ProjectCardPage = () => {
             {currentItems &&
               currentItems.map((item) => {
                 // var days = setDeadlineDays(item.deadline);
-                var days = setDeadlineDays(setDeadline(10));
+                // var days = setDeadlineDays(setDeadline(10));
                 
+                var FeedbacksNumber = item.feedbacks.length;
+                var feedbacksDone = item.feedbacks.filter((feedback)=>feedback.status===3).length;
+
                 return (
                   
                   <Col sm="6" lg="4" xxl="3" key={item.id}>
@@ -327,7 +330,7 @@ const ProjectCardPage = () => {
                                   <span>Edit Project</span>
                                 </DropdownItem>
                               </li>
-                              {days >= 0 && (
+                              
                                 <li onClick={() => completeProject(item.id)}>
                                   <DropdownItem
                                     tag="a"
@@ -340,7 +343,7 @@ const ProjectCardPage = () => {
                                     <span>Mark As Done</span>
                                   </DropdownItem>
                                 </li>
-                              )}
+                             
                             </ul>
                           </DropdownMenu>
                         </UncontrolledDropdown>
@@ -353,15 +356,18 @@ const ProjectCardPage = () => {
                         <div className="project-progress-details">
                           <div className="project-progress-task">
                             <Icon name="check-round-cut"></Icon>
-                            <span>5 feedbacks</span>
+                            <span>{item.feedbacks.length} feedbacks</span>
                           </div>
                           <div className="project-progress-percent">
-                            {days === 0 ? 100 : calcPercentage("12", "4")}%
+                           { FeedbacksNumber !== 0 && 
+                           calcPercentage(`${FeedbacksNumber}`, `${feedbacksDone}`)+"%"}
+                           { FeedbacksNumber === 0 && "0%"}
+
                           </div>
                         </div>
                         <Progress
                           className="progress-pill progress-md bg-light"
-                          value={days === 0 ? 100 : calcPercentage("12", "4")}
+                          value={calcPercentage(`${FeedbacksNumber}`, `${feedbacksDone}`)}
                         ></Progress>
                       </div>
                       <div className="project-meta">
@@ -373,7 +379,6 @@ const ProjectCardPage = () => {
                                 <UserAvatar
                                   className="sm"
                                   text={findUpper(user?.name)}
-                                  // theme={randomColor()}
                                   theme={getColorString(user?.name)} 
 
                                 />

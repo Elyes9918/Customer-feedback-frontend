@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Content from "../../../layout/content/Content";
 import KanbanBoard from "./KanbanBoard";
 import { columnData } from "./KanbanData";
-import { Modal } from "reactstrap";
+import { Modal, Spinner } from "reactstrap";
 import {
   BlockHead,
   BlockBetween,
@@ -14,16 +14,27 @@ import {
 } from "../../../components/Component";
 import { KanbanTaskForm } from "./KanbanForms";
 import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
+import { GetFeedbackByProjectIdAction, getFeedbackListAction } from "../../../features/feedbackSlice";
+import { ApiStatus } from "../../../types/ApiStatus";
 
 const Kanban = () => {
 
   let { projectId } = useParams();
 
-  useEffect(()=>{
-    console.log(projectId);
-  })
 
-  const [columns, setColumns] = useState(columnData);
+  const { status } = useAppSelector((state) => state.feedback);
+  const dispatch = useAppDispatch();
+
+  useEffect(()=>{
+    dispatch(GetFeedbackByProjectIdAction(projectId)).then((list)=>{
+      setFeedbackList(list.payload);
+    })
+  },[])
+
+
+  // const [columns, setColumns] = useState(columnData);
+  const [feedbackList, setFeedbackList] = useState();
   const [smBtn, setSmBtn] = useState(false);
   const [taskModal, setTaskModal] = useState(false);
 
@@ -68,15 +79,25 @@ const Kanban = () => {
           </BlockBetween>
         </BlockHead>
 
-        <Block>
-          <div className="nk-kanban">
-            <KanbanBoard columns={columns} setColumns={setColumns} />
-          </div>
-        </Block>
+
+        {status === ApiStatus.loading &&   
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
+            <Spinner type="grow" color="primary" />
+
+          </div> }
+
+        {status === ApiStatus.ideal && feedbackList &&
+          <Block>
+            <div className="nk-kanban">
+              <KanbanBoard feedbackList={feedbackList} setFeedbackList={setFeedbackList} />
+            </div>
+          </Block>
+        }
 
         <Modal size="lg" isOpen={taskModal} toggle={toggleTaskModal}>
-          <KanbanTaskForm toggle={toggleTaskModal} data={columns} setData={setColumns} />
+          <KanbanTaskForm toggle={toggleTaskModal} data={feedbackList} setData={setFeedbackList} />
         </Modal>
+        
       </Content>
     </React.Fragment>
   );

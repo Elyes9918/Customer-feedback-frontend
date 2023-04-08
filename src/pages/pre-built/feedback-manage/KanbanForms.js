@@ -7,6 +7,13 @@ import { teamList } from "./KanbanData";
 
 export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask }) => {
 
+  const PriorityOptions = [
+    { value: "0", label: "Low" },
+    { value: "1", label: "Medium" },
+    { value: "2", label: "High" },
+    { value: "3", label: "Very High" },
+  ];
+
   const [formData, setFormData] = useState({
     title: editTask ? editTask.title : "",
     desc: editTask ? editTask.desc : "",
@@ -40,14 +47,12 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
             desc: formData.desc,
             meta: {
               users: formData.users,
-              tags: formData.tags,
-              date: getDateStructured(formData.date),
-              category: formData.category,
             },
           },
         },
       };
       setData({ ...data, task: defaultTask.task });
+      console.log(defaultTask)
     } else {
       let defaultTask = {
         task: {
@@ -165,14 +170,21 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
             <Col sm="6">
               <div className="form-group">
                 <label className="form-label">Select Priority</label>
-                <RSelect
+                {/* <RSelect
                   defaultValue={taskToBoard ? boardOptions.find((item) => item.id === taskToBoard.id) : boardOptions[0]}
                   options={boardOptions}
                   placeholder="Select a board"
                   onChange={(e) => {
                     setFormData({ ...formData, board: e });
                   }}
-                />
+                /> */}
+                <RSelect 
+                      options={PriorityOptions} 
+                      // defaultValue={projectToEdit?.status === "0" ? StatusOptions[0] :
+                      // projectToEdit?.status === "1" ? StatusOptions[1] :
+                      // projectToEdit?.status === "2" ? StatusOptions[2] : "" }
+                      onChange={(e) => {setFormData({ ...formData, priority: e });}}
+                        />
               </div>
             </Col>
             <Col sm="12">

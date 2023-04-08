@@ -33,6 +33,11 @@ export const getFeedbacksByIdUserApi = async(id:string) => {
     return await authAxios.get<IFeedback[]>(url)
 }
 
+export const getFeedbacksByIdProjectApi = async(id:string) => {
+    const url = `${apiFeedbacksURL}/project/${id}`;
+    return await authAxios.get<IFeedback[]>(url)
+}
+
 export const updateFeedbackApi = async (data: IFeedback) => {
     const url = `${apiFeedbacksURL}/${data.id}`;
     return await authAxios.patch(url, data);

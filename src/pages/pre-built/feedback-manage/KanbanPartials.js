@@ -2,12 +2,22 @@ import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Modal, UncontrolledDropdown } from "reactstrap";
 import { Icon, UserAvatar } from "../../../components/Component";
-import { findUpper } from "../../../utils/Utils";
+import { findUpper, getColorString } from "../../../utils/Utils";
 import { KanbanTaskForm } from "./KanbanForms";
+import { Link } from "react-router-dom";
 
 export const KanbanCard = ({ data, setData, card, index, column }) => {
   const [open, setOpen] = useState(false);
   const [taskModal, setTaskModal] = useState(false);
+
+  const PriorityOptions = [
+    { value: "0", label: "Low" ,theme:"light"},
+    { value: "1", label: "Medium",theme:"warning" },
+    { value: "2", label: "High" ,theme:"dark"},
+    { value: "3", label: "Very High", theme:"danger" },
+  ];
+
+
 
   const toggleOpen = () => {
     setOpen(!open);
@@ -26,7 +36,9 @@ export const KanbanCard = ({ data, setData, card, index, column }) => {
     setData({ ...defaultData });
   };
 
-  const { id, title, desc, meta } = card;
+  
+
+  const { id, title, description, priority } = card;
   return (
     <React.Fragment>
       <Draggable draggableId={id} key={id} index={index}>
@@ -34,7 +46,10 @@ export const KanbanCard = ({ data, setData, card, index, column }) => {
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="mt-2">
             <div className="kanban-item">
               <div className="kanban-item-title">
+              <Link to={`${process.env.PUBLIC_URL}/feedback-details/${id}`}>
                 <h6 className="title">{title}</h6>
+              </Link>
+
                 <Dropdown isOpen={open} toggle={toggleOpen}>
                   <DropdownToggle
                     tag="a"
@@ -43,19 +58,19 @@ export const KanbanCard = ({ data, setData, card, index, column }) => {
                     onClick={(ev) => ev.preventDefault()}
                   >
                     <div className="user-avatar-group">
-                      {meta.users.map((user, index) => (
-                        <UserAvatar key={index} className="xs" theme={user.theme} text={user.value[0]}></UserAvatar>
+                      {card.usersId.map((user, index) => (
+                        <UserAvatar key={index} className="xs" theme={getColorString(user.name)} text={user.name[0]}></UserAvatar>
                       ))}
                     </div>
                   </DropdownToggle>
                   <DropdownMenu end>
                     <ul className="link-list-opt no-bdr p-3 g-2">
-                      {meta.users.map((user, index) => (
+                      {card.usersId.map((user, index) => (
                         <li key={index}>
                           <div className="user-card" onClick={toggleOpen}>
-                            <UserAvatar className="sm" theme={user.theme} text={findUpper(user.value)}></UserAvatar>
+                            <UserAvatar className="sm" theme={getColorString(user.name)} text={findUpper(user.name)}></UserAvatar>
                             <div className="user-name">
-                              <span className="tb-lead">{user.value}</span>
+                              <span className="tb-lead">{user.name}</span>
                             </div>
                           </div>
                         </li>
@@ -63,36 +78,19 @@ export const KanbanCard = ({ data, setData, card, index, column }) => {
                     </ul>
                   </DropdownMenu>
                 </Dropdown>
+
               </div>
               <div className="kanban-item-text">
-                <p>{desc}</p>
+                <p>{description}</p>
               </div>
               
               <div className="kanban-item-meta">
               <ul className="kanban-item-tags">
-                {meta.tags.map((tag, index) => (
                   <li key={index}>
-                    <Badge color="danger">Priority : High</Badge>
+                    <Badge color={PriorityOptions[priority].theme}>Priority : {PriorityOptions[priority].label}</Badge>
                   </li>
-                ))}
               </ul>
-                {/* <ul className="kanban-item-meta-list">
-                  {meta.date ? (
-                    <li>
-                      <Icon name="calendar"></Icon>
-                      <span>{meta.date}</span>
-                    </li>
-                  ) : (
-                    <li className={Number(meta.due) < 5 ? "text-danger" : ""}>
-                      <Icon name="calendar"></Icon>
-                      <span>{meta.due}d Due</span>
-                    </li>
-                  )}
-                  <li>
-                    <Icon name="notes"></Icon>
-                    <span>{meta.category}</span>
-                  </li>
-                </ul> */}
+                
                 <ul className="kanban-item-meta-list">
                   <UncontrolledDropdown>
                     <DropdownToggle
@@ -147,11 +145,11 @@ export const KanbanCard = ({ data, setData, card, index, column }) => {
   );
 };
 
-export const KanbanCardList = ({ data, setData, tasks, column }) => {
-  return tasks.length > 0 ? (
-    tasks.map((task, index) => {
-      const card = data.task[task];
-      return <KanbanCard card={card} data={data} setData={setData} key={card.id} index={index} column={column} />;
+export const KanbanCardList = ({ data, setData, column }) => {
+  return data.length > 0 ? (
+    data.map((feedback, index) => {
+      // const card = data.task[task];
+      return <KanbanCard card={feedback} data={data} setData={setData} key={index} index={index} column={column} />;
     })
   ) : (
     <div className="kanban-drag"></div>
@@ -166,17 +164,16 @@ export const KanbanColumn = ({ data, setData, column, index }) => {
   };
 
 
-
   return (
     <React.Fragment>
-      <Draggable draggableId={column.id} key={column.id} index={index}>
+      <Draggable draggableId={column.value} key={column.value} index={index}>
         {(provided) => (
           <div className="kanban-board" ref={provided.innerRef} {...provided.draggableProps}>
             <div className={`kanban-board-header kanban-${column.theme}`} {...provided.dragHandleProps}>
               <div className="kanban-title-board">
                 <div className="kanban-title-content">
-                  <h6 className="title">{column.text}</h6>
-                  <Badge className="text-dark" pill color="outline-light">{column.tasks.length}</Badge>
+                  <h6 className="title">{column.label}</h6>
+                  <Badge className="text-dark" pill color="outline-light">{data.length}</Badge>
                 </div>
                 <div className="kanban-title-content">
                   <UncontrolledDropdown>
@@ -209,13 +206,13 @@ export const KanbanColumn = ({ data, setData, column, index }) => {
                 </div>
               </div>
             </div>
-            <Droppable droppableId={column.id} type="task">
+            <Droppable droppableId={column.value} type="task">
               {(provided) => (
                 <div className="kanban-drag" {...provided.droppableProps} ref={provided.innerRef}>
-                  <KanbanCardList data={data} setData={setData} tasks={column.tasks} column={column} />
+                  <KanbanCardList data={data} setData={setData} column={column} />
                   <button className="kanban-add-task mt-2 btn btn-block" onClick={toggleModal}>
                     <Icon name="plus-sm"></Icon>
-                    <span>{column.tasks.length > 0 ? "Add Another " : "Add "} Feedback</span>
+                    <span>{data.length > 0 ? "Add Another " : "Add "} Feedback</span>
                   </button>
                   {provided.placeholder}
                 </div>
