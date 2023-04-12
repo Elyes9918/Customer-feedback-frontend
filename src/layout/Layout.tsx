@@ -11,14 +11,17 @@ import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular"
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
 import AnalyticsHomePage from "../pages/Analytics";
-import { ProjectCard } from "../components/Component";
 import ProjectCardPage from "../pages/pre-built/project-manage/ProjectCard";
 import ProjectDetailsPage from "../pages/pre-built/project-manage/ProjectDetailsRegular";
 import Kanban from "../pages/pre-built/feedback-manage/Kanban";
+import FeedbackDetailsPage from "../pages/pre-built/feedback-manage/FeedbackDetailsRegular";
+
 
 
 
 const Layout = () => {
+
+
 
   //Sidebar
   const [mobileView, setMobileView] = useState(false);
@@ -97,10 +100,6 @@ const Layout = () => {
   const isFeedbackDetails = useMatch('/feedback-details/:feedbackId');
 
 
-  
-
-
-  
 
 
   return (
@@ -127,7 +126,7 @@ const Layout = () => {
                 {isProjectDetails && <ProjectDetailsPage/>}
                 {isMyProjects && <ProjectCardPage/> }
                 {isFeedbacksProject && <Kanban/>}
-                {/* {isFeedbackDetails && } */}
+                {isFeedbackDetails && <FeedbackDetailsPage/>}
 
             
 

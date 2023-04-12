@@ -205,6 +205,18 @@ const ProjectCardPage = () => {
                                 href="#dropdownitem"
                                 onClick={(ev) => {
                                   ev.preventDefault();
+                                  setSelectedFilterBy("On Hold");
+                                  HandleFilterDropDown("1");
+                                }}>
+                                <span>On Hold</span>
+                              </DropdownItem>
+                            </li>
+                            <li key={3}>
+                              <DropdownItem
+                                tag="a"
+                                href="#dropdownitem"
+                                onClick={(ev) => {
+                                  ev.preventDefault();
                                   setSelectedFilterBy("Closed");
                                   HandleFilterDropDown("2");
                                 }}>
@@ -217,10 +229,9 @@ const ProjectCardPage = () => {
                                 href="#dropdownitem"
                                 onClick={(ev) => {
                                   ev.preventDefault();
-                                  setSelectedFilterBy("On Hold");
-                                  HandleFilterDropDown("1");
+                                  setData(list);
                                 }}>
-                                <span>On Hold</span>
+                                <span style={{color:"red"}}>Reset Filter</span>
                               </DropdownItem>
                             </li>
                           </ul>
@@ -296,7 +307,7 @@ const ProjectCardPage = () => {
                           </div>
                         </a>
                         </Link>
-                        <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
+                        
                         <UncontrolledDropdown>
                           <DropdownToggle
                             tag="a"
@@ -318,6 +329,7 @@ const ProjectCardPage = () => {
                                     <span>Project details</span>
                                   </DropdownItem>
                                 </li>
+                                <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
                               <li onClick={() => onEditClick(item)}>
                                 <DropdownItem
                                   tag="a"
@@ -331,7 +343,7 @@ const ProjectCardPage = () => {
                                 </DropdownItem>
                               </li>
                               
-                                <li onClick={() => completeProject(item.id)}>
+                                {/* <li onClick={() => completeProject(item.id)}>
                                   <DropdownItem
                                     tag="a"
                                     href="#markasdone"
@@ -342,12 +354,11 @@ const ProjectCardPage = () => {
                                     <Icon name="check-round-cut"></Icon>
                                     <span>Mark As Done</span>
                                   </DropdownItem>
-                                </li>
-                             
+                                </li> */}
+                                </RolesWithPermession>
                             </ul>
                           </DropdownMenu>
                         </UncontrolledDropdown>
-                        </RolesWithPermession>
                       </div>
                       <div className="project-details">
                         {item.description.length > 85 ? item.description.substring(0, 84) + "... " : item.description}

@@ -271,6 +271,7 @@ const UserListRegularPage = () => {
         <Block>
           <DataTable className="card-stretch">
             <div className="card-inner position-relative card-tools-toggle">
+              
               <div className="card-title-group">
                 <div className="card-tools">
                   <div className="form-inline flex-nowrap gx-3">
@@ -511,6 +512,7 @@ const UserListRegularPage = () => {
                   </div>
                 </div>
               </div>
+
             </div>
             <DataTableBody>
               <DataTableHead>

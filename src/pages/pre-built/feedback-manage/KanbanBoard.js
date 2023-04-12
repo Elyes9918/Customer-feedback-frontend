@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { UpdateFeedbackAction } from "../../../features/feedbackSlice";
 import { updateFeedbackApi } from "../../../services/FeedbackService";
 
-const KanbanBoard = ({ feedbackList, setFeedbackList }) => {
+const KanbanBoard = ({ feedbackList, setFeedbackList,projectId }) => {
 
   const ColumnsData = [
     { value: "0", label: "Open",theme:"light" },
@@ -90,10 +90,10 @@ const KanbanBoard = ({ feedbackList, setFeedbackList }) => {
             ref={provided.innerRef}
             >
  
-            <KanbanColumn data={openListFeedbacks} setData={setOpenListFeedBacks} column={ColumnsData[0]} key={0} index={0} />
-            <KanbanColumn data={inProgressListFeedbacks} setData={setInProgressListFeedBacks} column={ColumnsData[1]} key={1} index={1} />
-            <KanbanColumn data={toReviewListFeedbacks} setData={setToReviewListFeedBacks} column={ColumnsData[2]} key={2} index={2} />
-            <KanbanColumn data={completedListFeedbacks} setData={setCompletedListFeedBacks} column={ColumnsData[3]} key={3} index={3} />
+            <KanbanColumn data={openListFeedbacks} setData={setOpenListFeedBacks} column={ColumnsData[0]} key={0} index={0} projectId={projectId} />
+            <KanbanColumn data={inProgressListFeedbacks} setData={setInProgressListFeedBacks} column={ColumnsData[1]} key={1} index={1} projectId={projectId}/>
+            <KanbanColumn data={toReviewListFeedbacks} setData={setToReviewListFeedBacks} column={ColumnsData[2]} key={2} index={2} projectId={projectId}/>
+            <KanbanColumn data={completedListFeedbacks} setData={setCompletedListFeedBacks} column={ColumnsData[3]} key={3} index={3} projectId={projectId}/>
 
             {provided.placeholder}
           </div>

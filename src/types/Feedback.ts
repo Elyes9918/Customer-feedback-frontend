@@ -4,11 +4,13 @@ export interface IFeedback {
     description?: string;
     project_id?: string;
     status?:string;
-    estimated_time?:string;
+    estimatedTime?:string;
     priority?:string;
     rating?:string;
+    progress?:string;
     createdAt?:string;
     modifiedAt?:string;
     usersId?: string[];
     creator?:string[];
+    project?:string[];
   }

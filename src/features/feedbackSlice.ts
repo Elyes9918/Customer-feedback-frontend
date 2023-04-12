@@ -22,6 +22,14 @@ export const CreateFeedbackAction = createAsyncThunk(
     }
 );
 
+export const UpdateFeedbackAction = createAsyncThunk(
+    "feedback/UpdateFeedbackAction",
+    async (data:IFeedback) => {
+       const response = await updateFeedbackApi(data);
+       return response.data;
+    }
+);
+
 export const getFeedbackListAction = createAsyncThunk(
     "feedback/getFeedbackListAction",
     async () => {
@@ -54,13 +62,7 @@ export const GetFeedbackByProjectIdAction = createAsyncThunk(
     }
 );
 
-export const UpdateFeedbackAction = createAsyncThunk(
-    "feedback/UpdateFeedbackAction",
-    async (data:IFeedback) => {
-       const response = await updateFeedbackApi(data);
-       return response.data;
-    }
-);
+
 
 export const DeleteFeedbackAction = createAsyncThunk(
     "feedback/DeleteFeedbackAction",

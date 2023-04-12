@@ -16,7 +16,7 @@ const authAxios = axios.create({
 });
 
 export const createFeedbackApi = async (data: IFeedback) =>{
-    return await authAxios.post(apiFeedbacksURL);
+    return await authAxios.post(apiFeedbacksURL,data);
 }
 
 export const getFeedbackListApi = async () => {

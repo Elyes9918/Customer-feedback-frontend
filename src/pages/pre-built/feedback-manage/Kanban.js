@@ -11,6 +11,7 @@ import {
   Button,
   Icon,
   Block,
+  Sidebar,
 } from "../../../components/Component";
 import { KanbanTaskForm } from "./KanbanForms";
 import { useParams } from "react-router-dom";
@@ -25,6 +26,7 @@ const Kanban = () => {
 
   const { status } = useAppSelector((state) => state.feedback);
   const dispatch = useAppDispatch();
+
 
   useEffect(()=>{
     dispatch(GetFeedbackByProjectIdAction(projectId)).then((list)=>{
@@ -87,15 +89,15 @@ const Kanban = () => {
           </div> }
 
         {status === ApiStatus.ideal && feedbackList &&
-          <Block>
-            <div className="nk-kanban">
-              <KanbanBoard feedbackList={feedbackList} setFeedbackList={setFeedbackList} />
+          <Block >
+            <div className="nk-kanban" >
+              <KanbanBoard feedbackList={feedbackList} setFeedbackList={setFeedbackList} projectId={projectId} />
             </div>
           </Block>
         }
 
         <Modal size="lg" isOpen={taskModal} toggle={toggleTaskModal}>
-          <KanbanTaskForm toggle={toggleTaskModal} data={feedbackList} setData={setFeedbackList} />
+          <KanbanTaskForm toggle={toggleTaskModal} data={feedbackList} setData={setFeedbackList} projectId={projectId} />
         </Modal>
         
       </Content>
