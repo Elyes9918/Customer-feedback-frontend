@@ -28,3 +28,5 @@ export const ChangePasswordApi = async(data:IUserForm)=>{
     return await axios.post<IUser>(url,data)
 }
 
+
+

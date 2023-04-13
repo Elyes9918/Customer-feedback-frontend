@@ -10,14 +10,14 @@ import {
   Button,
   Icon,
   Col,
-} from "../../../components/Component";
+} from "../../components/Component";
 import {
   Form,
 } from "reactstrap";
 import { Spinner } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../../../app/store";
-import { UpdateUserAction } from "../../../features/userSlice";
+import { useAppDispatch } from "../../app/store";
+import { UpdateUserAction } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
 
 

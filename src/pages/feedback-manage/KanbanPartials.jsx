@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Modal, Progress, UncontrolledDropdown } from "reactstrap";
-import { Button, Icon, UserAvatar } from "../../../components/Component";
-import { findUpper, getColorString } from "../../../utils/Utils";
+import {  Icon, UserAvatar } from "../../components/Component";
+import { findUpper, getColorString } from "../../utils/Utils";
 import { KanbanTaskForm } from "./KanbanForms";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import { useAppDispatch } from "../../../app/store";
-import { DeleteFeedbackAction } from "../../../features/feedbackSlice";
-import currentUser from "../../../utils/currentUser";
-import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
+import { useAppDispatch } from "../../app/store";
+import currentUser from "../../utils/currentUser";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 
 
 export const KanbanCard = ({ data, setData, card, index, column,projectId }) => {
@@ -115,7 +113,9 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
               </ul>
                 
                 {card.creator.id ===currentUser().id && 
-                !currentUser().roles.includes("ROLE_GESTIONNAIRE","ROLE_MEMBER","ROLE_ADMIN") &&
+                !currentUser().roles.includes("ROLE_ADMIN") &&
+                !currentUser().roles.includes("ROLE_GESTIONNAIRE")&&
+                !currentUser().roles.includes("ROLE_MEMBER")&&
                 <ul className="kanban-item-meta-list">
                   <UncontrolledDropdown>
                     <DropdownToggle
@@ -238,7 +238,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
   };
 
   const HandleFilterDropDown = (PriorityFilter) => {
-      setData(data.filter((item) => item.priority === PriorityFilter));
+      setData(originalData.filter((item) => item.priority === PriorityFilter));
   }
 
   const showProgressPercentage = (data) => {
@@ -271,6 +271,8 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                 <div className="kanban-title-content">
                   <h6 className="title">{column.label}</h6>
                   <Badge className="text-dark" pill color="outline-light">{showProgressPercentage(data)} %</Badge>
+                  {/* <Badge className="text-dark" pill color="outline-light"
+                  style={{marginLeft:"6px"}}>{data?.length}</Badge> */}
                 </div>
                 <div className="kanban-title-content">
 

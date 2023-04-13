@@ -10,15 +10,15 @@ import {
   BlockTitle,
   Icon,
 
-} from "../../../components/Component";
-import Content from "../../../layout/content/Content";
-import { formatDate } from "../../../utils/Utils";
+} from "../../components/Component";
+import Content from "../../layout/content/Content";
+import { formatDate } from "../../utils/Utils";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { GetUserByIdAction } from "../../../features/userSlice";
-import { ApiStatus } from "../../../types/ApiStatus";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { GetUserByIdAction } from "../../features/userSlice";
+import { ApiStatus } from "../../types/ApiStatus";
 import EditUserModal from "./EditUserModal"
-import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Modal, ModalBody, Spinner } from "reactstrap";
+import { Card, Spinner } from "reactstrap";
 import {
   Button,
   Block,
@@ -9,15 +9,15 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
-} from "../../../components/Component";
-import Content from "../../../layout/content/Content";
-import { formatDate } from "../../../utils/Utils";
+} from "../../components/Component";
+import Content from "../../layout/content/Content";
+import { formatDate } from "../../utils/Utils";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { ApiStatus } from "../../../types/ApiStatus";
-import { GetProjectByIdAction } from "../../../features/projectSlice";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { ApiStatus } from "../../types/ApiStatus";
+import { GetProjectByIdAction } from "../../features/projectSlice";
 import EditProjectModal from "./EditProjectModal";
-import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 
 
 

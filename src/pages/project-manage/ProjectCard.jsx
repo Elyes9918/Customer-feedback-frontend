@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Content from "../../../layout/content/Content";
+import Content from "../../layout/content/Content";
 import {
   Block,
   BlockHead,
@@ -14,9 +14,8 @@ import {
   UserAvatar,
   Col,
   PaginationComponent,
-} from "../../../components/Component";
-import { projectData } from "./ProjectData";
-import { findUpper, setDeadline, setDeadlineDays, calcPercentage, getColorString } from "../../../utils/Utils";
+} from "../../components/Component";
+import { findUpper, setDeadline, calcPercentage, getColorString } from "../../utils/Utils";
 import {
   DropdownMenu,
   DropdownToggle,
@@ -27,14 +26,14 @@ import {
   Spinner,
   Alert
 } from "reactstrap";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { GetProjectsByIdUserAction, getProjectListAction } from "../../../features/projectSlice";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { GetProjectsByIdUserAction, getProjectListAction } from "../../features/projectSlice";
 import EditProjectModal from "./EditProjectModal";
 import AddProjectModal from "./AddProjectModal";
 import { Link, useMatch, useNavigate } from "react-router-dom";
-import { ApiStatus } from "../../../types/ApiStatus";
-import currentUser from "../../../utils/currentUser";
-import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
+import { ApiStatus } from "../../types/ApiStatus";
+import currentUser from "../../utils/currentUser";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 
 const ProjectCardPage = () => {
 

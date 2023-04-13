@@ -6,15 +6,15 @@ import classNames from "classnames";
 import { useMatch } from 'react-router-dom';
 
 
-import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular";
+import UserListRegularPage from "../pages/user-manage/UserListRegular";
 
-import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
-import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
+import UserProfileLayout from "../pages/user-manage/UserProfileLayout";
+import UserDetailsPage from "../pages/user-manage/UserDetailsRegular";
 import AnalyticsHomePage from "../pages/Analytics";
-import ProjectCardPage from "../pages/pre-built/project-manage/ProjectCard";
-import ProjectDetailsPage from "../pages/pre-built/project-manage/ProjectDetailsRegular";
-import Kanban from "../pages/pre-built/feedback-manage/Kanban";
-import FeedbackDetailsPage from "../pages/pre-built/feedback-manage/FeedbackDetailsRegular";
+import ProjectCardPage from "../pages/project-manage/ProjectCard";
+import ProjectDetailsPage from "../pages/project-manage/ProjectDetailsRegular";
+import Kanban from "../pages/feedback-manage/Kanban";
+import FeedbackDetailsPage from "../pages/feedback-manage/FeedbackDetailsRegular";
 
 
 

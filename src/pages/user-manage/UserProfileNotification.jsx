@@ -9,7 +9,7 @@ import {
   Icon,
   InputSwitch,
   Button,
-} from "../../../components/Component";
+} from "../../components/Component";
 
 const UserProfileNotificationPage = ({ sm, updateSm }) => {
   return (

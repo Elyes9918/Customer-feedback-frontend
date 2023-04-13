@@ -5,8 +5,7 @@ import {
   Button,
   Col,
   RSelect,
-} from "../../../components/Component";
-import {  teamList } from "./ProjectData";
+} from "../../components/Component";
 import {
   Modal,
   ModalBody,
@@ -15,10 +14,10 @@ import {
   Alert,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { getUserListAction } from "../../../features/userSlice";
-import { CreateProjectAction } from "../../../features/projectSlice";
-import currentUser from "../../../utils/currentUser";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { getUserListAction } from "../../features/userSlice";
+import { CreateProjectAction } from "../../features/projectSlice";
+import currentUser from "../../utils/currentUser";
 
 
 const AddProjectModal = ({isModalOpen}) => {

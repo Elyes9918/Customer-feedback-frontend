@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Content from "../../../layout/content/Content";
+import Content from "../../layout/content/Content";
 import KanbanBoard from "./KanbanBoard";
-import { columnData } from "./KanbanData";
 import { Modal, Spinner } from "reactstrap";
 import {
   BlockHead,
@@ -11,13 +10,12 @@ import {
   Button,
   Icon,
   Block,
-  Sidebar,
-} from "../../../components/Component";
+} from "../../components/Component";
 import { KanbanTaskForm } from "./KanbanForms";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { GetFeedbackByProjectIdAction, getFeedbackListAction } from "../../../features/feedbackSlice";
-import { ApiStatus } from "../../../types/ApiStatus";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { GetFeedbackByProjectIdAction } from "../../features/feedbackSlice";
+import { ApiStatus } from "../../types/ApiStatus";
 
 const Kanban = () => {
 

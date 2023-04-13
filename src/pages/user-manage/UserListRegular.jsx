@@ -26,12 +26,12 @@ import {
   TooltipComponent,
   RSelect,
   UserAvatar,
-} from "../../../components/Component";
-import Content from "../../../layout/content/Content";
-import { bulkActionOptions, findUpper, getColorString } from "../../../utils/Utils";
+} from "../../components/Component";
+import Content from "../../layout/content/Content";
+import { bulkActionOptions, findUpper, getColorString } from "../../utils/Utils";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { UpdateUserAction, getUserListAction } from "../../../features/userSlice";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { UpdateUserAction, getUserListAction } from "../../features/userSlice";
 import EditUserModal from "./EditUserModal"
 
 

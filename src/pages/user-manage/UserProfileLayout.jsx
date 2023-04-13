@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Content from "../../../layout/content/Content";
+import Content from "../../layout/content/Content";
 import UserProfileSettingPage from "./UserProfileSetting";
 import UserProfileNotificationPage from "./UserProfileNotification";
-import { Link } from "react-router-dom";
-import {  UserAvatar } from "../../../components/Component";
-import { findUpper, getColorString } from "../../../utils/Utils";
+import { Link, useNavigate } from "react-router-dom";
+import {  UserAvatar } from "../../components/Component";
+import { findUpper, formatDate, getColorString } from "../../utils/Utils";
 import { Card, DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle } from "reactstrap";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import {  getUserByEmailAction } from "../../../features/userSlice";
-import currentAccessToken from "../../../utils/currentAccessToken";
-import DatePicker from "react-datepicker";
-import { Modal, ModalBody } from "reactstrap";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import {  getUserByEmailAction } from "../../features/userSlice";
+import currentAccessToken from "../../utils/currentAccessToken";
 import {
   Block,
   BlockBetween,
@@ -20,7 +18,7 @@ import {
   BlockTitle,
   Icon,
   Button,
-} from "../../../components/Component";
+} from "../../components/Component";
 import EditUserModal from "./EditUserModal";
 
 
@@ -28,10 +26,12 @@ import EditUserModal from "./EditUserModal";
 const UserProfileLayout = () => {
 
   const token = currentAccessToken();
+  const navigate = useNavigate();
   const {cUser,listStatus} = useAppSelector((state)=>state.user)
   const dispatch = useAppDispatch();
   const [fullName,setFullName]=useState("");
 
+  
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const [showPersonalInformation,setShowPersonalInformation] = useState(true);
@@ -171,7 +171,7 @@ const UserProfileLayout = () => {
                     </li>
 
 
-                    <li onClick={() => {}}>
+                    <li onClick={() => {navigate(`/my-projects`)}}>
                       <Link
                         
                       >
@@ -179,15 +179,7 @@ const UserProfileLayout = () => {
                         <span>My Projects</span>
                       </Link>
                     </li>
-                    <li onClick={() => {}}>
-                      <Link
-                        
-                      >
-                        <Icon name="files"></Icon>
-                        <span>My Feedbacks</span>
-                        
-                      </Link>
-                    </li>
+                    
                     
                     
                   </ul>
@@ -307,21 +299,21 @@ const UserProfileLayout = () => {
                     <div className="data-item">
                       <div className="data-col">
                         <span className="data-label">Last Login</span>
-                        <span className="data-value">{cUser.lastLogin}</span>
+                        <span className="data-value">{formatDate(cUser.lastLogin)}</span>
                       </div>
                     </div>
 
                       <div className="data-item">
                       <div className="data-col">
                         <span className="data-label">Last modified at</span>
-                        <span className="data-value">{cUser.modifiedAt}</span>
+                        <span className="data-value">{formatDate(cUser.modifiedAt)}</span>
                       </div>
                       </div>
 
                       <div className="data-item">
                       <div className="data-col">
                         <span className="data-label">Created At</span>
-                        <span className="data-value">{cUser.createdAt}</span>
+                        <span className="data-value">{formatDate(cUser.createdAt)}</span>
                       </div>
                       </div>
 

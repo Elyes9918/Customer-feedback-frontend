@@ -8,7 +8,7 @@ import {
   Icon,
   LoginLogTable,
   Button,
-} from "../../../components/Component";
+} from "../../components/Component";
 
 const UserProfileActivityPage = ({ sm, updateSm }) => {
   return (

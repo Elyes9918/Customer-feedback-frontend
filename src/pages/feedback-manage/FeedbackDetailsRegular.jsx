@@ -10,22 +10,21 @@ import {
   BlockTitle,
   Icon,
   UserAvatar,
-} from "../../../components/Component";
-import Content from "../../../layout/content/Content";
-import { currentTime, formatDate, monthNames, todaysDate } from "../../../utils/Utils";
-import { notes } from "../user-manage/UserData";
+} from "../../components/Component";
+import Content from "../../layout/content/Content";
+import { formatDate } from "../../utils/Utils";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { ApiStatus } from "../../../types/ApiStatus";
-import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
-import { GetFeedbackByIdAction } from "../../../features/feedbackSlice";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { ApiStatus } from "../../types/ApiStatus";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
+import { GetFeedbackByIdAction } from "../../features/feedbackSlice";
 import { KanbanTaskForm } from "./KanbanForms";
-import { DeleteCommentAction, GetCommentByFeedbackIdAction } from "../../../features/CommentSlice";
+import { DeleteCommentAction, GetCommentByFeedbackIdAction } from "../../features/CommentSlice";
 import CommentModal from "./CommentModal";
 import Swal from "sweetalert2";
-import currentUser from "../../../utils/currentUser";
+import currentUser from "../../utils/currentUser";
 import Slider from "react-slick";
-import { SlickArrowLeft, SlickArrowRight } from "../../../components/partials/slick/SlickComponents";
+import { SlickArrowLeft, SlickArrowRight } from "../../components/partials/slick/SlickComponents";
 import { productCardData } from "./ProductData";
 
 
@@ -92,7 +91,6 @@ const FeedbackDetailsPage = () => {
     { value: "0", label: "Text" },
     { value: "1", label: "SQL Script" },
     { value: "2", label: "Commit" },
-    { value: "3", label: "Updates" },
   ];
 
   let { feedbackId } = useParams();
@@ -255,7 +253,9 @@ const FeedbackDetailsPage = () => {
                     </li>
                     
                     {feedback?.creator?.id===currentUser().id && 
-                    !currentUser().roles.includes("ROLE_ADMIN","ROLE_GESTIONNAIRE","ROLE_MEMBER") &&
+                       !currentUser().roles.includes("ROLE_ADMIN") &&
+                       !currentUser().roles.includes("ROLE_GESTIONNAIRE")&&
+                       !currentUser().roles.includes("ROLE_MEMBER")&&
                      <li className="nav-item nav-item-trigger d-xxl-none">
                      <Button  onClick={toggleTaskModal}>
                        <Icon name="pen2"></Icon>
@@ -396,7 +396,7 @@ const FeedbackDetailsPage = () => {
                           </div>
                       </Block>
 
-                      {/* <Block>
+                      <Block>
                           <BlockHead className="nk-block-head-line">
                             <BlockTitle tag="h4" className="overline-title text-base">
                               Images :
@@ -404,14 +404,15 @@ const FeedbackDetailsPage = () => {
                           </BlockHead>
                           <div style={{display: "flex",
                             justifyContent: "center",
-                            alignItems: "center"
+                            alignItems: "center",
+                            marginTop:"60px",
                            }}>
                           <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"350px"}}>
                           <div className="profile-ud-item" style={{ flexBasis: '100%' }}>
 
                               <div className="product-gallery me-xl-1 me-xxl-5" style={{
                               }}>
-                              <Slider
+                              {/* <Slider
                                 asNavFor={nav2}
                                 ref={slider1}
                                 arrows={false}
@@ -425,7 +426,7 @@ const FeedbackDetailsPage = () => {
                                 <div className="slider-item rounded" key={currentSlide?.id}>
                                   <img src={currentSlide?.img} className="w-100" alt="" />
                                 </div>
-                              </Slider>
+                              </Slider> */}
                               <Slider
                                 asNavFor={nav1}
                                 ref={slider2}
@@ -454,7 +455,7 @@ const FeedbackDetailsPage = () => {
                           </div>
                           </div>
                          
-                      </Block> */}
+                      </Block>
 
                       <Block>
                           <BlockHead className="nk-block-head-line">
@@ -527,7 +528,16 @@ const FeedbackDetailsPage = () => {
                             
                             <div className="bq-note-text">
                             <p><strong><sup>{TypeOptions.find(option => option.value === item.type)?.label} :&nbsp;</sup></strong></p>
-                              <div dangerouslySetInnerHTML={{ __html: item?.description }} />
+                            {item?.type==="0" && 
+                            <div dangerouslySetInnerHTML={{ __html: item?.description }} />
+                            }
+                            {item?.type==="1" && 
+                            <div dangerouslySetInnerHTML={{ __html: item?.description }} />
+                            }
+                            {item?.type==="2" && 
+                            <div dangerouslySetInnerHTML={{ __html: item?.description }} />
+                            }
+                              
                             </div>
 
                             <div className="bq-note-meta">

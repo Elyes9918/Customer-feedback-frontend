@@ -3,15 +3,13 @@ import {
   Button,
   Icon,
   RSelect,
-} from "../../../components/Component";
+} from "../../components/Component";
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../../../app/store";
-import currentUser from "../../../utils/currentUser";
-import { CreateCommentAction, UpdateCommentAction } from "../../../features/CommentSlice";
-
-
+import { useAppDispatch } from "../../app/store";
+import currentUser from "../../utils/currentUser";
+import { CreateCommentAction, UpdateCommentAction } from "../../features/CommentSlice";
 
 
 
@@ -21,7 +19,6 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
         { value: "0", label: "Text" },
         { value: "1", label: "SQL Script" },
         { value: "2", label: "Commit" },
-        { value: "3", label: "Updates" },
       ];
 
     const { errors, register, handleSubmit } = useForm();
@@ -46,7 +43,7 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
     useEffect(()=>{
 
      setModal(isModalOpen);
-    },[isModalOpen,selectedType])
+    },[isModalOpen,setSelectedType])
 
     const submitForm = () =>{
 
@@ -112,7 +109,7 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                         setModal(false);
                         setAddNoteText("");
                         if(successVal){
-                            window.location.reload(false);  
+                            window.location.reload();  
                         }
                       }}
                       className="close"
@@ -149,18 +146,17 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                                 options={TypeOptions} 
                                 defaultValue={editComment?.type === "0" ? TypeOptions[0] :
                                 editComment?.type === "1" ? TypeOptions[1] :
-                                editComment?.type === "2" ? TypeOptions[2] :
-                                editComment?.type === "3" ? TypeOptions[3]: "" }
+                                editComment?.type === "2" ? TypeOptions[2] : "" }
                                 placeholder="Select type"
-                                onChange={(e) => setSelectedType(e)}
+                                onChange={(e) => {setSelectedType(e)}}
                                 />
                             </div>
                         </Col>
                         
-                        {/* {selectedType === "0" && */}
+                        {(selectedType?.value === "0" || selectedType==="0") &&  
                         <Col className="col-12">
                             <div className="form-group">
-                                <label className="form-label">Comment Description</label>
+                                <label className="form-label">Comment Text</label>
                                 
                                 <Editor
                                 onInit={(evt, editor) => (editorRef.current = editor)}
@@ -181,7 +177,48 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                                 />
                             </div>
                         </Col>
-                        {/* } */}
+                        }
+
+                        {(selectedType?.value === "1" || selectedType==="1") && 
+                        <Col className="col-12">
+                            <div className="form-group">
+                                <label className="form-label">SQL Script input</label>
+                                
+                                <Editor
+                                onInit={(evt, editor) => (editorRef.current = editor)}
+                                initialValue={editComment?.description}
+                                onEditorChange={(a)=>{setDescriptionText(a)}}
+                                init={{
+                                menubar: "file edit",
+                                plugins: [
+                                    "advlist autolink lists link image charmap print preview anchor",
+                                    "searchreplace visualblocks code ",
+                                    "insertdatetime media table paste code",
+                                ],
+                                toolbar:
+                                    "undo redo " 
+                                }}
+                                />
+                            </div>
+                        </Col>
+                        }
+
+                        {(selectedType?.value === "2" || selectedType==="2") && 
+                        <Col className="col-12">
+                            <div className="form-group">
+                                <label className="form-label">Commit</label>
+                                
+                                <input
+                                type="text"
+                                name="title"
+                                placeholder="Please enter your commit ID"
+                                className="form-control"
+                                ref={register({ required: "This field is required" })}
+                                />
+                            </div>
+                        </Col>
+                        
+                        }
 
                         
                         

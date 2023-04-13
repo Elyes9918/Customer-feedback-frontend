@@ -1,15 +1,15 @@
 import  { useEffect, useRef, useState } from "react";
 import { ModalBody,  Col, Alert, Spinner } from "reactstrap";
-import { Icon, Button, RSelect, NSComponent } from "../../../components/Component";
+import { Icon, Button, RSelect, NSComponent } from "../../components/Component";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { getUserListAction } from "../../../features/userSlice";
-import { CreateFeedbackAction, DeleteFeedbackAction, UpdateFeedbackAction } from "../../../features/feedbackSlice";
-import currentUser from "../../../utils/currentUser";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { getUserListAction } from "../../features/userSlice";
+import { CreateFeedbackAction, DeleteFeedbackAction, UpdateFeedbackAction } from "../../features/feedbackSlice";
+import currentUser from "../../utils/currentUser";
 import { useMatch, useNavigate } from "react-router-dom";
 import Nouislider from "nouislider-react";
 import Swal from "sweetalert2";
-import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 import { Editor } from "@tinymce/tinymce-react";
 
 

@@ -11,15 +11,16 @@ import {
   Col,
   Button,
   RSelect,
-} from "../../../components/Component";
+} from "../../components/Component";
 import DatePicker from "react-datepicker";
-import { countryOptions } from "../../../utils/CountryOptions";
+import { countryOptions } from "../../utils/CountryOptions";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { UpdateUserAction, unAssignRoleAction } from "../../../features/userSlice";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { UpdateUserAction, unAssignRoleAction } from "../../features/userSlice";
 import { Spinner } from "reactstrap";
-import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
-import currentUser from "../../../utils/currentUser";
+import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
+import currentUser from "../../utils/currentUser";
+import { deleteRefreshTokenApi } from "../../services/RefreshTokenService";
 
 
 const EditUserModal = ({isModalOpen,userToEdit}) => {
@@ -206,6 +207,8 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
       setLoadingDiff(false);
     });
 
+    deleteRefreshTokenApi(userToEdit.email);
+
     
 
   }
@@ -224,7 +227,8 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
     }else{
       await dispatch(UpdateUserAction(user)).unwrap().then(()=>{
         setLoading(false);
-        setSuccessVal("Updated Succesfully")
+        setSuccessVal("Updated Succesfully");
+        deleteRefreshTokenApi(userToEdit.email);
         // setModal(false);
         // window.location.reload(false);
       }).catch(()=>{
@@ -232,9 +236,9 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
         setLoading(false);
       });
     }
-   
 
-    
+
+  
 
   }
 

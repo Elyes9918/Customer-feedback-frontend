@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
 import {
   Icon,
   Button,
   Col,
   RSelect,
-} from "../../../components/Component";
-import {  teamList } from "./ProjectData";
+} from "../../components/Component";
 import {
   Modal,
   ModalBody,
@@ -15,9 +13,9 @@ import {
   Spinner,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { getUserListAction } from "../../../features/userSlice";
-import { UpdateProjectAction } from "../../../features/projectSlice";
+import { useAppDispatch } from "../../app/store";
+import { getUserListAction } from "../../features/userSlice";
+import { UpdateProjectAction } from "../../features/projectSlice";
 
 
 const EditProjectModal = ({isModalOpen,projectToEdit}) => {

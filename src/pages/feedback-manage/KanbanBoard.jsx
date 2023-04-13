@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { KanbanColumn } from "./KanbanPartials";
-import { useAppDispatch, useAppSelector } from "../../../app/store";
-import { UpdateFeedbackAction } from "../../../features/feedbackSlice";
-import { updateFeedbackApi } from "../../../services/FeedbackService";
+import { updateFeedbackApi } from "../../services/FeedbackService";
 
 const KanbanBoard = ({ feedbackList, setFeedbackList,projectId }) => {
 
