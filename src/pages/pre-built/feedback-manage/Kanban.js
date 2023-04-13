@@ -14,7 +14,7 @@ import {
   Sidebar,
 } from "../../../components/Component";
 import { KanbanTaskForm } from "./KanbanForms";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { GetFeedbackByProjectIdAction, getFeedbackListAction } from "../../../features/feedbackSlice";
 import { ApiStatus } from "../../../types/ApiStatus";
@@ -26,6 +26,7 @@ const Kanban = () => {
 
   const { status } = useAppSelector((state) => state.feedback);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
 
   useEffect(()=>{
@@ -72,6 +73,28 @@ const Kanban = () => {
                         <Icon name="plus" />
                         <span>Add Feedback</span>
                       </Button>
+
+                    </li>
+
+                    <li>
+                    <Button
+                  color="light"
+                  outline
+                  className="bg-white d-none d-sm-inline-flex"
+                  onClick={() => navigate(`/my-projects`)}
+                >
+                  <Icon name="arrow-left"></Icon>
+                  <span>Back</span>
+                </Button>
+                <a
+                  href="/my-projects"
+                  onClick={(ev) => {
+                    navigate(`/my-projects`);
+                  }}
+                  className="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"
+                >
+                  <Icon name="arrow-left"></Icon>
+                </a>
                     </li>
                     
                   </ul>

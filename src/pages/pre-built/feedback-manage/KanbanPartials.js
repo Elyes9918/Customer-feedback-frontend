@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "../../../app/store";
 import { DeleteFeedbackAction } from "../../../features/feedbackSlice";
+import currentUser from "../../../utils/currentUser";
+import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
 
 
 export const KanbanCard = ({ data, setData, card, index, column,projectId }) => {
@@ -86,7 +88,7 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
 
               </div >
               <div className="kanban-item-text" style={{ height: "50px" }} >
-                <p>{description.length > 70 ? description.substring(0, 69) + "... " : description}</p>
+                <div dangerouslySetInnerHTML={{ __html: description.length > 70 ? description.substring(0, 69) + "... " : description }} />
               </div>
 
               <div >
@@ -112,6 +114,8 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
                   </li>
               </ul>
                 
+                {card.creator.id ===currentUser().id && 
+                !currentUser().roles.includes("ROLE_GESTIONNAIRE","ROLE_MEMBER","ROLE_ADMIN") &&
                 <ul className="kanban-item-meta-list">
                   <UncontrolledDropdown>
                     <DropdownToggle
@@ -142,6 +146,44 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </ul>
+                }
+
+                <RolesWithPermession rolesRequired="ADMIN,MEMBER,GESTIONNAIRE">
+
+                <ul className="kanban-item-meta-list">
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      tag="a"
+                      href="toggle"
+                      onClick={(ev) => ev.preventDefault()}
+                      className="dropdown-toggle btn btn-xs btn-icon btn-trigger me-n1"
+                    >
+                      <Icon name="more-v"></Icon>
+                    </DropdownToggle>
+                    <DropdownMenu end>
+                      <ul className="link-list-opt no-bdr">
+                        <li>
+                          <DropdownItem
+                            tag="a"
+                            href="#item"
+                            onClick={(ev) => {
+                              ev.preventDefault();
+                              toggleTaskModal();
+                            }}
+                          >
+                            <Icon name="edit"></Icon>
+                            <span>Edit Feedback</span>
+                          </DropdownItem>
+                        </li>
+
+                      </ul>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </ul>
+                </RolesWithPermession>
+
+
+
               </div>
             </div>
           </div>

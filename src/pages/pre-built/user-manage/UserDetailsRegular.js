@@ -12,8 +12,7 @@ import {
 
 } from "../../../components/Component";
 import Content from "../../../layout/content/Content";
-import { currentTime, formatDate, monthNames, todaysDate } from "../../../utils/Utils";
-import { notes } from "./UserData";
+import { formatDate } from "../../../utils/Utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { GetUserByIdAction } from "../../../features/userSlice";
@@ -33,9 +32,7 @@ const UserDetailsPage = () => {
 
 
   const [sideBar, setSidebar] = useState(false);
-  const [noteData, setNoteData] = useState(notes);
-  const [addNoteModal, setAddNoteModal] = useState(false);
-  const [addNoteText, setAddNoteText] = useState("");
+
 
   const [modal, setModal] = useState(false);
   const [shouldReRenderModal, setShouldReRenderModal] = useState(false);
@@ -52,25 +49,8 @@ const UserDetailsPage = () => {
     setSidebar(!sideBar);
   };
 
-  // delete a note
-  const deleteNote = (id) => {
-    let defaultNote = noteData;
-    defaultNote = defaultNote.filter((item) => item.id !== id);
-    setNoteData(defaultNote);
-  };
 
-  const submitNote = () => {
-    let submitData = {
-      id: Math.random(),
-      text: addNoteText,
-      date: `${monthNames[todaysDate.getMonth()]} ${todaysDate.getDate()}, ${todaysDate.getFullYear()}`,
-      time: `${currentTime()}`,
-      company: "Softnio",
-    };
-    setNoteData([...noteData, submitData]);
-    setAddNoteModal(false);
-    setAddNoteText("");
-  };
+
 
   // ROLE_ADMIN ROLE_USER ROLE_GESTIONNAIRE ROLE_MEMBER ROLE_CLIENT
   const reformulateRoles = (arg) =>{
@@ -334,99 +314,11 @@ const UserDetailsPage = () => {
                     }
                     
 
-                    <div className="nk-divider divider md"></div>
-
-                    <Block>
-                      <BlockHead size="sm">
-                        <BlockBetween>
-                          <BlockTitle tag="h5">Admin Note</BlockTitle>
-                          <a
-                            href="#addnote"
-                            onClick={(ev) => {
-                              ev.preventDefault();
-                              setAddNoteModal(true);
-                            }}
-                            className="link link-sm"
-                          >
-                            + Add Note
-                          </a>
-                        </BlockBetween>
-                      </BlockHead>
-                      <div className="bq-note">
-                        {noteData.map((item) => (
-                          <div className="bq-note-item" key={item.id}>
-                            <div className="bq-note-text">
-                              <p>{item.text}</p>
-                            </div>
-                            <div className="bq-note-meta">
-                              <span className="bq-note-added">
-                                Added on <span className="date">{item.date}</span> at{" "}
-                                <span className="time">{item.time}</span>
-                              </span>
-                              <span className="bq-note-sep sep">|</span>
-                              <span className="bq-note-by">
-                                By <span>{item.company}</span>
-                              </span>
-                              <a
-                                href="#deletenote"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                  deleteNote(item.id);
-                                }}
-                                className="link link-sm link-danger"
-                              >
-                                Delete Note
-                              </a>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Block>
+                   
                   </div>
                 </div>
 
-                <Modal
-                  isOpen={addNoteModal}
-                  toggle={() => setAddNoteModal(false)}
-                  className="modal-dialog-centered"
-                  size="lg"
-                >
-                  <ModalBody>
-                    <a
-                      href="#cancel"
-                      onClick={(ev) => {
-                        ev.preventDefault();
-                        setAddNoteModal(false);
-                        setAddNoteText("");
-                      }}
-                      className="close"
-                    >
-                      <Icon name="cross-sm"></Icon>
-                    </a>
-                    <div className="p-2">
-                      <h5 className="title">Add Admin Note</h5>
-                      <div className="mt-4 mb-4">
-                        <textarea
-                          defaultValue={addNoteText}
-                          className="form-control no-resize"
-                          onChange={(e) => setAddNoteText(e.target.value)}
-                        />
-                      </div>
-                      <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                        <li>
-                          <Button color="primary" size="md" type="submit" onClick={submitNote}>
-                            Add Note
-                          </Button>
-                        </li>
-                        <li>
-                          <Button onClick={() => setAddNoteModal(false)} className="link link-light">
-                            Cancel
-                          </Button>
-                        </li>
-                      </ul>
-                    </div>
-                  </ModalBody>
-                </Modal>
+                
 
                  {/* Modal is here */}
                  <EditUserModal 

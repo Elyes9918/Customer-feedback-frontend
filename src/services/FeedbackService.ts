@@ -1,5 +1,4 @@
 import axios from "axios";
-import { IProject } from "../types/Project";
 import { IFeedback } from "../types/Feedback";
 
 export const getToken = () => JSON.parse(localStorage.getItem('accessToken') || "{}");

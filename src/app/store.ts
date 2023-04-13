@@ -5,6 +5,7 @@ import authReducer  from "../features/authSlice";
 import projectReducer  from "../features/projectSlice";
 import feedbackSlice from "../features/feedbackSlice";
 import globalSlice from "../features/globalSlice";
+import CommentSlice from "../features/CommentSlice";
 
 
 
@@ -14,7 +15,8 @@ export const store = configureStore({
     auth : authReducer,
     project: projectReducer,
     feedback: feedbackSlice,
-    global: globalSlice
+    global: globalSlice,
+    comment:CommentSlice
   }
   
   

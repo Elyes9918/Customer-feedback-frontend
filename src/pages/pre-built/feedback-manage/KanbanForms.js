@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import { ModalBody,  Col, Alert, Spinner } from "reactstrap";
 import { Icon, Button, RSelect, NSComponent } from "../../../components/Component";
 import { useForm } from "react-hook-form";
@@ -10,6 +10,8 @@ import { useMatch, useNavigate } from "react-router-dom";
 import Nouislider from "nouislider-react";
 import Swal from "sweetalert2";
 import RolesWithPermession from "../../../routesProtectionComponents/RolesWithPermession";
+import { Editor } from "@tinymce/tinymce-react";
+
 
 
 
@@ -35,6 +37,9 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const editorRef = useRef(null);
+
+
   const {eTime} = useAppSelector((state) => state.global);
 
 
@@ -46,6 +51,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
   const [selectedPriority,setSelectedPriority] = useState(editTask?.priority);
   const [selectedStatus,setSelectedStatus] = useState(editTask?.status);
   const [selectedProgress,setSelectedProgress]=useState(editTask?.progress);
+  const [descriptionText,setDescriptionText]=useState("");
 
 
   const [membersUsers,setMembersUsers] = useState(editTask?.usersId.map((user) => ({
@@ -85,7 +91,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
     const feedback = {
       id:editTask?.id,
       title: formData?.title,
-      description: formData?.desc,
+      description: descriptionText === "" ? editTask.description : descriptionText,
       priority: parseInt(selectedPriority.value ?? editTask?.priority) ,
       status:parseInt(selectedStatus.value ?? editTask?.status),
       progress: Math.floor(Number(selectedProgress[0])),
@@ -114,7 +120,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
         const feedback = {
           project_id:projectId,
           title: formData?.title,
-          description: formData?.desc,
+          description: descriptionText,
           status: (editTask ? editTask.status : 0), 
           priority: parseInt(selectedPriority.value),
           progress: 0,
@@ -122,6 +128,8 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
           creatorId:currentUser().id,
           usersId: formData?.users?.map(user => user.value)
         }
+
+        console.log(descriptionText);
   
         dispatch(CreateFeedbackAction(feedback)).then(()=>{
           setLoading(false);
@@ -215,7 +223,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
             <Col className="col-12">
               <div className="form-group">
                 <label className="form-label">Task Description</label>
-                <textarea
+                {/* <textarea
                   name="desc"
                   value={formData.desc}
                   onChange={(e) =>
@@ -227,7 +235,24 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
                   className="form-control no-resize"
                   ref={register({ required: "This field is required" })}
                 />
-                {errors.desc && <span className="invalid">{errors.desc.message}</span>}
+                {errors.desc && <span className="invalid">{errors.desc.message}</span>} */}
+                <Editor
+                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  initialValue={formData.desc}
+                  onEditorChange={(a)=>{setDescriptionText(a)}}
+                  init={{
+                  menubar: "file edit view format",
+                  plugins: [
+                      "advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code ",
+                      "insertdatetime media table paste code",
+                  ],
+                  toolbar:
+                      "undo redo | formatselect | " +
+                      "bold italic | alignleft aligncenter " +
+                      "alignright alignjustify | outdent indent",
+                  }}
+                />
               </div>
             </Col>
 

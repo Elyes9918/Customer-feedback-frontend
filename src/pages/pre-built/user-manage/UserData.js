@@ -419,16 +419,16 @@ export const notes = [
   {
     id: 1,
     text: "Aproin at metus et dolor tincidunt feugiat eu id quam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean sollicitudin non nunc vel pharetra.",
-    date: "November 18, 2019",
+    date: "Mars 18, 2023",
     time: "5:34 pm",
-    company: "Softnio",
+    company: "Elyes",
   },
   {
     id: 2,
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eleifend libero semper metus aliquam tempus. Sed efficitur elit et ligula lobortis",
-    date: "December 27, 2019",
+    date: "Mars 25, 2023",
     time: "7:00 pm",
-    company: "Softnio",
+    company: "Elyes",
   },
 ];
 
