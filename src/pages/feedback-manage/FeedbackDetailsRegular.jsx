@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Card, Modal, ModalBody, Progress, Spinner } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { Card, Modal, Spinner } from "reactstrap";
 import {
   Button,
   Block,
@@ -9,7 +9,6 @@ import {
   BlockHeadContent,
   BlockTitle,
   Icon,
-  UserAvatar,
 } from "../../components/Component";
 import Content from "../../layout/content/Content";
 import { formatDate } from "../../utils/Utils";
@@ -21,57 +20,18 @@ import { GetFeedbackByIdAction } from "../../features/feedbackSlice";
 import { KanbanTaskForm } from "./KanbanForms";
 import { DeleteCommentAction, GetCommentByFeedbackIdAction } from "../../features/CommentSlice";
 import CommentModal from "./CommentModal";
+import ImageModal from "./ImageModal";
 import Swal from "sweetalert2";
 import currentUser from "../../utils/currentUser";
-import Slider from "react-slick";
-import { SlickArrowLeft, SlickArrowRight } from "../../components/partials/slick/SlickComponents";
-import { productCardData } from "./ProductData";
+import { Carousel, CarouselItem, CarouselControl, CarouselIndicators } from "reactstrap";
 
+import SlideA from "../../images/slides/s1.png";
+import SlideB from "../../images/slides/s2.png";
+import SlideC from "../../images/slides/s3.png";
 
 
 
 const FeedbackDetailsPage = () => {
-
-  const [data, setData] = useState(productCardData);
-
-  const sliderSettingsDefault = {
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerMode: true,
-    slide: null,
-    responsive: [
-      { breakpoint: 1539, settings: { slidesToShow: 3 } },
-      { breakpoint: 768, settings: { slidesToShow: 2 } },
-      { breakpoint: 420, settings: { slidesToShow: 1 } },
-    ],
-    arrows: false,
-    swipeToSlide: true,
-    focusOnSelect: true,
-    className: "slider-init slider-nav",
-  };
-
-  const [sliderData, setSliderData] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState({});
-  const [nav1, setNav1] = useState(null);
-  const [nav2, setNav2] = useState(null);
-
-  // changes slides
-  const slideChange = (index) => {
-    var product = sliderData.slider.find((item) => item.id === index);
-    setCurrentSlide(product);
-  };
-
-  const slider1 = useRef(null);
-  const slider2 = useRef(null);
-
-  useEffect(() => {
-    setNav1(slider1.current);
-    setNav2(slider2.current);
-    setSliderData(data.find((item) => item.id === 0));
-    setCurrentSlide(data.find((item) => item.id === 0).slider[0]);
-  }, []);
-
-
 
   const PriorityOptions = [
     { value: "0", label: "Low" },
@@ -95,6 +55,24 @@ const FeedbackDetailsPage = () => {
 
   let { feedbackId } = useParams();
 
+  const items = [
+    {
+      src: SlideA,
+      altText: "Slide 1",
+    },
+    {
+      src: SlideB,
+      altText: "Slide 2",
+    },
+    {
+      src: SlideC,
+      altText: "Slide 3",
+    },
+  ];
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
   const {feedback,status} = useAppSelector((state)=>state.feedback);
   const { list, status: commentStatus } = useAppSelector(state => state.comment);
 
@@ -117,9 +95,43 @@ const FeedbackDetailsPage = () => {
 
   const [taskModal, setTaskModal] = useState(false);
 
+  const [imageModal,setImageModal]=useState(false);
+
+
+
+  const next = () => {
+    if (animating) return;
+    const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
+    setActiveIndex(nextIndex);
+  };
+
+  const previous = () => {
+    if (animating) return;
+    const nextIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1;
+    setActiveIndex(nextIndex);
+  };
+
+  const goToIndex = (newIndex) => {
+    if (animating) return;
+    setActiveIndex(newIndex);
+  };
+
+  const slides = items.map((item) => {
+    return (
+      <CarouselItem onExiting={() => setAnimating(true)} onExited={() => setAnimating(false)} key={item.src}>
+        <img src={item.src} alt={item.altText} />
+      </CarouselItem>
+    );
+  });
+
+
   const toggleTaskModal = () => {
     setTaskModal(!taskModal);
   };
+
+  const toggleImageModal = () =>{
+    setImageModal(!imageModal);
+  }
 
 
   // grabs the id of the url and loads the corresponding data
@@ -171,18 +183,10 @@ const FeedbackDetailsPage = () => {
     }).then((result) => {
       if (result.isConfirmed) {
 
-       
-       
-
         dispatch(DeleteCommentAction(id)).then(()=>{
           Swal.fire("Deleted!", "Comment has been deleted.", "success");
           window.location.reload(false);  
         })
-
-        
-
-         
-
 
     }});
 
@@ -251,30 +255,36 @@ const FeedbackDetailsPage = () => {
                         <span>Feedback</span>
                       </a>
                     </li>
-                    
-                    {feedback?.creator?.id===currentUser().id && 
-                       !currentUser().roles.includes("ROLE_ADMIN") &&
-                       !currentUser().roles.includes("ROLE_GESTIONNAIRE")&&
-                       !currentUser().roles.includes("ROLE_MEMBER")&&
-                     <li className="nav-item nav-item-trigger d-xxl-none">
-                     <Button  onClick={toggleTaskModal}>
-                       <Icon name="pen2"></Icon>
-                     </Button>
-                      </li>
-                      }
 
+                      <ul className="nav-item nav-item-trigger d-xxl-none">
+
+                        <li >
+                          <Button  onClick={toggleImageModal}>
+                            <Icon name="camera-fill"></Icon>
+                          </Button>
+                        </li>
+
+                        {feedback?.creator?.id===currentUser().id && 
+                        !currentUser().roles.includes("ROLE_ADMIN") &&
+                        !currentUser().roles.includes("ROLE_GESTIONNAIRE")&&
+                        !currentUser().roles.includes("ROLE_MEMBER")&&
+                        <li >
+                          <Button  onClick={toggleTaskModal}>
+                            <Icon name="pen2"></Icon>
+                          </Button>
+                        </li>
+                        }
 
                       <RolesWithPermession rolesRequired="ADMIN,MEMBER,GESTIONNAIRE">
-                      <li className="nav-item nav-item-trigger d-xxl-none">
-                     <Button  onClick={toggleTaskModal}>
-                       <Icon name="pen2"></Icon>
-                     </Button>
-                      </li>
+                        <li >
+                          <Button  onClick={toggleTaskModal}>
+                            <Icon name="pen2"></Icon>
+                          </Button>
+                        </li>
                       </RolesWithPermession>
-                   
-        
-                
-                    
+
+                      </ul>
+
                   </ul>
 
                   <div className="card-inner">
@@ -405,51 +415,17 @@ const FeedbackDetailsPage = () => {
                           <div style={{display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            marginTop:"60px",
                            }}>
-                          <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"350px"}}>
+                          <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1000px"}}>
                           <div className="profile-ud-item" style={{ flexBasis: '100%' }}>
 
-                              <div className="product-gallery me-xl-1 me-xxl-5" style={{
-                              }}>
-                              {/* <Slider
-                                asNavFor={nav2}
-                                ref={slider1}
-                                arrows={false}
-                                fade={true}
-                                slidesToShow={1}
-                                slidesToScroll={1}
-                                initialSlide={currentSlide?.id}
-                                className="slider-init"
-                                prevArrow
-                              >
-                                <div className="slider-item rounded" key={currentSlide?.id}>
-                                  <img src={currentSlide?.img} className="w-100" alt="" />
-                                </div>
-                              </Slider> */}
-                              <Slider
-                                asNavFor={nav1}
-                                ref={slider2}
-                                afterChange={(newIndex) => slideChange(newIndex)}
-                                initialSlide={currentSlide.id}
-                                {...sliderSettingsDefault}
-                              >
-                                {sliderData?.slider?.map((item) => {
-                                  return (
-                                    <div
-                                      className={`slider-item ${currentSlide.id === item.id ? "slick-current" : ""}`}
-                                      key={item.id}
-                                    >
-                                      <div className="thumb">
-                                        <img src={item.img}  alt="" />
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </Slider>
-                            </div>
-                     
-
+                        
+                          <Carousel activeIndex={activeIndex} next={next} previous={previous}>
+                            <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={goToIndex} />
+                            {slides}
+                            <CarouselControl direction="prev" directionText="Previous" onClickHandler={previous} />
+                            <CarouselControl direction="next" directionText="Next" onClickHandler={next} />
+                          </Carousel>
 
                           </div>
                           </div>
@@ -622,6 +598,11 @@ const FeedbackDetailsPage = () => {
                   editComment={selectedEditComment} 
                   feedbackId={feedback.id}
                 />
+
+                <Modal size="lg" isOpen={imageModal} toggle={toggleImageModal}>
+                <ImageModal toggle={toggleImageModal}/>
+                </Modal>
+
 
                 <Modal size="lg" isOpen={taskModal} toggle={toggleTaskModal}>
                   <KanbanTaskForm toggle={toggleTaskModal}  editTask={feedback} projectId={feedback.project_id} />

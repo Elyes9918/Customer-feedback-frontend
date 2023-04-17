@@ -19,10 +19,13 @@ import { GetUserByIdAction } from "../../features/userSlice";
 import { ApiStatus } from "../../types/ApiStatus";
 import EditUserModal from "./EditUserModal"
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
+import { useTranslation } from "react-i18next";
 
 
 
 const UserDetailsPage = () => {
+  const {t}= useTranslation();
+
 
   let { userId } = useParams();
 
@@ -88,19 +91,19 @@ const UserDetailsPage = () => {
 
   const ReturnIsVerified = (status) =>{
     if(status===0){
-      return "not Verified"
+      return t('user.NotVerified')
     }else if(status===1){
-      return "is Verified"
+      return t('user.IsVerifed')
     }
   }
 
   const ReturnAccountStatus = (status) =>{
     if(status==="0"){
-      return "Inactive"
+      return t('user.Inactive')
     }else if(status==="1"){
-      return "Active"
+      return t('user.Active')
     }else if(status==="2"){
-      return "Suspended"
+      return t('user.Suspended')
     }
   }
 
@@ -112,15 +115,15 @@ const UserDetailsPage = () => {
             <BlockBetween>
               <BlockHeadContent>
                 <BlockTitle tag="h3" page>
-                  Users / <strong className="text-primary small">{user.firstName} {user.lastName}</strong>
+                  {t('user.Users')} / <strong className="text-primary small">{user.firstName} {user.lastName}</strong>
                 </BlockTitle>
                 <BlockDes className="text-soft">
                   <ul className="list-inline">
                     <li>
-                      User ID: <span className="text-base">{user.id}</span>
+                    {t('user.UserId')}: <span className="text-base">{user.id}</span>
                     </li>
                     <li>
-                      Last Login: <span className="text-base">{user.lastLogin}</span>
+                    {t('user.LastL')} : <span className="text-base">{user.lastLogin}</span>
                     </li>
                   </ul>
                 </BlockDes>
@@ -133,7 +136,7 @@ const UserDetailsPage = () => {
                   onClick={() => navigate("/user-list")}
                 >
                   <Icon name="arrow-left"></Icon>
-                  <span>Back</span>
+                  <span>{t('user.Back')}</span>
                 </Button>
                 <a
                   href="#back"
@@ -163,25 +166,10 @@ const UserDetailsPage = () => {
                         }}
                       >
                         <Icon name="user-circle"></Icon>
-                        <span>Personal</span>
+                        <span>{t('user.Personal')}</span>
                       </a>
                     </li>
         
-                    {/* <li className="nav-item">
-                      <a
-                        className="nav-link disabled"
-                        href="#documents"
-                        onClick={(ev) => {
-                          ev.preventDefault();
-                          handleUserEditModal();
-                        }}
-                       
-                      >
-                        <Icon name="file-text"></Icon>
-                        <span>Projects</span>
-                      </a>
-                    </li> */}
-
                     <RolesWithPermession rolesRequired="ADMIN">
                       <li className="nav-item nav-item-trigger d-xxl-none">
                         <Button  onClick={handleUserEditModal}>
@@ -190,16 +178,14 @@ const UserDetailsPage = () => {
                       </li>
                     </RolesWithPermession>
 
-        
-                
                     
                   </ul>
 
                   <div className="card-inner">
                     <Block>
                       <BlockHead>
-                        <BlockTitle tag="h5">Personal Information</BlockTitle>
-                        <p>Information related to the selected user on our platform Customer feedback.</p>
+                        <BlockTitle tag="h5">{t('user.PersonalInformation')}</BlockTitle>
+                        <p>{t('user.IRTSUOUP')}</p>
                       </BlockHead>
                     </Block>
 
@@ -222,43 +208,43 @@ const UserDetailsPage = () => {
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Full Name :</span>
+                              <span className="profile-ud-label">{t('user.FullName')} :</span>
                               <span className="profile-ud-value">{user.firstName} {user.lastName}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Date of Birth :</span>
+                              <span className="profile-ud-label">{t('page.WR.BirthDate')} :</span>
                               <span className="profile-ud-value">{user.birthDate}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Company :</span>
+                              <span className="profile-ud-label">{t('page.WR.Company')} :</span>
                               <span className="profile-ud-value">{user.company}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Mobile Number :</span>
+                              <span className="profile-ud-label">{t('page.WR.PhoneNum')} :</span>
                               <span className="profile-ud-value">{user.phoneNumber}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Roles :</span>
+                              <span className="profile-ud-label">{t('user.Roles')} :</span>
                               <span className="profile-ud-value">{formatRoles(user.roles)}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Address :</span>
+                                <span className="profile-ud-label">{t('page.WR.Address')} :</span>
                                 <span className="profile-ud-value">{user.address}</span>
                               </div>
                             </div>
                           <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Country :</span>
+                                <span className="profile-ud-label">{t('page.WR.Country')} :</span>
                                 <span className="profile-ud-value">{user.country}</span>
                               </div>
                             </div>
@@ -267,13 +253,13 @@ const UserDetailsPage = () => {
                       </Block><Block>
                           <BlockHead className="nk-block-head-line">
                             <BlockTitle tag="h6" className="overline-title text-base">
-                              Additional Information
+                            {t('user.AdditionalInfo')}
                             </BlockTitle>
                           </BlockHead>
                           <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                           <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Account :</span>
+                                <span className="profile-ud-label">{t('user.Account')} :</span>
                                 <span className="profile-ud-value">{ReturnIsVerified(user.isVerified)}</span>
                               </div>
                             </div>
@@ -285,25 +271,25 @@ const UserDetailsPage = () => {
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Date of creation :</span>
+                                <span className="profile-ud-label">{t('user.DateOfCreation')}:</span>
                                 <span className="profile-ud-value">{formatDate(user.createdAt)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Last modified :</span>
+                                <span className="profile-ud-label">{t('user.LastM')}:</span>
                                 <span className="profile-ud-value">{formatDate(user.modifiedAt)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Last login :</span>
+                                <span className="profile-ud-label">{t('user.LastL')}:</span>
                                 <span className="profile-ud-value">{formatDate(user.lastLogin)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Register Method :</span>
+                                <span className="profile-ud-label">{t('user.RMethod')} :</span>
                                 <span className="profile-ud-value">Email</span>
                               </div>
                             </div>

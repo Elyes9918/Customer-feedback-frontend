@@ -19,9 +19,13 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../app/store";
 import { UpdateUserAction } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 
 
 const UserProfileSettingPage = ({ sm, updateSm,user }) => {
+  const {t}= useTranslation();
+
 
   const passForm = useForm();
   const eForm = useForm();
@@ -44,7 +48,7 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
 
     await dispatch(UpdateUserAction(user)).unwrap().then(()=>{
       setLoadingDiff(false);
-      setSuccessVal("Updated Succesfully")
+      setSuccessVal(t('user.USuccesfully'))
       localStorage.removeItem("accessToken");
       localStorage.removeItem("currentUser");
       setTimeout(() => {
@@ -54,7 +58,7 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
       // setModal(false);
       // window.location.reload(false);
     }).catch(()=>{
-      setError("Email is already taken...");
+      setError(t('user.EisAlreadyT'));
       setLoadingDiff(false);
     });
 
@@ -71,19 +75,19 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
     }
 
     if(data?.nPassword !== data?.cPassword){
-      setError("Passwords do not match...");
+      setError(t('page.ChangePassword.ErrPDNMat'));
       setLoading(false);
     }else{
       await dispatch(UpdateUserAction(user)).unwrap().then(()=>{
         setLoading(false);
-        setSuccessVal("Updated Succesfully")
+        setSuccessVal(t('user.USuccesfully'))
 
         
         
         // setModal(false);
         // window.location.reload(false);
       }).catch(()=>{
-        setError("Something went wrong...");
+        setError(t('user.SWentWrong'));
         setLoading(false);
       });
     }
@@ -98,9 +102,9 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
       <BlockHead size="lg">
         <BlockBetween>
           <BlockHeadContent>
-            <BlockTitle tag="h4">Security Settings</BlockTitle>
+            <BlockTitle tag="h4">{t('user.Security')}</BlockTitle>
             <BlockDes>
-              <p>These settings will help you to keep your account secure.</p>
+              <p>{t('user.TSWHYKY')}</p>
             </BlockDes>
           </BlockHeadContent>
           <BlockHeadContent className="align-self-start d-lg-none">
@@ -138,8 +142,8 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
           <div className="card-inner">
               
               <div className="nk-block-text">
-                <h6>Change Email</h6>
-                <p>Set a unique email, If you procced to change your email you are required to logout.</p>
+                <h6>{t('user.ChangeEmail')}</h6>
+                <p>{t('user.SAUEIFY')}</p>
                 
               </div>
               
@@ -156,10 +160,10 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
                         defaultValue={currentUser.email}
                         placeholder="Enter email"
                         ref={eForm.register({
-                          required: "This field is required",
+                          required: `${t('page.Login.TfIsReq')}`,
                           pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "invalid email address",
+                            message: `${t('page.WR.EError')}`,
                           },
                         })}
                       />
@@ -173,7 +177,7 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
                   <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                     <li>
                       <Button color="primary" size="md" type="submit">
-                        {loadingDiff ? <Spinner size="sm" color="light" /> : "Change Email Address"}
+                        {loadingDiff ? <Spinner size="sm" color="light" /> : `${t('user.ChEmail')}`}
                       </Button>
                     </li>
 
@@ -197,22 +201,22 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
             <div className="card-inner">
               
                 <div className="nk-block-text">
-                  <h6>Change Password</h6>
-                  <p>Set a unique password to protect your account.</p>
+                <h6>{t('user.ChangePassword')}</h6>
+                <p>{t('user.SETAUNI')}</p>
                 </div>
                 <Form className="row gy-4 " onSubmit={passForm.handleSubmit(onChangePassword)}
                 style={{marginTop: '10px'}}>
 
                 <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">New Password</label>
+                      <label className="form-label">{t('user.NewPassword')}</label>
                       <input
                         className="form-control"
                         type="password"
                         name="nPassword"
                         defaultValue={""}
-                        placeholder="Enter your new password"
-                        ref={passForm.register({ required: "This field is required" })}
+                        placeholder={t('page.ChangePassword.CYPassword')}
+                        ref={passForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {passForm.errors.nPassword && <span className="invalid">{passForm.errors.nPassword.message}</span>}
                     </div>
@@ -220,14 +224,14 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
 
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Confirm Password</label>
+                      <label className="form-label">{t('user.CPassword')}</label>
                       <input
                         className="form-control"
                         type="password"
                         name="cPassword"
                         defaultValue={""}
-                        placeholder="Confirm your password"
-                        ref={passForm.register({ required: "This field is required" })}
+                        placeholder={t('page.ChangePassword.CNewPass')}
+                        ref={passForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {passForm.errors.cPassword && <span className="invalid">{passForm.errors.cPassword.message}</span>}
                     </div>
@@ -238,7 +242,7 @@ const UserProfileSettingPage = ({ sm, updateSm,user }) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          {loading ? <Spinner size="sm" color="light" /> : "Change Password"}
+                          {loading ? <Spinner size="sm" color="light" /> : `${t('user.ChPassword')}`}
                         </Button>
                       </li>
                       

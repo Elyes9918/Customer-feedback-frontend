@@ -9,8 +9,12 @@ import {
   LoginLogTable,
   Button,
 } from "../../components/Component";
+import { useTranslation } from "react-i18next";
+
 
 const UserProfileActivityPage = ({ sm, updateSm }) => {
+  const {t}= useTranslation();
+
   return (
     <React.Fragment>
       <BlockHead size="lg">

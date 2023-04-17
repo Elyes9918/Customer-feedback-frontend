@@ -21,26 +21,23 @@ import { Spinner } from "reactstrap";
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 import currentUser from "../../utils/currentUser";
 import { deleteRefreshTokenApi } from "../../services/RefreshTokenService";
+import { useTranslation } from "react-i18next";
+
 
 
 const EditUserModal = ({isModalOpen,userToEdit}) => {
+  const {t}= useTranslation();
+
 
   const filterStatus = [
-    { value: "1", label: "Active" },
-    { value: "0", label: "Inactive" },
-    { value: "2", label: "Suspended" },
+    { value: "1", label: `${t('user.Active')}` },
+    { value: "0", label: `${t('user.Inactive')}` },
+    { value: "2", label: `${t('user.Suspended')}` },
   ];
   
-   const filterRole = [
-    { value: "ROLE_ADMIN", label: "Admin" },
-    { value: "ROLE_GESTIONNAIRE", label: "Gestionnaire" },
-    { value: "ROLE_MEMBER", label: "Member" },
-    { value: "ROLE_CLIENT", label: "Client" },
-  ];
-
   const EmailVerifiedOptions = [
-    {value:true,label:"Is verified"},
-    {value:false,label:"Not verified"}
+    {value:true,label:`${t('user.isVerfied')}`},
+    {value:false,label:`${t('user.NotVerified')}`}
   ]
 
   const {status} = useAppSelector((state)=>state.user);
@@ -63,8 +60,6 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
   
   const [startIconDate, setStartIconDate] = useState(new Date());
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [roleToRemove,setRoleToRemove] = useState(null);
-  const [roleToAdd,setRoleToAdd] = useState(null);
   const [selectedStatus,setSelectedStatus] = useState(null);
   const [selectedEmailVerif,setSelectedEmailVerif] = useState(null);
 
@@ -113,7 +108,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
     dispatch(UpdateUserAction(user)).then(()=>{
       setLoading(false);
-      setSuccessVal("Updated Succesfully")
+      setSuccessVal(t('user.USuccesfully'))
       // setModal(false);
       // window.location.reload(false);
     })
@@ -130,12 +125,8 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
     dispatch(UpdateUserAction(user)).then(()=>{
       setLoading(false);
-      setSuccessVal("Updated Succesfully")
-      // setModal(false);
-      // window.location.reload(false);
+      setSuccessVal(t('user.USuccesfully'))
     })
-
-    // setModal(false);
   }
 
 
@@ -170,7 +161,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
     dispatch(UpdateUserAction(user)).then(()=>{
       setLoading(false);
-      setSuccessVal("Updated Succesfully")
+      setSuccessVal(t('user.USuccesfully'))
     })
 
   }
@@ -185,7 +176,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
     dispatch(UpdateUserAction(user)).then(()=>{
       setLoading(false);
-      setSuccessVal("Updated Succesfully")
+      setSuccessVal(t('user.USuccesfully'))
     })
 
   }
@@ -199,11 +190,11 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
     await dispatch(UpdateUserAction(user)).unwrap().then(()=>{
       setLoadingDiff(false);
-      setSuccessVal("Updated Succesfully")
+      setSuccessVal(t('user.USuccesfully'))
       // setModal(false);
       // window.location.reload(false);
     }).catch(()=>{
-      setError("Email is already taken...");
+      setError(t('user.EisAlreadyT'));
       setLoadingDiff(false);
     });
 
@@ -222,17 +213,17 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
     }
 
     if(data?.nPassword !== data?.cPassword){
-      setError("Passwords do not match...");
+      setError(t('page.ChangePassword.ErrPDNMat'));
       setLoading(false);
     }else{
       await dispatch(UpdateUserAction(user)).unwrap().then(()=>{
         setLoading(false);
-        setSuccessVal("Updated Succesfully");
+        setSuccessVal(t('user.USuccesfully'));
         deleteRefreshTokenApi(userToEdit.email);
         // setModal(false);
         // window.location.reload(false);
       }).catch(()=>{
-        setError("Something went wrong...");
+        setError(t('user.SWentWrong'));
         setLoading(false);
       });
     }
@@ -277,7 +268,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
             <Icon name="cross-sm"></Icon>
           </a>
           <div className="p-2">
-            <h5 className="title">Update  : {userToEdit?.email}</h5>
+            <h5 className="title">{t('user.Update')}  : {userToEdit?.email}</h5>
             <ul className="nk-nav nav nav-tabs">
               <li className="nav-item">
                 <a
@@ -289,7 +280,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   }}
                   href="#personal"
                 >
-                  Personal
+                  {t('user.Personal')}
                 </a>
               </li>
               <li className="nav-item">
@@ -303,7 +294,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   }}
                   href="#address"
                 >
-                  Address
+                  {t('user.Address')}
                 </a>
               </li>
               <RolesWithPermession rolesRequired={"ADMIN"}>
@@ -318,7 +309,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   }}
                   href="#address"
                 >
-                  Roles
+                  {t('user.Roles')}
                 </a>
               </li>
 
@@ -351,7 +342,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   }}
                   href="#address"
                 >
-                  Sensitive Information
+                  {t('user.SInformation')}
                 </a>
               </li>
               }
@@ -382,28 +373,28 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                 
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">First name</label>
+                      <label className="form-label">{t('page.WR.FirstName')}</label>
                       <input
                         className="form-control"
                         type="text"
                         name="firstName"
                         defaultValue={userToEdit?.firstName}
-                        placeholder="Enter name"
-                        ref={PForm.register({ required: "This field is required" })}
+                        placeholder={t('page.WR.EnterYFN')}
+                        ref={PForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {PForm.errors.firstName && <span className="invalid">{PForm.errors.firstName.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Last name</label>
+                      <label className="form-label">{t('page.WR.LastName')}</label>
                       <input
                         className="form-control"
                         type="text"
                         name="lastName"
                         defaultValue={userToEdit?.lastName}
-                        placeholder="Enter name"
-                        ref={PForm.register({ required: "This field is required" })}
+                        placeholder={t('page.WR.EnterYLN')}
+                        ref={PForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {PForm.errors.lastName && <span className="invalid">{PForm.errors.lastName.message}</span>}
                     </div>
@@ -423,28 +414,28 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Phone number</label>
+                      <label className="form-label">{t('page.WR.PhoneNum')}</label>
                       <input
                         className="form-control"
                         type="text"
                         name="phoneNumber"
                         defaultValue={userToEdit?.phoneNumber}
-                        placeholder="Enter name"
-                        ref={PForm.register({ required: "This field is required" })}
+                        placeholder={t('page.WR.EnterYPN')}
+                        ref={PForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {PForm.errors.phoneNumber && <span className="invalid">{PForm.errors.phoneNumber.message}</span>}
                     </div>
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Company</label>
+                      <label className="form-label">{t('page.WR.Company')}</label>
                       <input
                         className="form-control"
                         type="text"
                         name="company"
                         defaultValue={userToEdit?.company}
-                        placeholder="Enter name"
-                        ref={PForm.register({ required: "This field is required" })}
+                        placeholder={t('page.WR.EnterYourCompany')}
+                        ref={PForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {PForm.errors.company && <span className="invalid">{PForm.errors.company.message}</span>}
                     </div>
@@ -456,7 +447,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button type="submit" color="primary" size="md" >
-                          {loading ? <Spinner size="sm" color="light" /> : "Update Personal information"}
+                          {loading ? <Spinner size="sm" color="light" /> : `${t('user.UPI')}`}
                         </Button>
                       </li>
                       {!successVal && 
@@ -469,7 +460,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('user.Cancel')}
                         </a>
                       </li>}
                       
@@ -484,14 +475,14 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
                 <Col md="12">
                     <div className="form-group">
-                      <label className="form-label">Address Line</label>
+                      <label className="form-label">{t('page.WR.Address')}</label>
                       <input
                         className="form-control"
                         type="text"
                         name="address"
                         defaultValue={userToEdit?.address}
-                        placeholder="Enter Address line"
-                        ref={AForm.register({ required: "This field is required" })}
+                        placeholder={t('page.WR.EnterYAD')}
+                        ref={AForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {AForm.errors.address && <span className="invalid">{AForm.errors.address.message}</span>}
                     </div>
@@ -500,7 +491,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="address-county">
-                        Country
+                      {t('page.WR.Country')}
                       </label>
                       <RSelect
                         options={countryOptions}
@@ -522,7 +513,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          {loading ? <Spinner size="sm" color="light" /> : "Update Address information"}
+                          {loading ? <Spinner size="sm" color="light" /> : `${t('user.UAI')}`}
                         </Button>
                       </li>
                       {!successVal && 
@@ -535,7 +526,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('user.Cancel')}
                         </a>
                       </li>}
                     </ul>
@@ -549,7 +540,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
                 <Col sm="12" >
                 <div className="preview-block">
-                  <span className="form-label" style={{ marginBottom: '30px' }} >Roles</span>
+                  <span className="form-label" style={{ marginBottom: '30px' }} >{t('user.Roles')}</span>
                   <p></p>
                   <div className="custom-control custom-checkbox">
                     <input type="checkbox" className="custom-control-input" id="customCheck1"
@@ -606,7 +597,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                     <li>
                         <Button color="primary" size="md" type="submit">
-                        {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                        {loading ? <Spinner size="sm" color="light" /> : `${t('user.Update')}`}
                         </Button>
                       </li>
                      
@@ -620,7 +611,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('user.Cancel')}
                         </a>
                       </li>}
                     </ul>
@@ -651,13 +642,13 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
 
                   <Col md="12">
                     <div className="form-group">
-                      <label className="form-label">Email is Verified</label>
+                      <label className="form-label">{t('user.AccountS')}</label>
                       <div className="form-control-wrap">
                         <RSelect
                           options={EmailVerifiedOptions}
                           defaultValue={{
                             value: userToEdit?.isVerified,
-                            label: userToEdit?.isVerified ? "Is verified" : "Not verified",
+                            label: userToEdit?.isVerified ? `${t('user.IsVerifed')}` : `${t('user.NotVerified')}`,
                           }}
                           onChange={(e) => setSelectedEmailVerif(e.value)}
                           isDisabled={userToEdit?.isVerified}
@@ -671,7 +662,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          {loading ? <Spinner size="sm" color="light" /> : "Update Status information"}
+                          {loading ? <Spinner size="sm" color="light" /> : `${t('user.USI')}`}
                         </Button>
                       </li>
                       {!successVal && 
@@ -684,7 +675,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('user.Cancel')}
                         </a>
                       </li>}
                     </ul>
@@ -707,10 +698,10 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                         defaultValue={userToEdit?.email}
                         placeholder="Enter email"
                         ref={EForm.register({
-                          required: "This field is required",
+                          required: `${t('page.Login.TfIsReq')}`,
                           pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "invalid email address",
+                            message: `${t('page.WR.EError')}`,
                           },
                         })}
                       />
@@ -722,7 +713,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          {loadingDiff ? <Spinner size="sm" color="light" /> : "Change Email"}
+                          {loadingDiff ? <Spinner size="sm" color="light" /> : `${t('user.ChEmail')}`}
                         </Button>
                       </li>
                       
@@ -733,13 +724,13 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   <Form className="row gy-4" onSubmit={PassForm.handleSubmit(onEditPassword)}>
                 <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">New Password</label>
+                      <label className="form-label">{t('user.NewPassword')}</label>
                       <input
                         className="form-control"
                         type="password" 
                         name="nPassword"
-                        placeholder="Enter your new password"
-                        ref={PassForm.register({ required: "This field is required" })}
+                        placeholder={t('page.ChangePassword.CYPassword')}
+                        ref={PassForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {PassForm.errors.nPassword && <span className="invalid">{PassForm.errors.nPassword.message}</span>}
                     </div>
@@ -748,13 +739,13 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                   
                 <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Confirm Password</label>
+                      <label className="form-label">{t('user.CPassword')}</label>
                       <input
                         className="form-control"
                         type="password"
                         name="cPassword"
-                        placeholder="Confirm your new password"
-                        ref={PassForm.register({ required: "This field is required" })}
+                        placeholder={t('page.ChangePassword.CNewPass')}
+                        ref={PassForm.register({ required: `${t('page.Login.TfIsReq')}` })}
                       />
                       {PassForm.errors.cPassword && <span className="invalid">{PassForm.errors.cPassword.message}</span>}
                     </div>
@@ -765,7 +756,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          {loading ? <Spinner size="sm" color="light" /> : "Change Password"}
+                          {loading ? <Spinner size="sm" color="light" /> : `${t('user.ChPassword')}`}
                         </Button>
                       </li>
                       {!successVal && 
@@ -778,7 +769,7 @@ const EditUserModal = ({isModalOpen,userToEdit}) => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('user.Cancel')}
                         </a>
                       </li>}
                     </ul>

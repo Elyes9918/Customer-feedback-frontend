@@ -31,7 +31,7 @@
             "NewPass":"Définissez votre mot de passe",
             "ChangePass":"Réinitialiser le mot de passe",
             "PleEnterNP":"Veuillez saisir votre nouveau mot de passe.",
-            "CYPassword":"Confirmez votre mot de passe",
+            "CYPassword":"Entrez votre mot de passe",
             "CNewPass":"Confirmez votre nouveau mot de passe"
         },
         
@@ -69,8 +69,90 @@
             "EnterYourCompany":"Entrez votre Société",
             "EnterYC":"Entrez votre pays",
             "EError":"Adresse e-mail invalide"
+        }
 
+        },
+        "user":{
+            "Active":"Activé",
+            "Inactive":"Désactivé",
+            "Suspended":"Bloqué",
+            "IsVerifed":"Vérifié",
+            "NotVerified":"Non vérifié",
+            "USuccesfully":"Mise à jour réussie",
+            "EisAlreadyT":"Email is already taken...",
+            "SWentWrong":"Il y a eu un problème...",
+            "Update":"Modifier",
+            "Personal":"Personnel",
+            "Address":"Adresse",
+            "Roles":"Rôles",
+            "SInformation":"Informations confidentielles",
+            "AccountS":"Statut du compte",
+            "NewPassword":"Nouveau mot de passe",
+            "CPassword":"Confirmer le mot de passe",
+            "Cancel":"Annuler",
+            "UPI":"Mise à jour des informations personnelles",
+            "UAI":"Mise à jour de l'adresse",
+            "USI":"Mise à jour",
+            "ChEmail":"Changer l'email",
+            "ChPassword":"Changer le mot de passe",
+
+            "Users":"Utilisateurs",
+            "PersonalInformation":"Informations personnelles",
+            "Back":"Retour",
+            "IRTSUOUP":"Informations relatives à l'utilisateur sélectionné sur notre plateforme",
+            "FullName":"Nom complet",
+            "LastM":"Dernière modification",
+            "LastL":"Dernière connexion",
+            "DateOfCreation":"Date de création",
+            "Account":"Compte",
+            "RMethod":"Méthode d'enregistrement",
+            "UserId":"ID de l'utilisateur",
+            "AdditionalInfo":"Informations supplémentaires",
+
+
+            "UsersList":"Liste des utilisateurs",
+            "YouHa":"Vous avez un total de",
+            "users":"Utilisateurs",
+            "Export":"Exporter",
+            "FilterUsers":"Filtrer les utilisateurs",
+            "Role":"Role",
+            "AnyRole":"Choissiez un rôle",
+            "AnyStatus":"choisissez un statut",
+            "Filter":"Filtrer",
+            "ResetFilter":"Réinitialiser le filtre",
+            "Show":"Afficher",
+            "ORDER":"ORDONNER",
+            "Name":"Nom",
+            
+            "Security":"Paramètres de sécurité",
+            "TSWHYKY":"Ces paramètres vous aideront à sécuriser votre compte.",
+            "ChangeEmail":"Changer l'email",
+            "SAUEIFY":"Si vous procédez à un changement d'adresse électronique, vous devez vous déconnecter.",
+            "ChangePassword":"Changer le mot de passe",
+            "SETAUNI":"Définissez un mot de passe unique pour protéger votre compte.",
+
+            "PInformation":"Informations personnelles",
+            "Settings":"Paramètres",
+            "Notification":"Notification",
+            "MyProjects":"Mes projets",
+            "InfReToY":"Informations relatives à votre compte sur notre plateforme Customer Feedback",
+            "Basics":"Information de base",
+            "AccountDetails":"Détails du compte"
+
+        },
+        "project":{
+   
+        },
+        "general":{
+            "signOut":"Se déconnecter",
+            "ViewProfile":"Voir mon profil",
+            "Terms":"Termes",
+            "Privacy":"Politique de confidentialité",
+            "Help":"Aide",
+            "SearchAnything":"Rechercher n'importe quoi",
+            "":"",
+            "":""
         }
 
     }
-}
+    

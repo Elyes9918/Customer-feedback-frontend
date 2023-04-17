@@ -86,170 +86,167 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                     setErrorVal("");
                     setSuccessVal("Comment Created Succesfully");
                 })
-
             }
         }
-
-        
     }
 
 
     return ( 
         <Modal
-                  isOpen={modal}
-                  toggle={() => setModal(false)}
-                  className="modal-dialog-centered"
-                  size="lg"
-                >
-                  <ModalBody>
-                    <a
-                      href="#cancel"
-                      onClick={(ev) => {
-                        ev.preventDefault();
-                        setModal(false);
-                        setAddNoteText("");
-                        if(successVal){
-                            window.location.reload();  
-                        }
-                      }}
-                      className="close"
-                    >
-                      <Icon name="cross-sm"></Icon>
-                    </a>
-                    <div className="p-2">
-                      <h5 className="title">{editComment ? "Modify Comment" : "Add Comment"}</h5>
-                      <div className="mt-4">
-                        {errorVal && (
-                                <div className="mb-3">
-                                    <Alert color="danger" className="alert-icon">
-                                    {" "}
-                                    <Icon name="alert-circle" /> {errorVal}{" "}
-                                    </Alert>
-                                </div>
-                                )}
-                        {successVal && (
-                                <div className="mb-3">
-                                    <Alert color="success" className="alert-icon">
-                                    {" "}
-                                    <Icon name="alert-circle" /> {successVal}{" "}
-                                    </Alert>
-                                </div>
-                                )}
-
-                        <form className="row gy-4" onSubmit={handleSubmit(submitForm)}>
-
-                        <Col sm="12">
-                            <div className="form-group">
-                            <label className="form-label">Select Type</label>
-                            
-                            <RSelect 
-                                options={TypeOptions} 
-                                defaultValue={editComment?.type === "0" ? TypeOptions[0] :
-                                editComment?.type === "1" ? TypeOptions[1] :
-                                editComment?.type === "2" ? TypeOptions[2] : "" }
-                                placeholder="Select type"
-                                onChange={(e) => {setSelectedType(e)}}
-                                />
-                            </div>
-                        </Col>
-                        
-                        {(selectedType?.value === "0" || selectedType==="0") &&  
-                        <Col className="col-12">
-                            <div className="form-group">
-                                <label className="form-label">Comment Text</label>
-                                
-                                <Editor
-                                onInit={(evt, editor) => (editorRef.current = editor)}
-                                initialValue={editComment?.description}
-                                onEditorChange={(a)=>{setDescriptionText(a)}}
-                                init={{
-                                menubar: "file edit view format",
-                                plugins: [
-                                    "advlist autolink lists link image charmap print preview anchor",
-                                    "searchreplace visualblocks code ",
-                                    "insertdatetime media table paste code",
-                                ],
-                                toolbar:
-                                    "undo redo | formatselect | " +
-                                    "bold italic | alignleft aligncenter " +
-                                    "alignright alignjustify | outdent indent",
-                                }}
-                                />
-                            </div>
-                        </Col>
-                        }
-
-                        {(selectedType?.value === "1" || selectedType==="1") && 
-                        <Col className="col-12">
-                            <div className="form-group">
-                                <label className="form-label">SQL Script input</label>
-                                
-                                <Editor
-                                onInit={(evt, editor) => (editorRef.current = editor)}
-                                initialValue={editComment?.description}
-                                onEditorChange={(a)=>{setDescriptionText(a)}}
-                                init={{
-                                menubar: "file edit",
-                                plugins: [
-                                    "advlist autolink lists link image charmap print preview anchor",
-                                    "searchreplace visualblocks code ",
-                                    "insertdatetime media table paste code",
-                                ],
-                                toolbar:
-                                    "undo redo " 
-                                }}
-                                />
-                            </div>
-                        </Col>
-                        }
-
-                        {(selectedType?.value === "2" || selectedType==="2") && 
-                        <Col className="col-12">
-                            <div className="form-group">
-                                <label className="form-label">Commit</label>
-                                
-                                <input
-                                type="text"
-                                name="title"
-                                placeholder="Please enter your commit ID"
-                                className="form-control"
-                                ref={register({ required: "This field is required" })}
-                                />
-                            </div>
-                        </Col>
-                        
-                        }
-
-                        
-                        
-                        <Col className="col-12">
-                            <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                            <li>
-                                <Button color="primary" size="md" type="submit">
-                                {loading ? <Spinner size="sm" color="light" /> : (editComment ? "Upadate Comment" : "Add Comment")}
-                                </Button>
-                            </li>
-                            {!successVal && 
-                            <li>
-                                <Button type ="button"
-                                onClick={(ev) => {
-                                    ev.preventDefault();
-                                    setModal(false);
-                                }}
-                                className="link link-light"
-                                >
-                                Cancel
-                                </Button>
-                            </li>
-                            }
-                            </ul>
-                        </Col>
-
-                        </form>
+            isOpen={modal}
+            toggle={() => setModal(false)}
+            className="modal-dialog-centered"
+            size="lg"
+        >
+            <ModalBody>
+            <a
+                href="#cancel"
+                onClick={(ev) => {
+                ev.preventDefault();
+                setModal(false);
+                setAddNoteText("");
+                if(successVal){
+                    window.location.reload();  
+                }
+                }}
+                className="close"
+            >
+                <Icon name="cross-sm"></Icon>
+            </a>
+            <div className="p-2">
+                <h5 className="title">{editComment ? "Modify Comment" : "Add Comment"}</h5>
+                <div className="mt-4">
+                {errorVal && (
+                        <div className="mb-3">
+                            <Alert color="danger" className="alert-icon">
+                            {" "}
+                            <Icon name="alert-circle" /> {errorVal}{" "}
+                            </Alert>
                         </div>
+                        )}
+                {successVal && (
+                        <div className="mb-3">
+                            <Alert color="success" className="alert-icon">
+                            {" "}
+                            <Icon name="alert-circle" /> {successVal}{" "}
+                            </Alert>
+                        </div>
+                        )}
+
+                <form className="row gy-4" onSubmit={handleSubmit(submitForm)}>
+
+                <Col sm="12">
+                    <div className="form-group">
+                    <label className="form-label">Select Type</label>
+                    
+                    <RSelect 
+                        options={TypeOptions} 
+                        defaultValue={editComment?.type === "0" ? TypeOptions[0] :
+                        editComment?.type === "1" ? TypeOptions[1] :
+                        editComment?.type === "2" ? TypeOptions[2] : "" }
+                        placeholder="Select type"
+                        onChange={(e) => {setSelectedType(e)}}
+                        />
                     </div>
-                  </ModalBody>
-                </Modal>
+                </Col>
+                
+                {(selectedType?.value === "0" || selectedType==="0") &&  
+                <Col className="col-12">
+                    <div className="form-group">
+                        <label className="form-label">Comment Text</label>
+                        
+                        <Editor
+                        onInit={(evt, editor) => (editorRef.current = editor)}
+                        initialValue={editComment?.description}
+                        onEditorChange={(a)=>{setDescriptionText(a)}}
+                        init={{
+                        menubar: "file edit view format",
+                        plugins: [
+                            "advlist autolink lists link image charmap print preview anchor",
+                            "searchreplace visualblocks code ",
+                            "insertdatetime media table paste code",
+                        ],
+                        toolbar:
+                            "undo redo | formatselect | " +
+                            "bold italic | alignleft aligncenter " +
+                            "alignright alignjustify | outdent indent",
+                        }}
+                        />
+                    </div>
+                </Col>
+                }
+
+                {(selectedType?.value === "1" || selectedType==="1") && 
+                <Col className="col-12">
+                    <div className="form-group">
+                        <label className="form-label">SQL Script input</label>
+                        
+                        <Editor
+                        onInit={(evt, editor) => (editorRef.current = editor)}
+                        initialValue={editComment?.description}
+                        onEditorChange={(a)=>{setDescriptionText(a)}}
+                        init={{
+                        menubar: "file edit",
+                        plugins: [
+                            "advlist autolink lists link image charmap print preview anchor",
+                            "searchreplace visualblocks code ",
+                            "insertdatetime media table paste code",
+                        ],
+                        toolbar:
+                            "undo redo " 
+                        }}
+                        />
+                    </div>
+                </Col>
+                }
+
+                {(selectedType?.value === "2" || selectedType==="2") && 
+                <Col className="col-12">
+                    <div className="form-group">
+                        <label className="form-label">Commit</label>
+                        
+                        <input
+                        type="text"
+                        name="title"
+                        placeholder="Please enter your commit ID"
+                        className="form-control"
+                        ref={register({ required: "This field is required" })}
+                        />
+                    </div>
+                </Col>
+                
+                }
+
+                
+                
+                <Col className="col-12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                    <li>
+                        <Button color="primary" size="md" type="submit">
+                        {loading ? <Spinner size="sm" color="light" /> : (editComment ? "Upadate Comment" : "Add Comment")}
+                        </Button>
+                    </li>
+                    {!successVal && 
+                    <li>
+                        <Button type ="button"
+                        onClick={(ev) => {
+                            ev.preventDefault();
+                            setModal(false);
+                        }}
+                        className="link link-light"
+                        >
+                        Cancel
+                        </Button>
+                    </li>
+                    }
+                    </ul>
+                </Col>
+
+                </form>
+                </div>
+            </div>
+            </ModalBody>
+        </Modal>
      );
 }
  

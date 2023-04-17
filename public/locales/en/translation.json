@@ -70,6 +70,97 @@
             
         }
 
+    },
+    "user":{
+        "Active":"Active",
+        "Inactive":"Inactive",
+        "Suspended":"Suspended",
+        "IsVerifed":"Is Verifed",
+        "NotVerified":"Not Verified",
+        "USuccesfully":"Updated Succesfully",
+        "EisAlreadyT":"L'email est déjà pris...",
+        "PasswordsDNMatch":"Passwords do not match...",
+        "SWentWrong":"Something went wrong...",
+        "Update":"Update",
+        "Personal":"Personal",
+        "Address":"Address",
+        "Roles":"Roles",
+        "SInformation":"Sensitive Information",
+        "AccountS":"Account Status",
+        "NewPassword":"New Password",
+        "CPassword":"Confirm Password",
+        "Cancel":"Cancel",
+        "UPI":"Update Personal information",
+        "UAI":"Update Address information",
+        "USI":"Update Status information",
+        "ChEmail":"Change Email",
+        "ChPassword":"Change Password",
+
+        "Users":"Users",
+        "PersonalInformation":"Personal Information",
+        "Back":"Back",
+        "IRTSUOUP":"Information related to the selected user on our platform Customer feedback.",
+        "FullName":"Full Name",
+        "LastM":"Last Modified",
+        "LastL":"Last login",
+        "DateOfCreation":"Date of creation",
+        "Account":"Account ",
+        "RMethod":"Register Method",
+        "UserId":"User ID",
+        "AdditionalInfo":"Additional Information",
+       
+        "UsersList":"Users List",
+        "YouHa":"You have a total of",
+        "users":"users",
+        "Export":"Export",
+        "FilterUsers":"Filter Users",
+        "Role":"Role",
+        "AnyRole":"Any Role",
+        "AnyStatus":"Any Status",
+        "Filter":"Filter",
+        "ResetFilter":"Reset Filter",
+        "Show":"SHOW",
+        "ORDER":"ORDER",
+        "Name":"Name",
+
+
+        "Security":"Security Settings",
+        "TSWHYKY":"These settings will help you to keep your account secure.",
+        "ChangeEmail":"Change Email",
+        "SAUEIFY":"Set a unique email, If you procced to change your email you are required to logout.",
+        "ChangePassword":"Change Password",
+        "SETAUNI":"Set a unique password to protect your account.",
+
+        "PInformation":"Personal Information",
+        "Settings":"Settings",
+        "Notification":"Notification",
+        "MyProjects":"My Projects",
+        "InfReToY":"Information related to your account on our platform Customer feedback.",
+        "Basics":"Basics",
+        "AccountDetails":"Account Details"
+
+    },
+    "project":{
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":"",
+        "":""
+
+
+    },
+    "general":{
+        "signOut":"Se déconnecter",
+        "ViewProfile":"Voir mon profil",
+        "Terms":"Terms",
+        "Privacy":"Privacy",
+        "Help":"Help",
+        "SearchAnything":"Search Anything",
+        "":"",
+        "":""
     }
 
   }

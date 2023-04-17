@@ -20,16 +20,19 @@ import {
   Button,
 } from "../../components/Component";
 import EditUserModal from "./EditUserModal";
+import { useTranslation } from "react-i18next";
+
 
 
 
 const UserProfileLayout = () => {
+  const {t}= useTranslation();
+
 
   const token = currentAccessToken();
   const navigate = useNavigate();
   const {cUser,listStatus} = useAppSelector((state)=>state.user)
   const dispatch = useAppDispatch();
-  const [fullName,setFullName]=useState("");
 
   
   const [sm, updateSm] = useState(false);
@@ -50,7 +53,7 @@ const UserProfileLayout = () => {
       updateSm(false);
     }
   };
-
+  
   useEffect(() => {
     dispatch(getUserByEmailAction(token.username));
     viewChange();
@@ -97,7 +100,7 @@ const UserProfileLayout = () => {
                         <DropdownToggle tag="a" className="btn btn-icon btn-trigger me-n2">
                           <Icon name="more-v"></Icon>
                         </DropdownToggle>
-                        <DropdownMenu end>
+                        {/* <DropdownMenu end>
                           <ul className="link-list-opt no-bdr">
                             <li>
                               <DropdownItem
@@ -124,14 +127,14 @@ const UserProfileLayout = () => {
                               </DropdownItem>
                             </li>
                           </ul>
-                        </DropdownMenu>
+                        </DropdownMenu> */}
                       </UncontrolledDropdown>
                     </div>
                   </div>
                 </div>
                 <div className="card-inner">
                   <div className="user-account-info py-0">
-                    <h6 className="overline-title-alt">Customer Feedback account</h6>
+                    <h6 className="overline-title-alt">Customer Feedback {t('user.Account')}</h6>
                   </div>
                 </div>
                 <div className="card-inner p-0">
@@ -143,7 +146,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="user-fill-c"></Icon>
-                        <span>Personal Information</span>
+                        <span>{t('user.PInformation')}</span>
                       </Link>
                     </li>
                     <li onClick={() => {updateSm(false);setShowNotificationPanel(false);setShowPersonalInformation(false);
@@ -156,7 +159,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="bell-fill"></Icon>
-                        <span>Settings</span>
+                        <span>{t('user.Settings')}</span>
                       </Link>
                     </li>
                     <li onClick={() => {updateSm(false);setShowNotificationPanel(true);setShowPersonalInformation(false);setShowSettingsPanel(false);}}>
@@ -166,7 +169,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="bell-fill"></Icon>
-                        <span>Notification</span>
+                        <span>{t('user.Notification')}</span>
                       </Link>
                     </li>
 
@@ -176,7 +179,7 @@ const UserProfileLayout = () => {
                         
                       >
                         <Icon name="contact-fill"></Icon>
-                        <span>My Projects</span>
+                        <span>{t('user.MyProjects')}</span>
                       </Link>
                     </li>
                     
@@ -199,9 +202,9 @@ const UserProfileLayout = () => {
                 <BlockHead size="lg">
                   <BlockBetween>
                     <BlockHeadContent>
-                      <BlockTitle tag="h4">Personal Information</BlockTitle>
+                      <BlockTitle tag="h4">{t('user.PInformation')}</BlockTitle>
                       <BlockDes>
-                        <p>Information related to your account on our platform Customer feedback.</p>
+                        <p>{t('user.InfReToY')}</p>
                       </BlockDes>
                     </BlockHeadContent>
                     <BlockHeadContent className="align-self-start d-lg-none">
@@ -218,11 +221,11 @@ const UserProfileLayout = () => {
                 <Block>
                   <div className="nk-data data-list">
                     <div className="data-head">
-                      <h6 className="overline-title">Basics</h6>
+                      <h6 className="overline-title">{t('user.Basics')}</h6>
                     </div>
                     <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
-                        <span className="data-label">Full Name</span>
+                        <span className="data-label">{t('user.FullName')}</span>
                         <span className="data-value">{cUser.firstName} {cUser.lastName}</span>
                       </div>
                       <div className="data-col data-col-end">
@@ -244,7 +247,7 @@ const UserProfileLayout = () => {
                     </div>
                     <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
-                        <span className="data-label">Company</span>
+                        <span className="data-label">{t('page.WR.Company')}</span>
                         <span className="data-value">{cUser.company}</span>
                       </div>
                       <div className="data-col data-col-end">
@@ -255,7 +258,7 @@ const UserProfileLayout = () => {
                     </div>
                     <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
-                        <span className="data-label">Phone Number</span>
+                        <span className="data-label">{t('page.WR.PhoneNum')}</span>
                         <span className="data-value text-soft">{cUser.phoneNumber}</span>
                       </div>
                       <div className="data-col data-col-end">
@@ -266,7 +269,7 @@ const UserProfileLayout = () => {
                     </div>
                     <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
-                        <span className="data-label">Date of Birth</span>
+                        <span className="data-label">{t('page.WR.BirthDate')}</span>
                         <span className="data-value">{cUser.birthDate}</span>
                       </div>
                       <div className="data-col data-col-end">
@@ -277,7 +280,7 @@ const UserProfileLayout = () => {
                     </div>
                     <div className="data-item" onClick={() => onEditClick()}>
                       <div className="data-col">
-                        <span className="data-label">Address</span>
+                        <span className="data-label">{t('page.WR.Address')}</span>
                         <span className="data-value">
                           {cUser.address}
                           <br />
@@ -293,26 +296,26 @@ const UserProfileLayout = () => {
                   </div>
                   <div className="nk-data data-list">
                     <div className="data-head">
-                      <h6 className="overline-title">Account details</h6>
+                      <h6 className="overline-title">{t('user.AccountDetails')}</h6>
                     </div>
                     
                     <div className="data-item">
                       <div className="data-col">
-                        <span className="data-label">Last Login</span>
+                        <span className="data-label">{t('user.LastL')}</span>
                         <span className="data-value">{formatDate(cUser.lastLogin)}</span>
                       </div>
                     </div>
 
                       <div className="data-item">
                       <div className="data-col">
-                        <span className="data-label">Last modified at</span>
+                        <span className="data-label">{t('user.LastM')}</span>
                         <span className="data-value">{formatDate(cUser.modifiedAt)}</span>
                       </div>
                       </div>
 
                       <div className="data-item">
                       <div className="data-col">
-                        <span className="data-label">Created At</span>
+                        <span className="data-label">{t('user.DateOfCreation')}</span>
                         <span className="data-value">{formatDate(cUser.createdAt)}</span>
                       </div>
                       </div>

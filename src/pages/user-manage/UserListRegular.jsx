@@ -33,9 +33,13 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { UpdateUserAction, getUserListAction } from "../../features/userSlice";
 import EditUserModal from "./EditUserModal"
+import { useTranslation } from "react-i18next";
+
 
 
 const UserListRegularPage = () => {
+  const {t}= useTranslation();
+
   // const { contextData } = useContext(UserContext);
 
   const { list, status } = useAppSelector((state) => state.user);
@@ -66,9 +70,9 @@ const UserListRegularPage = () => {
 
 
   const filterStatus = [
-    { value: "1", label: "Active" },
-    { value: "0", label: "Inactive" },
-    { value: "2", label: "Suspended" },
+    { value: "1", label: `${t('user.Active')}` },
+    { value: "0", label: `${t('user.Inactive')}` },
+    { value: "2", label: `${t('user.Suspended')}` },
   ];
   
    const filterRole = [
@@ -222,11 +226,11 @@ const UserListRegularPage = () => {
 
   const reformulate = (num) =>{
     if(num==="0"){
-      return "Inactive"
+      return t('user.Inactive')
     }else if(num==="1"){
-      return "Active"
-    }else{
-      return "Suspended"
+      return t('user.Active')
+    }else if(num==="2"){
+      return t('user.Suspended')
     }
 
   }
@@ -238,10 +242,10 @@ const UserListRegularPage = () => {
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle tag="h3" page>
-                Users List
+                {t('user.UsersList')}
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have a total of {list.length} users.</p>
+                <p>{t('user.YouHa')} {list.length} {t('user.users')}.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -257,7 +261,7 @@ const UserListRegularPage = () => {
                     <li>
                       <Button color="light" outline className="btn-white">
                         <Icon name="download-cloud"></Icon>
-                        <span>Export</span>
+                        <span>{t('user.Export')}</span>
                       </Button>
                     </li>
                    
@@ -275,15 +279,15 @@ const UserListRegularPage = () => {
               <div className="card-title-group">
                 <div className="card-tools">
                   <div className="form-inline flex-nowrap gx-3">
-                    <div className="form-wrap">
+                    {/* <div className="form-wrap">
                       <RSelect
                         options={bulkActionOptions}
                         className="w-130px"
                         placeholder="Bulk Action"
                         onChange={(e) => onActionText(e)}
                       />
-                    </div>
-                    <div className="btn-wrap">
+                    </div> */}
+                    {/* <div className="btn-wrap">
                       <span className="d-none d-md-block">
                         <Button
                           disabled={actionText !== "" ? false : true}
@@ -306,7 +310,7 @@ const UserListRegularPage = () => {
                           <Icon name="arrow-right"></Icon>
                         </Button>
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="card-tools me-n1">
@@ -351,7 +355,7 @@ const UserListRegularPage = () => {
                                   style={{ overflow: "visible" }}
                                 >
                                   <div className="dropdown-head">
-                                    <span className="sub-title dropdown-title">Filter Users</span>
+                                    <span className="sub-title dropdown-title">{t('user.users')}</span>
                                     <div className="dropdown">
                                       <a
                                         href="#more"
@@ -371,7 +375,7 @@ const UserListRegularPage = () => {
                                       <Col size="6">
                                         <div className="form-group">
                                           <label className="overline-title overline-title-alt">Role</label>
-                                          <RSelect options={filterRole} placeholder="Any Role" onChange={(ev)=>{
+                                          <RSelect options={filterRole} placeholder={t('user.AnyRole')} onChange={(ev)=>{
                                             setSelectedRole(ev);
                                           }} />
                                         </div>
@@ -379,7 +383,7 @@ const UserListRegularPage = () => {
                                       <Col size="6">
                                         <div className="form-group">
                                           <label className="overline-title overline-title-alt">Status</label>
-                                          <RSelect options={filterStatus} placeholder="Any Status" onChange={(ev)=>{
+                                          <RSelect options={filterStatus} placeholder={t('user.AnyStatus')} onChange={(ev)=>{
                                             setSelectedStatus(ev);
                                           }} />
                                         </div>
@@ -387,7 +391,7 @@ const UserListRegularPage = () => {
                                       <Col size="12">
                                         <div className="form-group">
                                           <button type="button" className="btn btn-secondary" onClick={HandleFilterDropDown}>
-                                            Filter
+                                          {t('user.Filter')}
                                           </button>
                                         </div>
                                       </Col>
@@ -402,7 +406,7 @@ const UserListRegularPage = () => {
                                       }}
                                       className="clickable"
                                     >
-                                      Reset Filter
+                                      {t('user.ResetFilter')}
                                     </a>
                                     
                                   </div>
@@ -417,7 +421,7 @@ const UserListRegularPage = () => {
                                 <DropdownMenu end className="dropdown-menu-xs">
                                   <ul className="link-check">
                                     <li>
-                                      <span>Show</span>
+                                      <span>{t('user.Show')}</span>
                                     </li>
                                     <li className={itemPerPage === 5 ? "active" : ""}>
                                       <DropdownItem
@@ -446,7 +450,7 @@ const UserListRegularPage = () => {
                                   </ul>
                                   <ul className="link-check">
                                     <li>
-                                      <span>Order</span>
+                                      <span>{t('user.ORDER')}</span>
                                     </li>
                                     <li className={sort === "dsc" ? "active" : ""}>
                                       <DropdownItem
@@ -521,16 +525,16 @@ const UserListRegularPage = () => {
                   <span className="sub-text">Email</span>
                 </DataTableRow>
                 <DataTableRow size="mb">
-                  <span className="sub-text">Name</span>
+                  <span className="sub-text">{t('user.Name')}</span>
                 </DataTableRow>
                 <DataTableRow size="md">
-                  <span className="sub-text">Phone</span>
+                  <span className="sub-text">{t('page.WR.PhoneNum')}</span>
                 </DataTableRow>
                 <DataTableRow size="lg">
-                  <span className="sub-text">Verified</span>
+                  <span className="sub-text">{t('user.IsVerifed')}</span>
                 </DataTableRow>
                 <DataTableRow size="lg">
-                  <span className="sub-text">Last Modified</span>
+                  <span className="sub-text">{t('user.LastM')}</span>
                 </DataTableRow>
                 <DataTableRow size="md">
                   <span className="sub-text">Status</span>

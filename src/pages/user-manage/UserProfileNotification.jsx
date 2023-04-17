@@ -10,8 +10,12 @@ import {
   InputSwitch,
   Button,
 } from "../../components/Component";
+import { useTranslation } from "react-i18next";
+
 
 const UserProfileNotificationPage = ({ sm, updateSm }) => {
+  const {t}= useTranslation();
+
   return (
     <React.Fragment>
       <BlockHead size="lg">
