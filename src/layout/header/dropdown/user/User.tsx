@@ -8,10 +8,13 @@ import {currentAccessToken} from "../../../../utils/currentAccessToken";
 import {  RootState, useAppSelector,useAppDispatch} from "../../../../app/store";
 import { getUserByEmailAction } from "../../../../features/userSlice";
 import { findUpper, getColorString } from "../../../../utils/Utils";
+import { useTranslation } from "react-i18next";
 
 
 
 const User = () => {
+  const {t}= useTranslation();
+
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
 
@@ -80,7 +83,7 @@ const User = () => {
         <div className="dropdown-inner">
           <LinkList>
             <LinkItem link="/user-profile" icon="user-alt" onClick={toggle}>
-              View Profile
+              {t('general.ViewProfile')}
             </LinkItem>
             {/* <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>
               Login Activity
@@ -91,7 +94,7 @@ const User = () => {
           <LinkList>
             <a href={`${process.env.PUBLIC_URL}/auth-login`} onClick={handleSignout}>
               <Icon name="signout"></Icon>
-              <span>Sign Out</span>
+              <span>{t('general.signOut')}</span>
             </a>
           </LinkList>
         </div>

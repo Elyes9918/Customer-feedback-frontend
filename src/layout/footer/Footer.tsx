@@ -4,16 +4,33 @@ import EnglishFlag from "../../images/flags/english.png";
 import FrenchFlag from "../../images/flags/french.png";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
 import { useTranslation } from 'react-i18next'
+import Swal from "sweetalert2";
+
+
 
 
 const Footer = () => {
+  const {t}= useTranslation();
+
 
   const [selectedLanguage,setSelectedLanguage] = useState("English")
 
   const {i18n} = useTranslation()
 
   const handleClick = (language) =>{
-    i18n.changeLanguage(language)
+
+    Swal.fire({
+      title: "",
+      text: `${t('general.AreYSure')}`+(language==="en" ? `${t('general.english')}` : `${t('general.french')}`)+" ?",
+      showCancelButton: true,
+      cancelButtonText:`${t('user.Cancel')}`,
+      confirmButtonText: `${t('general.Confirm')}`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        i18n.changeLanguage(language)
+        window.location.reload();
+      }
+    });
   }
 
   useEffect(()=>{
@@ -83,17 +100,19 @@ const Footer = () => {
               </li>
               <li className="nav-item">
                 <Link to={`${process.env.PUBLIC_URL}/pages/terms-policy`} className="nav-link">
-                  Terms
+                  {t('general.Terms')}
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to={`${process.env.PUBLIC_URL}/pages/faq`} className="nav-link">
-                  Privacy
+                  
+                  {t('general.Privacy')}
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to={`${process.env.PUBLIC_URL}/pages/terms-policy`} className="nav-link">
-                  Help
+                  
+                  {t('general.Help')}
                 </Link>
               </li>
             </ul>

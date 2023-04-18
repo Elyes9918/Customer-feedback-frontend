@@ -19,7 +19,7 @@ import RolesWithPermession from "../../routesProtectionComponents/RolesWithPerme
 import { GetFeedbackByIdAction } from "../../features/feedbackSlice";
 import { KanbanTaskForm } from "./KanbanForms";
 import { DeleteCommentAction, GetCommentByFeedbackIdAction } from "../../features/CommentSlice";
-import CommentModal from "./CommentModal";
+import CommentModal from "../comment-manage/CommentModal";
 import ImageModal from "./ImageModal";
 import Swal from "sweetalert2";
 import currentUser from "../../utils/currentUser";
@@ -28,23 +28,28 @@ import { Carousel, CarouselItem, CarouselControl, CarouselIndicators } from "rea
 import SlideA from "../../images/slides/s1.png";
 import SlideB from "../../images/slides/s2.png";
 import SlideC from "../../images/slides/s3.png";
+import { useTranslation } from 'react-i18next'
+
+
 
 
 
 const FeedbackDetailsPage = () => {
+  const {t}= useTranslation();
+
 
   const PriorityOptions = [
-    { value: "0", label: "Low" },
-    { value: "1", label: "Medium" },
-    { value: "2", label: "High" },
-    { value: "3", label: "Very High" },
+    { value: "0", label: t('feedback.Low') },
+    { value: "1", label: t('feedback.Medium') },
+    { value: "2", label: t('feedback.High') },
+    { value: "3", label: t('feedback.VeryHigh') },
   ];
 
   const StatusOptions = [
-    { value: "0", label: "Open" },
-    { value: "1", label: "In Progress" },
-    { value: "2", label: "To Review" },
-    { value: "3", label: "Completed" },
+    { value: "0", label: t('feedback.Open') },
+    { value: "1", label: t('feedback.InProgress') },
+    { value: "2", label: t('feedback.ToReview') },
+    { value: "3", label: t('feedback.Completed') },
   ];
 
   const TypeOptions = [
@@ -67,7 +72,7 @@ const FeedbackDetailsPage = () => {
     {
       src: SlideC,
       altText: "Slide 3",
-    },
+    }
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -175,11 +180,12 @@ const FeedbackDetailsPage = () => {
   const deleteComment = (id) =>{
 
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: t('feedback.AreYouSure'),
+      text: t('feedback.YouWonBT'),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, Delete it",
+      cancaelButtonText:t('user.Cancel'),
+      confirmButtonText: t('feedback.YesDel'),
     }).then((result) => {
       if (result.isConfirmed) {
 
@@ -201,12 +207,12 @@ const FeedbackDetailsPage = () => {
             <BlockBetween>
               <BlockHeadContent>
                 <BlockTitle tag="h3" page>
-                  Feedbacks / <strong className="text-primary small">{feedback.title}</strong>
+                  {t('feedback.Feedbacks')} / <strong className="text-primary small">{feedback.title}</strong>
                 </BlockTitle>
                 <BlockDes className="text-soft">
                   <ul className="list-inline">
                     <li>
-                      Feedback ID: <span className="text-base">{feedback.id}</span>
+                    {t('feedback.FeedbackId')}: <span className="text-base">{feedback.id}</span>
                     </li>
                
                   </ul>
@@ -220,7 +226,7 @@ const FeedbackDetailsPage = () => {
                   onClick={() => navigate(`/feedbacks/${feedback?.project.id}`)}
                 >
                   <Icon name="arrow-left"></Icon>
-                  <span>Back</span>
+                  <span>{t('user.Back')}</span>
                 </Button>
                 <a
                   href="/feedbacks/"
@@ -290,8 +296,8 @@ const FeedbackDetailsPage = () => {
                   <div className="card-inner">
                     <Block>
                       <BlockHead>
-                        <BlockTitle tag="h5">Feedback Information</BlockTitle>
-                        <p>Information related to the selected feedback on our platform Customer feedback.</p>
+                        <BlockTitle tag="h5">{t('feedback.FInfo')}</BlockTitle>
+                        <p>{t('feedback.FInfoRe')}</p>
                       </BlockHead>
                     </Block>
 
@@ -308,7 +314,7 @@ const FeedbackDetailsPage = () => {
                         <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Title :</span>
+                              <span className="profile-ud-label">{t('feedback.FTitle')} :</span>
                               <span className="profile-ud-value">{feedback.title}</span>
                             </div>
                           </div>
@@ -316,7 +322,7 @@ const FeedbackDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Client Company :</span>
+                              <span className="profile-ud-label">{t('project.Client')} :</span>
                               <span className="profile-ud-value">{feedback?.project?.client}</span>
                             </div>
                           </div>
@@ -324,7 +330,7 @@ const FeedbackDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Project:</span>
+                              <span className="profile-ud-label">{t('feedback.Project')}:</span>
                               <span className="profile-ud-value">
                                 
                                 <a href={`/project-details/${feedback?.project?.id}`}>{feedback?.project?.name}</a>
@@ -334,7 +340,7 @@ const FeedbackDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Team Members :</span>
+                              <span className="profile-ud-label">{t('project.TeamMembers')} :</span>
                               <span className="profile-ud-value">
                                 <ul>
                                 {membersUsers?.map((user,idx) => {
@@ -356,7 +362,7 @@ const FeedbackDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Priority :</span>
+                              <span className="profile-ud-label">{t('feedback.Priority')} :</span>
                               <span className="profile-ud-value"> 
                               {PriorityOptions.find(option => option.value === feedback?.priority)?.label}
                               </span>
@@ -365,7 +371,7 @@ const FeedbackDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Estimated Time :</span>
+                              <span className="profile-ud-label">{t('feedback.EstimatedTime')} :</span>
                               <span className="profile-ud-value"> 
                               {feedback?.estimatedTime} Hours
                               </span>
@@ -383,7 +389,7 @@ const FeedbackDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Progress :</span>
+                              <span className="profile-ud-label">{t('feedback.Progress')} :</span>
                               <span className="profile-ud-value">{feedback.progress}%</span>
                             </div>
                           </div>
@@ -395,7 +401,7 @@ const FeedbackDetailsPage = () => {
                       <Block>
                           <BlockHead className="nk-block-head-line">
                             <BlockTitle tag="h4" className="overline-title text-base">
-                              Description :
+                            {t('feedback.FDescription')} :
                             </BlockTitle>
                           </BlockHead>
                           <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
@@ -421,7 +427,7 @@ const FeedbackDetailsPage = () => {
 
                         
                           <Carousel activeIndex={activeIndex} next={next} previous={previous}>
-                            <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={goToIndex} />
+                            <CarouselIndicators items={items}  activeIndex={activeIndex} onClickHandler={goToIndex} />
                             {slides}
                             <CarouselControl direction="prev" directionText="Previous" onClickHandler={previous} />
                             <CarouselControl direction="next" directionText="Next" onClickHandler={next} />
@@ -436,19 +442,19 @@ const FeedbackDetailsPage = () => {
                       <Block>
                           <BlockHead className="nk-block-head-line">
                             <BlockTitle tag="h4" className="overline-title text-base">
-                              Additional Information :  
+                            {t('user.AdditionalInfo')} :  
                             </BlockTitle>
                           </BlockHead>
                           <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Date of creation :</span>
+                                <span className="profile-ud-label">{t('user.DateOfCreation')} :</span>
                                 <span className="profile-ud-value">{formatDate(feedback.createdAt)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Created by :</span>
+                                <span className="profile-ud-label">{t('general.CreatedBy')} :</span>
                                 <span className="profile-ud-value">
                                   <RolesWithPermession rolesRequired="CLIENT">
                                     {feedback?.creator?.name}
@@ -462,7 +468,7 @@ const FeedbackDetailsPage = () => {
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Last modified :</span>
+                                <span className="profile-ud-label">{t('user.LastM')} :</span>
                                 <span className="profile-ud-value">{formatDate(feedback.modifiedAt)}</span>
                               </div>
                             </div>

@@ -16,14 +16,18 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../app/store";
 import { getUserListAction } from "../../features/userSlice";
 import { UpdateProjectAction } from "../../features/projectSlice";
+import { useTranslation } from "react-i18next";
+
 
 
 const EditProjectModal = ({isModalOpen,projectToEdit}) => {
+  const {t}= useTranslation();
+
 
   const StatusOptions = [
-    { value: "0", label: "Open" },
-    { value: "1", label: "On Hold" },
-    { value: "2", label: "Closed" },
+    { value: "0", label: t('project.Open') },
+    { value: "1", label: t('project.OnHold') },
+    { value: "2", label: t('project.Closed') },
   ];
 
   const dispatch = useAppDispatch();
@@ -116,7 +120,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
 
     dispatch(UpdateProjectAction(project)).then(()=>{
       setLoading(false);
-      setSuccessVal("Project Updated Succesfully")
+      setSuccessVal(t('project.PUS'))
       // setModal(false);
     })
 
@@ -146,7 +150,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Update Project</h5>
+              <h5 className="title">{t('project.UProject')}</h5>
               <div className="mt-4">
                        
               {successVal && (
@@ -160,13 +164,13 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                 <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Title</label>
+                      <label className="form-label">{t('project.Title')}</label>
                       <input
                         type="text"
                         name="title"
                         defaultValue={projectToEdit?.title}
-                        placeholder="Enter Title"
-                        ref={register({ required: "This field is required" })}
+                        placeholder={t('project.TitlePH')}
+                        ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                         className="form-control"
                       />
                       {errors.title && <span className="invalid">{errors.title.message}</span>}
@@ -180,8 +184,8 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                         type="text"
                         name="client"
                         defaultValue={projectToEdit?.client}
-                        placeholder="Enter client name"
-                        ref={register({ required: "This field is required" })}
+                        placeholder={t('project.ClientPH')}
+                        ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                         className="form-control"
                       />
                       {errors.client && <span className="invalid">{errors.client.message}</span>}
@@ -193,8 +197,8 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                       <textarea
                         name="description"
                         defaultValue={projectToEdit?.description}
-                        placeholder="Your description"
-                        ref={register({ required: "This field is required" })}
+                        placeholder={t('project.DescriptionPH')}
+                        ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                         className="form-control no-resize"
                       />
                       {errors.description && <span className="invalid">{errors.description.message}</span>}
@@ -204,7 +208,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                   
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Team Members</label>
+                      <label className="form-label">{t('project.TeamMembers')}</label>
                       <RSelect
                         options={membersUsersOptions}
                         isMulti
@@ -216,7 +220,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Lead</label>
+                      <label className="form-label">{t('project.Lead')}</label>
                       <RSelect
                         options={gestUsersOptions}
                         defaultValue={gestUsers}
@@ -252,7 +256,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                     <li>
                       <Button color="primary" size="md" type="submit">
-                      {loading ? <Spinner size="sm" color="light" /> : "Update Project"}
+                      {loading ? <Spinner size="sm" color="light" /> : `${t('project.UProject')}`}
                       </Button>
                     </li>
                     {!successVal && 
@@ -264,7 +268,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                         }}
                         className="link link-light"
                       >
-                        Cancel
+                        {t('user.Cancel')}
                       </Button>
                     </li>}
                     </ul>

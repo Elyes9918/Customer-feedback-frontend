@@ -137,30 +137,125 @@
         "MyProjects":"My Projects",
         "InfReToY":"Information related to your account on our platform Customer feedback.",
         "Basics":"Basics",
-        "AccountDetails":"Account Details"
+        "AccountDetails":"Account Details",
+        "Edit":"Edit",
+        "Suspend":"Suspend",
+        "SuspendUser":"Suspend User"
 
     },
     "project":{
-        "":"",
-        "":"",
-        "":"",
-        "":"",
-        "":"",
-        "":"",
+        "PCS":"Project created Succesfully",
+        "AddProject":"Add Project",
+        "TitlePH":"Enter Title",
+        "Title":"Title",
+        "Client":"Client Company",
+        "ClientPH":"Enter client name",
+        "DescriptionPH":"Enter your description",
+        "TeamMembers":"Team Members",
+        "Lead":"Lead",
+        "Open":"Open",
+        "OnHold":"On Hold",
+        "Closed":"Closed",
+        "PUS":"Project Updated Succesfully",
+        "UProject":"Update Project",
+
+        "Projects":"Projects",
+        "SearchBy":"Search by Title/Client",
+        "FilteredBy":"Filtered By",
+        "ProjectDetails":"Project Details",
+        "EditProject":"Edit Project",
+        "NoProjects":"No Projects",
+        "MTDesc":"match this description.",
+        "AreAffe":"are affected to you at the moment.",
+
+        "ProjectID":"Project ID",
+        "PInformation":"Project Information",
+        "InfoReP":"Information related to the selected project on our platform Customer feedback."
+
+
+
+    },
+    "feedback":{
+        "FeedbackBoard":"Feedback Board",
+        "AddFeedback":"Add Feedback",
+        "UpdateFeedback":"Update Feedback",
+        "Open":"Open",
+        "InProgress":"In Progress",
+        "ToReview":"To Review",
+        "Completed":"Completed",
+        "Priority":"Priority",
+        "Low":"Low",
+        "Medium":"Medium",
+        "High":"High",
+        "VeryHigh":"Very High",
+        "Search":"Search",
+        "Progress":"Progress",
+        "EditFeedback":"Edit Feedback",
+        "The":"The",
+        "LIEmpty":"List is Empty",
+        "FTitle":"Feedback Title",
+        "FDescription":"Feedback Description",
+        "SelectPriority":"Select Priority",
+        "MembersAssigned":"Members Assigned",
+        "EstimatedTime":"Estimated Time",
+        "DeleteFeedback":"Delete Feedback",
+        "Feedbacks":"Feedbacks",
+        "FeedbackId":"Feedback ID",
+        "FInfo":"Feedback Information",
+        "FInfoRe":"Information related to the selected feedback on our platform Customer feedback.",
+        "AreYouSure":"Are you sure?",
+        "YouWonBT":"You wont be able to revert this!",
+        "YesDel":"Yes,Delete it",
+        "AddImages":"Add Images",
+        "Add":"Add",
+        "Project":"Project",
+        "FUS":"Feedback Updated Succesfully",
+        "PSP":"Please select a priority",
+        "FCS":"Feedback Created Succesfully",
+        "Deleted":"Deleted",
+        "FeedbackHaD":"Feedback has been deleted.",
+        "Update":"Update",
+        "SStatus":"Select Status"
+
+
+
+    },
+    "comment":{
+        "Comments":"Comments",
+        "Modify":"Modify",
+        "Delete":"Delete",
+        "AddedOn":"Added on",
+        "By":"By",
+        "ModifyComment":"Modify Comment",
+        "UpdateComment":"Update Comment",
         "":"",
         "":""
 
 
     },
     "general":{
-        "signOut":"Se déconnecter",
-        "ViewProfile":"Voir mon profil",
+        "signOut":"Sign out",
+        "ViewProfile":"View profile",
         "Terms":"Terms",
-        "Privacy":"Privacy",
+        "Privacy":"Privacy Policies",
         "Help":"Help",
         "SearchAnything":"Search Anything",
-        "":"",
+
+        "DASHBOARD":"DASHBOARD",
+        "PANELS":"PANELS",
+        "UserBoard":"User Board",
+        "UsersList":"Users List",
+        "ProjectBoard":"Project Board",
+        "ProjectsList":"Projects List",
+        "MyProjects":"My Projects",
+        "CreatedBy":"Created By",
+
+        "AreYSure":"Are you sure you want to change the language to ",
+        "english":"english",
+        "french":"french",
+        "Confirm":"Confirm",
         "":""
+
     }
 
   }

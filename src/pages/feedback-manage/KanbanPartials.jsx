@@ -8,19 +8,21 @@ import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../app/store";
 import currentUser from "../../utils/currentUser";
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
+import { useTranslation } from 'react-i18next'
+
 
 
 export const KanbanCard = ({ data, setData, card, index, column,projectId }) => {
+  const {t}= useTranslation();
+
   const [open, setOpen] = useState(false);
   const [taskModal, setTaskModal] = useState(false);
 
-  const dispatch = useAppDispatch();
-
   const PriorityOptions = [
-    { value: "0", label: "Low" ,theme:"light"},
-    { value: "1", label: "Medium",theme:"warning" },
-    { value: "2", label: "High" ,theme:"dark"},
-    { value: "3", label: "Very High", theme:"danger" },
+    { value: "0", label: t('feedback.Low') ,theme:"light"},
+    { value: "1", label: t('feedback.Medium'),theme:"warning" },
+    { value: "2", label: t('feedback.High') ,theme:"dark"},
+    { value: "3", label: t('feedback.VeryHigh'), theme:"danger" },
   ];
 
 
@@ -93,7 +95,7 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
                   <div className="project-progress-details">
                     <div className="project-progress-task">
                       <Icon name="meter"></Icon>
-                      <span>Progress</span>
+                      <span>{t('feedback.Progress')}</span>
                     </div>
                     <div className="project-progress-percent">
                       {card.progress}%
@@ -108,7 +110,7 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
               <div className="kanban-item-meta">
               <ul className="kanban-item-tags">
                   <li key={index}>
-                    <Badge color={PriorityOptions[priority].theme}>Priority : {PriorityOptions[priority].label}</Badge>
+                    <Badge color={PriorityOptions[priority].theme}>{t('feedback.Priority')} : {PriorityOptions[priority].label}</Badge>
                   </li>
               </ul>
                 
@@ -138,7 +140,7 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
                             }}
                           >
                             <Icon name="edit"></Icon>
-                            <span>Edit Feedback</span>
+                            <span>{t('feedback.EditFeedback')}</span>
                           </DropdownItem>
                         </li>
 
@@ -172,7 +174,7 @@ export const KanbanCard = ({ data, setData, card, index, column,projectId }) => 
                             }}
                           >
                             <Icon name="edit"></Icon>
-                            <span>Edit Feedback</span>
+                            <span>{t('feedback.EditFeedback')}</span>
                           </DropdownItem>
                         </li>
 
@@ -208,11 +210,12 @@ export const KanbanCardList = ({ data, setData, column,projectId }) => {
 };
 
 export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
+  const {t}= useTranslation();
+
   const [open, setOpen] = useState(false);
 
   const [originalData,setOriginalData] = useState(data);
 
-  const [updatedData,setUpdatedData]=useState();
   const [filter,setFilter]=useState();
 
   const [onSearchText, setSearchText] = useState("");
@@ -290,7 +293,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
 
                           <input type="text" className="form-control" 
                           id="default-04"
-                          placeholder="Search " 
+                          placeholder={t('feedback.Search')} 
                           value={onSearchText}
                           onChange={(e) => onFilterChange(e)}
                           />
@@ -320,7 +323,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                               ev.preventDefault();
                               HandleFilterDropDown("0");
                             }}>
-                            <span>Low</span>
+                            <span>{t('feedback.Low')}</span>
                           </DropdownItem>
                         </li>
                         <li key={1}>
@@ -330,7 +333,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                               ev.preventDefault();
                               HandleFilterDropDown("1");
                             }}>
-                            <span>Medium</span>
+                            <span>{t('feedback.Medium')}</span>
                           </DropdownItem>
                         </li>
                         <li key={2}>
@@ -340,7 +343,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                               ev.preventDefault();
                               HandleFilterDropDown("2");
                             }}>
-                            <span>High</span>
+                            <span>{t('feedback.High')}</span>
                           </DropdownItem>
                         </li>
                         <li key={3}>
@@ -351,7 +354,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                               setFilter(3);
                               HandleFilterDropDown("3");
                             }}>
-                            <span>Very High</span>
+                            <span>{t('feedback.Very High')}</span>
                           </DropdownItem>
                         </li>
                         <li key={3}>
@@ -361,7 +364,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                               ev.preventDefault();
                               setData(originalData);
                             }}>
-                            <span style={{color:"red"}}>Reset Filter</span>
+                            <span style={{color:"red"}}>{t('user.ResetFilter')}</span>
                           </DropdownItem>
                         </li>
                       </ul>
@@ -380,7 +383,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
 
                   <button className="kanban-add-task mt-2 btn btn-block" onClick={toggleModal}>
                   <Icon name="alert-fill"></Icon>
-                  <span>The {column.label} list is empty</span>
+                  <span>{column.label} {t('feedback.LIEmpty')}</span>
                   </button>
                   
                   }

@@ -4,6 +4,7 @@ import FrenchFlag from "../../images/flags/french.png";
 import { Row, Col } from "../../components/Component";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from "reactstrap";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import { useTranslation } from 'react-i18next'
 
 
@@ -15,8 +16,23 @@ const AuthFooter = () => {
   const {i18n} = useTranslation()
 
   const handleClick = (language) =>{
-    i18n.changeLanguage(language)
+
+    Swal.fire({
+      title: "",
+      text: `${t('general.AreYSure')}`+(language==="en" ? `${t('general.english')}` : `${t('general.french')}`)+" ?",
+      showCancelButton: true,
+      cancelButtonText:`${t('user.Cancel')}`,
+      confirmButtonText: `${t('general.Confirm')}`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        i18n.changeLanguage(language)
+        window.location.reload();
+      }
+    });
+    
   }
+
+  
 
   useEffect(()=>{
     if(i18n.language==="en"){

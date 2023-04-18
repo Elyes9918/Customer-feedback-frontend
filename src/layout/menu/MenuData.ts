@@ -1,6 +1,7 @@
+
 const menu = [
   {
-    heading: "Dashboard",
+    heading: "DASHBOARD",
     role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
   },
   {

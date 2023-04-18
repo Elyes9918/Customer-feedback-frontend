@@ -2,15 +2,20 @@ import React, {  useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { KanbanColumn } from "./KanbanPartials";
 import { updateFeedbackApi } from "../../services/FeedbackService";
+import { useTranslation } from 'react-i18next'
+
 
 const KanbanBoard = ({ feedbackList, setFeedbackList,projectId }) => {
+  const {t}= useTranslation();
+
 
   const ColumnsData = [
-    { value: "0", label: "Open",theme:"light" },
-    { value: "1", label: "In Progress",theme:"primary" },
-    { value: "2", label: "To Review",theme:"warning" },
-    { value: "3", label: "Completed",theme:"success" },
+    { value: "0", label: t('feedback.Open'),theme:"light" },
+    { value: "1", label: t('feedback.InProgress'),theme:"primary" },
+    { value: "2", label: t('feedback.ToReview'),theme:"warning" },
+    { value: "3", label: t('feedback.Completed'),theme:"success" },
   ];
+
 
 
 

@@ -11,25 +11,29 @@ import Nouislider from "nouislider-react";
 import Swal from "sweetalert2";
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 import { Editor } from "@tinymce/tinymce-react";
+import { useTranslation } from 'react-i18next'
+
 
 
 
 
 export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
+  const {t}= useTranslation();
+
 
 
   const PriorityOptions = [
-    { value: "0", label: "Low" },
-    { value: "1", label: "Medium" },
-    { value: "2", label: "High" },
-    { value: "3", label: "Very High" },
+    { value: "0", label: t('feedback.Low') },
+    { value: "1", label: t('feedback.Medium') },
+    { value: "2", label: t('feedback.High') },
+    { value: "3", label: t('feedback.VeryHigh') },
   ];
 
   const StatusOptions = [
-    { value: "0", label: "Open",theme:"light" },
-    { value: "1", label: "In Progress",theme:"primary" },
-    { value: "2", label: "To Review",theme:"warning" },
-    { value: "3", label: "Completed",theme:"success" },
+    { value: "0", label: t('feedback.Open'),theme:"light" },
+    { value: "1", label: t('feedback.InProgress'),theme:"primary" },
+    { value: "2", label: t('feedback.ToReview'),theme:"warning" },
+    { value: "3", label: t('feedback.Completed'),theme:"success" },
   ];
 
 
@@ -102,7 +106,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
 
     dispatch(UpdateFeedbackAction(feedback)).then(()=>{
       setLoading(false);
-      setSuccessVal("Feedback Updated Succesfully")
+      setSuccessVal(t('feedback.FUS'))
       setErrorVal("");
       if(!isFeedbackDetails){
         window.location.reload(false);  
@@ -112,7 +116,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
     }else{
 
       if(selectedPriority===undefined){
-        setErrorVal("Please select a priority");
+        setErrorVal(t('feedback.PSP'));
         setSuccessVal("");
       }else{
         setLoading(true);
@@ -134,7 +138,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
         dispatch(CreateFeedbackAction(feedback)).then(()=>{
           setLoading(false);
           setErrorVal("");
-          setSuccessVal("Feedback Created Succesfully");
+          setSuccessVal(t('feedback.FCS'));
         })
       }
       
@@ -144,15 +148,16 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
 
   const handleDelete = () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: t('feedback.AreYouSure'),
+      text: t('feedback.YouWonBT'),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, Delete it",
+      cancelButtonText:t('user.Cancel'),
+      confirmButtonText: t('feedback.YesDel'),
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(DeleteFeedbackAction(editTask.id)).then(()=>{
-          Swal.fire("Deleted!", "Feedback has been deleted.", "success");
+          Swal.fire(t('feedback.Deleted'), t('feedback.FeedbackHaD'), "success");
           if(isFeedbackDetails){
             navigate(`/feedbacks/${editTask.project.id}`)
           }else{
@@ -181,7 +186,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
         <Icon name="cross-sm"></Icon>
       </a>
       <div className="p-2">
-        <h5 className="title">{editTask ? "Update" : "Add"} Feedback</h5>
+        <h5 className="title">{editTask ? `${t('feedback.Update')}` : `${t('feedback.Add')}`} Feedback</h5>
         <div className="mt-4">
         {errorVal && (
                 <div className="mb-3">
@@ -202,7 +207,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
           <form className="row gy-4" onSubmit={handleSubmit(submitForm)}>
             <Col sm="12">
               <div className="form-group">
-                <label className="form-label">Feedback Title</label>
+                <label className="form-label">{t('feedback.FTitle')}</label>
                 <input
                   type="text"
                   name="title"
@@ -222,7 +227,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
             
             <Col className="col-12">
               <div className="form-group">
-                <label className="form-label">Task Description</label>
+                <label className="form-label">{t('feedback.FDescription')}</label>
                 {/* <textarea
                   name="desc"
                   value={formData.desc}
@@ -259,7 +264,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
             {!isFeedbackDetails && 
             <Col sm="12">
             <div className="form-group">
-              <label className="form-label">Select Priority</label>
+              <label className="form-label">{t('feedback.SelectPriority')}</label>
               
               <RSelect 
                 options={PriorityOptions} 
@@ -277,7 +282,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
             <>
              <Col sm="6">
              <div className="form-group">
-               <label className="form-label">Select Priority</label>
+               <label className="form-label">{t('feedback.SelectPriority')}</label>
                
                <RSelect 
                  options={PriorityOptions} 
@@ -295,7 +300,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
 
            <Col sm="6">
              <div className="form-group">
-               <label className="form-label">Select Status</label>
+               <label className="form-label">{t('feedback.SStatus')}</label>
                
                <RSelect 
                  options={StatusOptions} 
@@ -316,7 +321,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
 
             <Col sm="12">
               <div className="form-group">
-                <label className="form-label">Members Assigned</label>
+                <label className="form-label">{t('feedback.MembersAssigned')}</label>
                 <RSelect
                   options={membersUsersOptions}
                   isMulti
@@ -329,13 +334,13 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
             <>
             <Col sm="6">
               <div className="form-group">
-                <label className="form-label">Estimated Time</label>
+                <label className="form-label">{t('feedback.EstimatedTime')}</label>
                 <NSComponent defaultVal={parseInt(editTask?.estimatedTime)} color="light" outline />    
               </div>
             </Col>
             <Col sm="6">
               <div className="form-group">
-                <label className="form-label" style={{marginBottom:"25px"}}>Progress</label>
+                <label className="form-label" style={{marginBottom:"25px"}}>{t('feedback.Progress')}</label>
                 <div className="form-control-wrap">
                     <Nouislider
                       className="form-range-slider"
@@ -362,7 +367,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
                 <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                   <li>
                     <Button color="primary" size="md" type="submit">
-                      {loading ? <Spinner size="sm" color="light" /> : (editTask ? "Update Feedback" : "Add Feedback")}
+                      {loading ? <Spinner size="sm" color="light" /> : (editTask ? `${t('feedback.UpdateFeedback')}` : `${t('feedback.AddFeedback')}`)}
                     </Button>
                   </li>
                   {!successVal && 
@@ -374,7 +379,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
                       }}
                       className="link link-light"
                     >
-                      Cancel
+                      {t('user.Cancel')}
                     </Button>
                   </li>
                   }
@@ -385,7 +390,7 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
                   <ul>
                     <li>
                       <Button type ="button" color="danger" size="md" onClick={() => handleDelete()}>
-                        {deleteLoading ? <Spinner size="sm" color="light" /> : "Delete Task" }
+                        {deleteLoading ? <Spinner size="sm" color="light" /> : `${t('feedback.DeleteFeedback')}` }
                       </Button>
                     </li>
                   </ul>

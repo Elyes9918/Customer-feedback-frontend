@@ -34,8 +34,12 @@ import { Link, useMatch, useNavigate } from "react-router-dom";
 import { ApiStatus } from "../../types/ApiStatus";
 import currentUser from "../../utils/currentUser";
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
+import { useTranslation } from "react-i18next";
+
 
 const ProjectCardPage = () => {
+  const {t}= useTranslation();
+
 
   const { list, status } = useAppSelector((state) => state.project);
   const dispatch = useAppDispatch();
@@ -152,8 +156,8 @@ const ProjectCardPage = () => {
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
-              <BlockTitle page> Projects</BlockTitle>
-              <BlockDes className="text-soft">You have a total of {list?.length} projects</BlockDes>
+              <BlockTitle page> {t('project.Projects')}</BlockTitle>
+              <BlockDes className="text-soft">{t('user.YouHa')} {list?.length} {t('project.Projects')}</BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
               <div className="toggle-wrap nk-block-tools-toggle">
@@ -172,7 +176,7 @@ const ProjectCardPage = () => {
                           </div>
                           <input type="text" className="form-control" 
                           id="default-04"
-                          placeholder="Search by Name/Client" 
+                          placeholder={t('project.SearchBy')} 
                           onChange={(e) => onFilterChange(e)}
                           />
                       </div>
@@ -181,7 +185,7 @@ const ProjectCardPage = () => {
                       <UncontrolledDropdown>
                         <DropdownToggle tag="a" className="dropdown-toggle btn btn-white btn-dim btn-outline-light">
                           <Icon name="filter-alt" className="d-none d-sm-inline"></Icon>
-                          <span>Filtered By</span>
+                          <span>{t('project.FilteredBy')} </span>
                           <Icon name="chevron-right" className="dd-indc"></Icon>
                         </DropdownToggle>
                         <DropdownMenu end>
@@ -195,7 +199,7 @@ const ProjectCardPage = () => {
                                   setSelectedFilterBy("Open");
                                   HandleFilterDropDown("0");
                                 }}>
-                                <span>Open</span>
+                                <span>{t('project.Open')} </span>
                               </DropdownItem>
                             </li>
                             <li key={2}>
@@ -207,7 +211,7 @@ const ProjectCardPage = () => {
                                   setSelectedFilterBy("On Hold");
                                   HandleFilterDropDown("1");
                                 }}>
-                                <span>On Hold</span>
+                                <span>{t('project.OnHold')} </span>
                               </DropdownItem>
                             </li>
                             <li key={3}>
@@ -219,7 +223,7 @@ const ProjectCardPage = () => {
                                   setSelectedFilterBy("Closed");
                                   HandleFilterDropDown("2");
                                 }}>
-                                <span>Closed</span>
+                                <span>{t('project.Closed')} </span>
                               </DropdownItem>
                             </li>
                             <li key={3}>
@@ -230,7 +234,7 @@ const ProjectCardPage = () => {
                                   ev.preventDefault();
                                   setData(list);
                                 }}>
-                                <span style={{color:"red"}}>Reset Filter</span>
+                                <span style={{color:"red"}}>{t('user.ResetFilter')} </span>
                               </DropdownItem>
                             </li>
                           </ul>
@@ -241,7 +245,7 @@ const ProjectCardPage = () => {
                     <li className="nk-block-tools-opt" onClick={() => {onAddClick()}}>
                       <Button color="primary">
                         <Icon name="plus"></Icon>
-                        <span>Add Project</span>
+                        <span>{t('project.AddProject')}</span>
                       </Button>
                     </li>
                     }
@@ -262,7 +266,7 @@ const ProjectCardPage = () => {
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
             <Alert className="alert-icon" color="primary">
               <Icon name="alert-circle" />
-              <strong>No Projects</strong> are affected to you at the moment.
+              <strong>{t('project.NoProjects')}</strong> {t('project.AreAffe')}
             </Alert>
         </div> 
         }
@@ -271,7 +275,7 @@ const ProjectCardPage = () => {
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
                 <Alert className="alert-icon" color="primary">
                   <Icon name="alert-circle" />
-                  <strong>No Projects</strong> match this description.
+                  <strong>{t('project.NoProjects')}</strong> {t('project.MTDesc')}
                 </Alert>
             </div> 
             }
@@ -325,7 +329,7 @@ const ProjectCardPage = () => {
                                     }}
                                   >
                                     <Icon name="list-round"></Icon>
-                                    <span>Project details</span>
+                                    <span>{t('project.ProjectDetails')}</span>
                                   </DropdownItem>
                                 </li>
                                 <RolesWithPermession rolesRequired="ADMIN,GESTIONNAIRE,MEMBER">
@@ -338,7 +342,7 @@ const ProjectCardPage = () => {
                                   }}
                                 >
                                   <Icon name="edit"></Icon>
-                                  <span>Edit Project</span>
+                                  <span>{t('project.EditProject')}</span>
                                 </DropdownItem>
                               </li>
                               
@@ -415,7 +419,7 @@ const ProjectCardPage = () => {
                           }
                         >
                           <Icon name="hot-fill"></Icon>
-                          <span>{item.status=== "0" ? "Open" : item.status === "1" ? "On Hold" : item.status==="2" ? "CLOSED" :""}</span>
+                          <span>{item.status=== "0" ? `${t('project.Open')}` : item.status === "1" ? `${t('project.OnHold')}` : item.status==="2" ? `${t('project.Closed')}` :""}</span>
                         </Badge>
                       </div>
                     </ProjectCard>

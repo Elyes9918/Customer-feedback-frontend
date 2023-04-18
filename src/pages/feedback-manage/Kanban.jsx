@@ -16,8 +16,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { GetFeedbackByProjectIdAction } from "../../features/feedbackSlice";
 import { ApiStatus } from "../../types/ApiStatus";
+import { useTranslation } from 'react-i18next'
 
 const Kanban = () => {
+  const {t}= useTranslation();
+
 
   let { projectId } = useParams();
 
@@ -50,7 +53,7 @@ const Kanban = () => {
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
-              <BlockTitle page>Feedback Board</BlockTitle>
+              <BlockTitle page>{t('feedback.FeedbackBoard')}</BlockTitle>
             </BlockHeadContent>
             <BlockHeadContent>
               <div className="toggle-wrap nk-block-tools-toggle">
@@ -69,7 +72,7 @@ const Kanban = () => {
                     <li>
                       <Button color="primary"  onClick={() => toggleTaskModal()}>
                         <Icon name="plus" />
-                        <span>Add Feedback</span>
+                        <span>{t('feedback.AddFeedback')}</span>
                       </Button>
 
                     </li>
@@ -82,7 +85,7 @@ const Kanban = () => {
                   onClick={() => navigate(`/my-projects`)}
                 >
                   <Icon name="arrow-left"></Icon>
-                  <span>Back</span>
+                  <span>{t('user.Back')}</span>
                 </Button>
                 <a
                   href="/my-projects"

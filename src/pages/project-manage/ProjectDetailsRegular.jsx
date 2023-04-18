@@ -18,10 +18,13 @@ import { ApiStatus } from "../../types/ApiStatus";
 import { GetProjectByIdAction } from "../../features/projectSlice";
 import EditProjectModal from "./EditProjectModal";
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
+import { useTranslation } from "react-i18next";
 
 
 
 const ProjectDetailsPage = () => {
+  const {t}= useTranslation();
+
 
   let { projectId } = useParams();
 
@@ -78,11 +81,11 @@ const ProjectDetailsPage = () => {
 
   const ReturnProjectStatus = (status) =>{
     if(status==="0"){
-      return "Open"
+      return t('project.Open')
     }else if(status==="1"){
-      return "On Hold"
+      return t('project.OnHold')
     }else if(status==="2"){
-      return "Closed"
+      return t('project.Closed')
     }
   }
 
@@ -94,12 +97,12 @@ const ProjectDetailsPage = () => {
             <BlockBetween>
               <BlockHeadContent>
                 <BlockTitle tag="h3" page>
-                  Projects / <strong className="text-primary small">{project.title}</strong>
+                  {t('project.Projects')} / <strong className="text-primary small">{project.title}</strong>
                 </BlockTitle>
                 <BlockDes className="text-soft">
                   <ul className="list-inline">
                     <li>
-                      Project ID: <span className="text-base">{project.id}</span>
+                      {t('project.ProjectID')}: <span className="text-base">{project.id}</span>
                     </li>
                
                   </ul>
@@ -113,7 +116,7 @@ const ProjectDetailsPage = () => {
                   onClick={() => navigate("/my-projects")}
                 >
                   <Icon name="arrow-left"></Icon>
-                  <span>Back</span>
+                  <span>{t('user.Back')}</span>
                 </Button>
                 <a
                   href="/my-projects"
@@ -145,7 +148,7 @@ const ProjectDetailsPage = () => {
                        
                       >
                         <Icon name="file-text"></Icon>
-                        <span>Projects</span>
+                        <span>{t('project.Projects')}</span>
                       </a>
                     </li>
 
@@ -164,8 +167,8 @@ const ProjectDetailsPage = () => {
                   <div className="card-inner">
                     <Block>
                       <BlockHead>
-                        <BlockTitle tag="h5">Project Information</BlockTitle>
-                        <p>Information related to the selected project on our platform Customer feedback.</p>
+                        <BlockTitle tag="h5">{t('project.PInformation')}</BlockTitle>
+                        <p>{t('project.InfoReP')}</p>
                       </BlockHead>
                     </Block>
 
@@ -182,13 +185,13 @@ const ProjectDetailsPage = () => {
                         <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Title :</span>
+                              <span className="profile-ud-label">{t('project.Title')} :</span>
                               <span className="profile-ud-value">{project.title}</span>
                             </div>
                           </div>
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Client Company :</span>
+                              <span className="profile-ud-label">{t('project.Client')} :</span>
                               <span className="profile-ud-value">{project.client}</span>
                             </div>
                           </div>
@@ -213,7 +216,7 @@ const ProjectDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Lead :</span>
+                              <span className="profile-ud-label">{t('project.Lead')} :</span>
                               <span className="profile-ud-value">
                                 <RolesWithPermession rolesRequired="CLIENT">
                                 <div >{gestUsers[0]?.label}</div>
@@ -227,7 +230,7 @@ const ProjectDetailsPage = () => {
 
                           <div className="profile-ud-item">
                             <div className="profile-ud wider">
-                              <span className="profile-ud-label">Team Members :</span>
+                              <span className="profile-ud-label">{t('project.TeamMembers')} :</span>
                               <span className="profile-ud-value">
                                 <ul>
                                 {membersUsers?.map((user,idx) => {
@@ -289,19 +292,19 @@ const ProjectDetailsPage = () => {
                       <Block>
                           <BlockHead className="nk-block-head-line">
                             <BlockTitle tag="h4" className="overline-title text-base">
-                              Additional Information :  
+                            {t('user.AdditionalInfo')} :  
                             </BlockTitle>
                           </BlockHead>
                           <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Date of creation :</span>
+                                <span className="profile-ud-label">{t('user.DateOfCreation')} :</span>
                                 <span className="profile-ud-value">{formatDate(project.createdAt)}</span>
                               </div>
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Created by :</span>
+                                <span className="profile-ud-label">{t('project.CreatedBy')} :</span>
                                 <span className="profile-ud-value">
                                   <RolesWithPermession rolesRequired="CLIENT">
                                     {project?.creator?.name}
@@ -315,7 +318,7 @@ const ProjectDetailsPage = () => {
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">Last modified :</span>
+                                <span className="profile-ud-label">{t('user.LastM')} :</span>
                                 <span className="profile-ud-value">{formatDate(project.modifiedAt)}</span>
                               </div>
                             </div>

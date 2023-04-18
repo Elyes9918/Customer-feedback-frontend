@@ -633,7 +633,7 @@ const UserListRegularPage = () => {
                                 id={"edit-" + item.id}
                                 icon="edit-alt-fill"
                                 direction="top"
-                                text="Edit"
+                                text={t('user.Edit')}
                               />
                             </li>
                             {item.status !== "2" && (
@@ -645,7 +645,7 @@ const UserListRegularPage = () => {
                                     id={"suspend" + item.id}
                                     icon="user-cross-fill"
                                     direction="top"
-                                    text="Suspend"
+                                    text={t('user.Suspend')}
                                   />
                                 </li>
                               </React.Fragment>
@@ -666,7 +666,7 @@ const UserListRegularPage = () => {
                                         }}
                                       >
                                         <Icon name="edit"></Icon>
-                                        <span>Edit</span>
+                                        <span>{t('user.Edit')}</span>
                                       </DropdownItem>
                                     </li>
                                     {item.status !== "Suspend" && (
@@ -681,7 +681,7 @@ const UserListRegularPage = () => {
                                             }}
                                           >
                                             <Icon name="na"></Icon>
-                                            <span>Suspend User</span>
+                                            <span>{t('user.SuspendUser')}</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>

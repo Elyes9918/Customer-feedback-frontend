@@ -18,9 +18,13 @@ import { useAppDispatch, useAppSelector } from "../../app/store";
 import { getUserListAction } from "../../features/userSlice";
 import { CreateProjectAction } from "../../features/projectSlice";
 import currentUser from "../../utils/currentUser";
+import { useTranslation } from "react-i18next";
+
 
 
 const AddProjectModal = ({isModalOpen}) => {
+  const {t}= useTranslation();
+
 
   const { list, status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -84,7 +88,7 @@ const AddProjectModal = ({isModalOpen}) => {
 
     dispatch(CreateProjectAction(project)).then(()=>{
       setLoading(false);
-      setSuccessVal("Project created Succesfully")
+      setSuccessVal(t('project.PCS'))
       // setModal(false);
     })
 
@@ -115,7 +119,7 @@ const AddProjectModal = ({isModalOpen}) => {
             <Icon name="cross-sm"></Icon>
           </a>
           <div className="p-2">
-            <h5 className="title">Add Project</h5>
+            <h5 className="title">{t('project.AddProject')}</h5>
             <div className="mt-4">
            
                     
@@ -130,13 +134,13 @@ const AddProjectModal = ({isModalOpen}) => {
               <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
                 <Col md="6">
                   <div className="form-group">
-                    <label className="form-label">Title</label>
+                    <label className="form-label">{t('project.Title')}</label>
                     <input
                       type="text"
                       name="title"
-                      placeholder="Enter Title"
+                      placeholder={t('project.TitlePH')}
                       className="form-control"
-                      ref={register({ required: "This field is required" })}
+                      ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                     />
                     {errors.title && <span className="invalid">{errors.title.message}</span>}
                   </div>
@@ -147,9 +151,9 @@ const AddProjectModal = ({isModalOpen}) => {
                     <input
                       type="text"
                       name="client"
-                      placeholder="Enter client name"
+                      placeholder={t('project.ClientPH')}
                       className="form-control"
-                      ref={register({ required: "This field is required" })}
+                      ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                     />
                     {errors.client && <span className="invalid">{errors.client.message}</span>}
                   </div>
@@ -159,9 +163,9 @@ const AddProjectModal = ({isModalOpen}) => {
                     <label className="form-label">Description</label>
                     <textarea
                       name="description"
-                      placeholder="Your description"
+                      placeholder={t('project.DescriptionPH')}
                       className="form-control-xl form-control no-resize"
-                      ref={register({ required: "This field is required" })}
+                      ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                     />
                     {errors.description && <span className="invalid">{errors.description.message}</span>}
                   </div>
@@ -170,7 +174,7 @@ const AddProjectModal = ({isModalOpen}) => {
                 
                 <Col md="6">
                   <div className="form-group">
-                    <label className="form-label">Team Members</label>
+                    <label className="form-label">{t('project.TeamMembers')}</label>
                     <RSelect 
                     options={MembersUsers} 
                     isMulti 
@@ -180,7 +184,7 @@ const AddProjectModal = ({isModalOpen}) => {
                 </Col>
                 <Col md="6">
                   <div className="form-group">
-                    <label className="form-label">Lead</label>
+                    <label className="form-label">{t('project.Lead')}</label>
                     <RSelect 
                     options={GestUsers}
                     onChange={(e) => setFormData({ ...formData, lead: e })}
@@ -203,7 +207,7 @@ const AddProjectModal = ({isModalOpen}) => {
                  
                     <li>
                       <Button color="primary" size="md" type="submit">
-                      {loading ? <Spinner size="sm" color="light" /> : "Add Project"}
+                      {loading ? <Spinner size="sm" color="light" /> : `${t('project.AddProject')}`}
                       </Button>
                     </li>
                     {!successVal && 
@@ -215,7 +219,7 @@ const AddProjectModal = ({isModalOpen}) => {
                         }}
                         className="link link-light"
                       >
-                        Cancel
+                        {t('user.Cancel')}
                       </Button>
                     </li>}
                   </ul>

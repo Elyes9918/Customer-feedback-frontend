@@ -7,11 +7,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../app/store";
 import Dropzone from "react-dropzone";
+import { useTranslation } from 'react-i18next'
+
 
 
 
 
 const ImageModal = ({toggle}) => {
+    const {t}= useTranslation();
+
     // I need first to upload them using an input file which i have
     // then submit the form send the file name and all in a post request
     // handle it in the backend (save the path in the database and save the file in a directory in 
@@ -62,7 +66,7 @@ const ImageModal = ({toggle}) => {
             <Icon name="cross-sm"></Icon>
         </a>
         <div className="p-2">
-            <h5 className="title">Add Images</h5>
+            <h5 className="title">{t('feedback.AddImages')}</h5>
             <div className="mt-4">
             {errorVal && (
                     <div className="mb-3">
@@ -122,7 +126,7 @@ const ImageModal = ({toggle}) => {
                 <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                 <li>
                     <Button color="primary" size="md" type="submit">
-                    {loading ? <Spinner size="sm" color="light" /> : "Add" }
+                    {loading ? <Spinner size="sm" color="light" /> : `${t('feedback.Add')}` }
                     </Button>
                 </li>
                 {!successVal && 
@@ -134,7 +138,7 @@ const ImageModal = ({toggle}) => {
                     }}
                     className="link link-light"
                     >
-                    Cancel
+                    {t('user.Cancel')}
                     </Button>
                 </li>
                 }

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import menu from "./MenuData";
 import { NavLink, Link } from "react-router-dom";
 import Icon from "../../components/icon/Icon";
 import classNames from "classnames";
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
+import { useTranslation } from "react-i18next";
+
 
 const MenuHeading = ({ heading }) => {
   return (
@@ -182,6 +183,57 @@ const MenuItem = ({ icon, link, role,text, sub, subPanel, panel, newTab, mobileV
 };
 
 const PanelItem = ({ icon, link,role, text, subPanel, index, data, setMenuData, ...props }) => {
+  const {t}= useTranslation();
+
+
+  const menu = [
+    {
+      heading: t('general.DASHBOARD'),
+      role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
+    },
+    {
+      icon: "growth-fill",
+      text: "Analytics",
+      role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBER",
+      link: "/dashboard",
+    },
+    {
+      heading: t('general.PANELS'),
+      role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
+    },
+    {
+      icon: "users-fill",
+      text: t('general.UserBoard'),
+      role: "ADMIN",
+      active: false,
+      subMenu: [
+        {
+          text: t('general.UsersList'),
+          link: "/user-list",
+          role:"ADMIN"
+        },
+      ],
+    },
+    {
+      icon: "tile-thumb-fill",
+      text: t('general.ProjectBoard'),
+      role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER",
+      active: false,
+      subMenu: [
+        {
+          text: t('general.ProjectsList'),
+          link: "/projects",
+          role:"ADMIN,GESTIONNAIRE"
+        },
+        {
+          text: t('general.MyProjects'),
+          link: "/my-projects",
+          role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
+        },
+      ],
+    },
+       
+  ];
   
   const menuItemClass = classNames({
     "nk-menu-item": true,
@@ -263,6 +315,58 @@ const MenuSub = ({ icon, link, text,role, sub, sidebarToggle, mobileView, ...pro
 };
 
 const Menu = ({ sidebarToggle, mobileView }) => {
+  const {t}= useTranslation();
+
+
+  const menu = [
+    {
+      heading: t('general.DASHBOARD'),
+      role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
+    },
+    {
+      icon: "growth-fill",
+      text: "Analytics",
+      role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBER",
+      link: "/dashboard",
+    },
+    {
+      heading: t('general.PANELS'),
+      role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
+    },
+    {
+      icon: "users-fill",
+      text: t('general.UserBoard'),
+      role: "ADMIN",
+      active: false,
+      subMenu: [
+        {
+          text: t('general.UsersList'),
+          link: "/user-list",
+          role:"ADMIN"
+        },
+      ],
+    },
+    {
+      icon: "tile-thumb-fill",
+      text: t('general.ProjectBoard'),
+      role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER",
+      active: false,
+      subMenu: [
+        {
+          text: t('general.ProjectsList'),
+          link: "/projects",
+          role:"ADMIN,GESTIONNAIRE"
+        },
+        {
+          text: t('general.MyProjects'),
+          link: "/my-projects",
+          role:"CLIENT,ADMIN,GESTIONNAIRE,MEMBER"
+        },
+      ],
+    },
+       
+  ];
+
   const [data, setMenuData] = useState(menu);
 
   useEffect(() => {

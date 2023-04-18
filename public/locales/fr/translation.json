@@ -137,11 +137,103 @@
             "MyProjects":"Mes projets",
             "InfReToY":"Informations relatives à votre compte sur notre plateforme Customer Feedback",
             "Basics":"Information de base",
-            "AccountDetails":"Détails du compte"
+            "AccountDetails":"Détails du compte",
+            "Edit":"Modifier",
+            "Suspend":"Bloquer",
+            "SuspendUser":"Bloquer l'utilisateur"
 
         },
         "project":{
+            "PCS":"Projet créé avec succès",
+            "AddProject":"Ajouter un projet",
+            "TitlePH":"Saisir le titre",
+            "Title":"Titre",
+            "Client":"Entreprise cliente",
+            "ClientPH":"Entrez le nom du client",
+            "DescriptionPH":"Entrez votre description",
+            "TeamMembers":"Membres de l'équipe",
+            "Lead":"Responsable",
+            "Open":"Ouvert",
+            "OnHold":"En attente",
+            "Closed":"Fermé",
+            "PUS":"Projet mis à jour avec succès",
+            "UProject":"Modifier",
+
+            "Projects":"Projets",
+            "SearchBy":"Recherche par Titre/Client",
+            "FilteredBy":"Filtré par",
+            "ProjectDetails":"Détails du projet",
+            "EditProject":"Modifier le projet",
+            "NoProjects":"Aucun projet",
+            "MTDesc":"correspond à cette description.",
+            "AreAffe":"sont affectés à vous en ce moment",
+
+            "ProjectID":"ID du Projet",
+            "PInformation":"Information sur le projet",
+            "InfoReP":"Informations relatives au projet sélectionné sur notre plateforme Customer Feedback.",
+            "CreatedBy":"Crée par",
+            "":""
+
+    
    
+        },
+        "feedback":{
+            "FeedbackBoard":"Liste des Feedbacks",
+            "AddFeedback":"Ajouter un feedback",
+            "UpdateFeedback":"Mettre à jour le feedback",
+            "Open":"Ouvert",
+            "InProgress":"En cours",
+            "ToReview":"A vérifier",
+            "Completed":"Terminé",
+            "Priority":"Priorité",
+            "Low":"Basse",
+            "Medium":"Moyennne",
+            "High":"élevée",
+            "VeryHigh":"Très élevée",
+            "Search":"Recherche",
+            "Progress":"Progrès",
+            "EditFeedback":"Modifier Feedback",
+            "The":"La",
+            "LIEmpty":"liste est vide",
+            "FTitle":"Titre du Feedback",
+            "FDescription":"Description du Feedback",
+            "SelectPriority":"Sélectionner la priorité",
+            "MembersAssigned":"Membres assignés",
+            "EstimatedTime":"Durée estimée",
+            "DeleteFeedback":"Supprimer Feedback",
+            "Feedbacks":"Feedbacks",
+            "FeedbackId":"ID du Feedback",
+            "FInfo":"Information sur le Feedback",
+            "FInfoRe":"Informations relatives au feedback sélectionné sur notre plateforme Customer Feedback",
+            "AreYouSure":"Êtes-vous sûr ?",
+            "YouWonBT":"Vous ne pourrez pas revenir en arrière !",
+            "YesDel":"Oui, supprimez-le",
+            "AddImages":"Ajouter des images",
+            "Add":"Ajouter",
+            "Project":"Projet",
+            "FUS":"Feedback mis à jour avec succès",
+            "PSP":"Veuillez sélectionner une priorité",
+            "FCS":"Feedback créé avec succès",
+            "Deleted":"Supprimé",
+            "FeedbackHaD":"Le feedback a été supprimé.",
+            "Update":"Modifier",
+            "SStatus":"Selectionner le statut"
+    
+    
+    
+        },
+        "comment":{
+            "Comments":"Comments",
+            "Modify":"Modify",
+            "Delete":"Delete",
+            "AddedOn":"Added on",
+            "By":"By",
+            "ModifyComment":"Modify Comment",
+            "UpdateComment":"Update Comment",
+            "":"",
+            "":""
+    
+    
         },
         "general":{
             "signOut":"Se déconnecter",
@@ -150,6 +242,21 @@
             "Privacy":"Politique de confidentialité",
             "Help":"Aide",
             "SearchAnything":"Rechercher n'importe quoi",
+
+            "DASHBOARD":"TABLEAU DE BORD",
+            "PANELS":"PANNEAUX",
+            "UserBoard":"Panneau des utilisateurs",
+            "UsersList":"Liste des utilisateurs",
+            "ProjectBoard":"Panneau des projets",
+            "ProjectsList":"Liste des projets",
+            "MyProjects":"Mes projets",
+            "CreatedBy":"Crée par",
+
+
+            "AreYSure":"Êtes-vous sûr de vouloir changer la langue en ",
+            "english":"anglais",
+            "french":"français",
+            "Confirm":"Confirmer",
             "":"",
             "":""
         }
