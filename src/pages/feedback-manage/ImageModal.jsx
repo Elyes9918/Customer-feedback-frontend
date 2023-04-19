@@ -8,12 +8,13 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../app/store";
 import Dropzone from "react-dropzone";
 import { useTranslation } from 'react-i18next'
+import { uploadImageApi } from "../../services/ImageService";
 
 
 
 
 
-const ImageModal = ({toggle}) => {
+const ImageModal = ({toggle,feedbackId}) => {
     const {t}= useTranslation();
 
     // I need first to upload them using an input file which i have
@@ -44,8 +45,21 @@ const ImageModal = ({toggle}) => {
 
 
     const submitForm = () =>{
+       setLoading(true);
+        const formData = new FormData();
+        
+        formData.append('feedbackId',feedbackId)
 
-        console.log(images);
+        images.forEach((image) => {
+            formData.append('images[]', image);
+          });
+
+    
+        // console.log(formData);
+        uploadImageApi(formData).then(()=>{
+            setLoading(false);
+            setSuccessVal("Images added successfully")
+        });
        
     }
 
@@ -91,7 +105,7 @@ const ImageModal = ({toggle}) => {
             <Col sm="12">
             <Dropzone
                 onDrop={(acceptedFiles) => handleDropChange(acceptedFiles, setImages)}
-                accept={[".jpg", ".png", ".svg"]}
+                accept={[".jpg", ".png", ".svg",".gif"]}
             >
                 {({ getRootProps, getInputProps }) => (
                 <section>
@@ -101,7 +115,7 @@ const ImageModal = ({toggle}) => {
                         <div className="dz-message">
                         <span className="dz-message-text">Drag and drop your images</span>
                         <span className="dz-message-or">or</span>
-                        <Button color="primary">SELECT</Button>
+                        <Button color="primary" type="button">SELECT</Button>
                         </div>
                     )}
                     {images.map((image) => (

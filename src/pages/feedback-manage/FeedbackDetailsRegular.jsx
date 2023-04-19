@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Modal, Spinner } from "reactstrap";
+import { Card, Col, Modal, Row, Spinner } from "reactstrap";
 import {
   Button,
   Block,
@@ -28,7 +28,12 @@ import { Carousel, CarouselItem, CarouselControl, CarouselIndicators } from "rea
 import SlideA from "../../images/slides/s1.png";
 import SlideB from "../../images/slides/s2.png";
 import SlideC from "../../images/slides/s3.png";
+import SlideD from "../../images/slides/scénario.gif"
+import SlideF from "../../images/slides/Screenshot_2.png"
 import { useTranslation } from 'react-i18next'
+import { DeleteImageAction, GetImageUrlsIdFeedbackAction } from "../../features/ImageSlice";
+import ImageContainer from "../../components/partials/gallery/GalleryImage";
+import { getImageStaticApi } from "../../services/ImageService";
 
 
 
@@ -62,6 +67,10 @@ const FeedbackDetailsPage = () => {
 
   const items = [
     {
+      src: SlideD,
+      altText: "Scénario",
+    },
+    {
       src: SlideA,
       altText: "Slide 1",
     },
@@ -71,15 +80,17 @@ const FeedbackDetailsPage = () => {
     },
     {
       src: SlideC,
-      altText: "Slide 3",
+      altText: "Slide 3kdsdsjkdkskdjsjkdsjkdsjkdjksjkdsjkdjkdsjkdsjkdsdjks",
+    },
+    {
+      src:SlideF,
+      altText:"Sea",
     }
   ];
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [animating, setAnimating] = useState(false);
-
   const {feedback,status} = useAppSelector((state)=>state.feedback);
-  const { list, status: commentStatus } = useAppSelector(state => state.comment);
+  const { list:commentList, status: commentStatus } = useAppSelector(state => state.comment);
+  const [authenticatedImages,setAuthenticatedImages] =useState();
 
 
   const [shouldReRenderCommentModal, setShouldReRenderCommentModal] = useState(false);
@@ -103,33 +114,6 @@ const FeedbackDetailsPage = () => {
   const [imageModal,setImageModal]=useState(false);
 
 
-
-  const next = () => {
-    if (animating) return;
-    const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
-    setActiveIndex(nextIndex);
-  };
-
-  const previous = () => {
-    if (animating) return;
-    const nextIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1;
-    setActiveIndex(nextIndex);
-  };
-
-  const goToIndex = (newIndex) => {
-    if (animating) return;
-    setActiveIndex(newIndex);
-  };
-
-  const slides = items.map((item) => {
-    return (
-      <CarouselItem onExiting={() => setAnimating(true)} onExited={() => setAnimating(false)} key={item.src}>
-        <img src={item.src} alt={item.altText} />
-      </CarouselItem>
-    );
-  });
-
-
   const toggleTaskModal = () => {
     setTaskModal(!taskModal);
   };
@@ -142,8 +126,6 @@ const FeedbackDetailsPage = () => {
   // grabs the id of the url and loads the corresponding data
   useEffect(() => {
     dispatch(GetFeedbackByIdAction(feedbackId)).then((data)=>{
-
-        console.log(data.payload);
      
       setMembersUsers(data?.payload?.usersId?.map((user) => ({
         value: user?.id,
@@ -153,9 +135,19 @@ const FeedbackDetailsPage = () => {
     });
 
     dispatch(GetCommentByFeedbackIdAction(feedbackId)).then((data)=>{
-      // console.log(data.payload);
       setCommentData(data.payload);
     });
+
+    dispatch(GetImageUrlsIdFeedbackAction(feedbackId)).then(async (data)=>{
+
+      const transformedPayload = await Promise.all(data.payload.map(async (obj) => ({
+        ...obj,
+        imageUrl: await getImageStaticApi(obj.imageUrl),
+      })));
+
+      setAuthenticatedImages(transformedPayload);
+    });
+
 
   }, []);
 
@@ -195,6 +187,25 @@ const FeedbackDetailsPage = () => {
         })
 
     }});
+
+  }
+
+  const handleDeleteImage = (id,extension) => {
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This image will be permanently deleted",
+      showCancelButton: true,
+      cancaelButtonText:t('user.Cancel'),
+      confirmButtonText: t('feedback.YesDel'),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedState = authenticatedImages.filter(obj => obj.id !== id);
+        setAuthenticatedImages(updatedState);
+        dispatch(DeleteImageAction(id+"."+extension));
+    }});
+
+
 
   }
 
@@ -406,7 +417,6 @@ const FeedbackDetailsPage = () => {
                           </BlockHead>
                           <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
                           <div className="profile-ud-item" style={{ flexBasis: '100%' }}>
-                            {/* <p>{feedback.description}</p>  */}
                             <div dangerouslySetInnerHTML={{ __html: feedback.description }} />
                             </div>
                           </div>
@@ -418,24 +428,51 @@ const FeedbackDetailsPage = () => {
                               Images :
                             </BlockTitle>
                           </BlockHead>
-                          <div style={{display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                           }}>
-                          <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1000px"}}>
-                          <div className="profile-ud-item" style={{ flexBasis: '100%' }}>
 
-                        
-                          <Carousel activeIndex={activeIndex} next={next} previous={previous}>
-                            <CarouselIndicators items={items}  activeIndex={activeIndex} onClickHandler={goToIndex} />
-                            {slides}
-                            <CarouselControl direction="prev" directionText="Previous" onClickHandler={previous} />
-                            <CarouselControl direction="next" directionText="Next" onClickHandler={next} />
-                          </Carousel>
+                          {authenticatedImages===undefined &&   
+                          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
+                            <Spinner type="grow" color="primary" />
 
-                          </div>
-                          </div>
-                          </div>
+                          </div> }
+
+                          {authenticatedImages?.length===0 &&   
+                          <p>No available images...</p> }
+
+                          {authenticatedImages && 
+
+                          <Row className="g-gs">
+                        {authenticatedImages?.map( (item) => {
+                            // const imageUrl = await getImageStaticApi(item.imageUrl);
+                                      return (
+                            <Col sm={6} lg={4} xxl={3} key={item?.id}>
+                              <Card className="gallery" >
+                              <ImageContainer img={item?.imageUrl}  />
+                                <div className="gallery-body card-inner align-center justify-between flex-wrap g-2">
+                                  <div className="user-card">
+                                    
+                                    <div className="user-info">
+                                      <span className="text">
+                                        {item?.imageName.length > 20 ?
+                                         item?.imageName.substring(0,19) + "..." :
+                                         item?.imageName}
+                                      </span>
+                                     
+                                      {/* <span className="sub-text">{item.userEmail}</span> */}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <Button className="btn-p-0 btn-focus" onClick={()=>handleDeleteImage(item?.id,item?.imageExtension)}>
+                                      <Icon name="trash-empty-fill"></Icon>
+                                      <span>Delete</span>
+                                    </Button>
+                                  </div>
+                                </div>
+                              </Card>
+                            </Col>
+                          );
+                        })}
+                        </Row>
+                        }
                          
                       </Block>
 
@@ -505,7 +542,7 @@ const FeedbackDetailsPage = () => {
 
                       {commentData &&
                       <div className="bq-note">
-                        {list.map((item) => (
+                        {commentList.map((item) => (
                           <div className="bq-note-item" key={item?.id}>
                             
                             <div className="bq-note-text">
@@ -606,7 +643,7 @@ const FeedbackDetailsPage = () => {
                 />
 
                 <Modal size="lg" isOpen={imageModal} toggle={toggleImageModal}>
-                <ImageModal toggle={toggleImageModal}/>
+                <ImageModal toggle={toggleImageModal} feedbackId={feedback.id}/>
                 </Modal>
 
 

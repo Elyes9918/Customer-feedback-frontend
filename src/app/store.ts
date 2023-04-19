@@ -6,6 +6,7 @@ import projectReducer  from "../features/projectSlice";
 import feedbackSlice from "../features/feedbackSlice";
 import globalSlice from "../features/globalSlice";
 import CommentSlice from "../features/CommentSlice";
+import ImageSlice from "../features/ImageSlice";
 
 
 
@@ -16,7 +17,8 @@ export const store = configureStore({
     project: projectReducer,
     feedback: feedbackSlice,
     global: globalSlice,
-    comment:CommentSlice
+    comment:CommentSlice,
+    image:ImageSlice
   }
   
   

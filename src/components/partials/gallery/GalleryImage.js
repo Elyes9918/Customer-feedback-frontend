@@ -3,9 +3,20 @@ import { Modal } from "reactstrap";
 
 const ImageContainer = ({ img }) => {
   const [open, setOpen] = useState(false);
+
   const toggle = () => {
     setOpen(!open);
   };
+
+  const [imgWidth, setImgWidth] = useState(null);
+  const [imgHeight, setImgHeight] = useState(null);
+
+  const handleImgLoad = e => {
+    setImgWidth(e.target.naturalWidth);
+    setImgHeight(e.target.naturalHeight);
+  }
+
+
   return (
     <a
       className="gallery-image popup-image"
@@ -15,12 +26,20 @@ const ImageContainer = ({ img }) => {
       }}
       href="#gallery"
     >
-      <img className="w-100 rounded-top" src={img} alt="" />
-      <Modal isOpen={open} toggle={toggle} size="large">
+      <img className="w-100 rounded-top" src={img} alt="" style={{height: '180px', width: '250px'}} />
+      <Modal isOpen={open} toggle={toggle} 
+      style={{ maxHeight: '80vh', maxWidth: '80vw', 
+               width: imgWidth ? `${imgWidth}px` : 'auto',
+               height: imgHeight ? `${imgHeight}px` : 'auto' }}>
         <button type="button" className="mfp-close" onClick={toggle}>
           ×
         </button>
-        <img className="w-100 rounded-top" style={{ height: "100%" }} src={img} alt="" />
+
+        <img src={img} alt="" 
+        style={{  width: 'auto', height: 'auto',objectFit: 'contain' }}
+        onLoad={handleImgLoad} 
+        />
+
       </Modal>
     </a>
   );
