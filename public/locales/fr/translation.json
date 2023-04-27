@@ -207,7 +207,7 @@
             "FInfoRe":"Informations relatives au feedback sélectionné sur notre plateforme Customer Feedback",
             "AreYouSure":"Êtes-vous sûr ?",
             "YouWonBT":"Vous ne pourrez pas revenir en arrière !",
-            "YesDel":"Oui, supprimez-le",
+            "YesDel":"Oui, supprimer",
             "AddImages":"Ajouter des images",
             "Add":"Ajouter",
             "Project":"Projet",
@@ -217,7 +217,18 @@
             "Deleted":"Supprimé",
             "FeedbackHaD":"Le feedback a été supprimé.",
             "Update":"Modifier",
-            "SStatus":"Selectionner le statut"
+            "SStatus":"Selectionner le statut",
+            "thisFileDeleted":"Ce fichier sera définitivement supprimé",
+            "thisImageDeleted":"Cette image sera définitivement supprimée",
+            "Download":"Télécharger",
+            "Files":"Fichiers",
+            "NoAvailImages":"NAucune image disponible...",
+            "NoAvailFiles":"Aucun fichier disponible...",
+            "AddFiles":"Ajouter des fichiers",
+            "DnDImages":"Drag and Drop vos images",
+            "DnDFiles":"Drag and Drop vos fichiers",
+            "Or":"OU",
+            "Select":"SÉLECTIONNER"
     
     
     

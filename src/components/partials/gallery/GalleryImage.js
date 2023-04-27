@@ -26,7 +26,7 @@ const ImageContainer = ({ img }) => {
       }}
       href="#gallery"
     >
-      <img className="w-100 rounded-top" src={img} alt="" style={{height: '180px', width: '250px'}} />
+      <img className="w-100 rounded-top" src={img} alt="" style={{height: '120px', width: '250px'}} />
       <Modal isOpen={open} toggle={toggle} 
       style={{ maxHeight: '80vh', maxWidth: '80vw', 
                width: imgWidth ? `${imgWidth}px` : 'auto',

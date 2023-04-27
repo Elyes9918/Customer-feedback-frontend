@@ -9,6 +9,7 @@ import {  RootState, useAppSelector,useAppDispatch} from "../../../../app/store"
 import { getUserByEmailAction } from "../../../../features/userSlice";
 import { findUpper, getColorString } from "../../../../utils/Utils";
 import { useTranslation } from "react-i18next";
+import { setInfoPerso, setNotificationPanel } from "../../../../features/globalSlice";
 
 
 
@@ -82,7 +83,8 @@ const User = () => {
         </div>
         <div className="dropdown-inner">
           <LinkList>
-            <LinkItem link="/user-profile" icon="user-alt" onClick={toggle}>
+            <LinkItem link="/user-profile" icon="user-alt" onClick={()=>{toggle();dispatch(setNotificationPanel(false));
+              dispatch(setInfoPerso(true));}}>
               {t('general.ViewProfile')}
             </LinkItem>
             {/* <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>

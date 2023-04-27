@@ -15,7 +15,7 @@ function App() {
 
   const dispatch = useAppDispatch();
 
-  if(localStorage.getItem("rememberMe")){
+  if(localStorage.getItem("rememberMe")==="true"){
 
     if(localStorage.getItem("accessToken")){
       const token = currentAccessToken();

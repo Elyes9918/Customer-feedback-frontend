@@ -215,7 +215,18 @@
         "Deleted":"Deleted",
         "FeedbackHaD":"Feedback has been deleted.",
         "Update":"Update",
-        "SStatus":"Select Status"
+        "SStatus":"Select Status",
+        "thisFileDeleted":"This file will be permanently deleted",
+        "thisImageDeleted":"This image will be permanently deleted",
+        "Download":"Download",
+        "Files":"Files",
+        "NoAvailImages":"No available images...",
+        "NoAvailFiles":"No available files...",
+        "AddFiles":"Add Files",
+        "DnDImages":"Drag and Drop your images",
+        "DnDFiles":"Drag and Drop your files",
+        "Or":"OR",
+        "Select":"Select"
 
 
 

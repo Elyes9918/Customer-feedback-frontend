@@ -5,4 +5,5 @@ export interface IImage {
     imageExtension?:string;
     createdAt?:string;
     modifiedAt?:string;
+    creatorId?:string;
   }

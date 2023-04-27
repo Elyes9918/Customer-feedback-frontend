@@ -84,6 +84,7 @@ const AddProjectModal = ({isModalOpen}) => {
         ...(formData.lead ? [formData.lead.value] : [])
       ],
       creatorId:currentUser().id,
+      repo:data?.repoLink
     }
 
     dispatch(CreateProjectAction(project)).then(()=>{
@@ -199,6 +200,19 @@ const AddProjectModal = ({isModalOpen}) => {
                     isMulti 
                     onChange={(e) => setFormData({ ...formData, clients: e })}
                       />
+                  </div>
+                </Col>
+                <Col md="12">
+                  <div className="form-group">
+                    <label className="form-label">Web-Based repository link</label>
+                    <input
+                      type="text"
+                      name="repoLink"
+                      placeholder="Please enter your repository link"
+                      className="form-control"
+                      ref={register({ required: `${t('page.Login.TfIsReq')}` })}
+                    />
+                    {errors.repoLink && <span className="invalid">{errors.repoLink.message}</span>}
                   </div>
                 </Col>
                

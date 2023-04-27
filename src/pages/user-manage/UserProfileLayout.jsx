@@ -21,6 +21,8 @@ import {
 } from "../../components/Component";
 import EditUserModal from "./EditUserModal";
 import { useTranslation } from "react-i18next";
+import { GetNotificationByUserIdAction } from "../../features/NotificationSlice";
+import currentUser from "../../utils/currentUser";
 
 
 
@@ -32,13 +34,17 @@ const UserProfileLayout = () => {
   const token = currentAccessToken();
   const navigate = useNavigate();
   const {cUser,listStatus} = useAppSelector((state)=>state.user)
+  const {list,status} = useAppSelector((state)=>state.notification)
+
   const dispatch = useAppDispatch();
 
+  const {notificationPanel} = useAppSelector((state) => state.global);
+  const {infoPerso} = useAppSelector((state) => state.global);
   
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
-  const [showPersonalInformation,setShowPersonalInformation] = useState(true);
-  const [showNotificationPanel,setShowNotificationPanel] = useState(false);
+  const [showPersonalInformation,setShowPersonalInformation] = useState(infoPerso);
+  const [showNotificationPanel,setShowNotificationPanel] = useState(notificationPanel);
   const [showSettingsPanel,setShowSettingsPanel] = useState(false);
 
   const [modal, setModal] = useState(false);
@@ -53,8 +59,15 @@ const UserProfileLayout = () => {
       updateSm(false);
     }
   };
+
+  useEffect(()=>{
+
+  },[infoPerso])
   
   useEffect(() => {
+
+    dispatch(GetNotificationByUserIdAction(currentUser().id));
+
     dispatch(getUserByEmailAction(token.username));
     viewChange();
     window.addEventListener("load", viewChange);
@@ -66,6 +79,9 @@ const UserProfileLayout = () => {
       window.removeEventListener("resize", viewChange);
       window.removeEventListener("load", viewChange);
     };
+
+   
+
   }, []);
 
 
@@ -100,34 +116,7 @@ const UserProfileLayout = () => {
                         <DropdownToggle tag="a" className="btn btn-icon btn-trigger me-n2">
                           <Icon name="more-v"></Icon>
                         </DropdownToggle>
-                        {/* <DropdownMenu end>
-                          <ul className="link-list-opt no-bdr">
-                            <li>
-                              <DropdownItem
-                                tag="a"
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                <Icon name="camera-fill"></Icon>
-                                <span>Change Photo</span>
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem
-                                tag="a"
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                <Icon name="edit-fill"></Icon>
-                                <span>Update Profile</span>
-                              </DropdownItem>
-                            </li>
-                          </ul>
-                        </DropdownMenu> */}
+                       
                       </UncontrolledDropdown>
                     </div>
                   </div>
@@ -331,11 +320,9 @@ const UserProfileLayout = () => {
                             />
 
                 </React.Fragment>
-
-              
               }
         
-              {showNotificationPanel && <UserProfileNotificationPage updateSm={updateSm} sm={sm} />}
+              {showNotificationPanel  && <UserProfileNotificationPage updateSm={updateSm} sm={sm} notifList={list} />}
               {/* {showActivityPanel && <UserProfileActivityPage updateSm={updateSm} sm={sm} />} */}
               {showSettingsPanel && <UserProfileSettingPage updateSm={updateSm} sm={sm} user={cUser}/>}
               

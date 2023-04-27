@@ -171,7 +171,7 @@ export const formatDate = (inputDate) => {
   });
 
   // Combine the components into the desired format
-  const formattedDate = `${monthName} ${day}, ${year} at ${time}`;
+  const formattedDate = `${monthName} ${day}, ${year} , ${time}`;
   
   return formattedDate;
 };

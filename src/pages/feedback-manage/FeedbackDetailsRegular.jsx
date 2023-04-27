@@ -23,17 +23,13 @@ import CommentModal from "../comment-manage/CommentModal";
 import ImageModal from "./ImageModal";
 import Swal from "sweetalert2";
 import currentUser from "../../utils/currentUser";
-import { Carousel, CarouselItem, CarouselControl, CarouselIndicators } from "reactstrap";
-
-import SlideA from "../../images/slides/s1.png";
-import SlideB from "../../images/slides/s2.png";
-import SlideC from "../../images/slides/s3.png";
-import SlideD from "../../images/slides/scénario.gif"
-import SlideF from "../../images/slides/Screenshot_2.png"
 import { useTranslation } from 'react-i18next'
 import { DeleteImageAction, GetImageUrlsIdFeedbackAction } from "../../features/ImageSlice";
 import ImageContainer from "../../components/partials/gallery/GalleryImage";
 import { getImageStaticApi } from "../../services/ImageService";
+import FileModal from "./FileModal";
+import { DeleteFileAction, GetFileUrlsIdFeedbackAction } from "../../features/FileSlice";
+import { downloadFileApi } from "../../services/FileService";
 
 
 
@@ -65,32 +61,11 @@ const FeedbackDetailsPage = () => {
 
   let { feedbackId } = useParams();
 
-  const items = [
-    {
-      src: SlideD,
-      altText: "Scénario",
-    },
-    {
-      src: SlideA,
-      altText: "Slide 1",
-    },
-    {
-      src: SlideB,
-      altText: "Slide 2",
-    },
-    {
-      src: SlideC,
-      altText: "Slide 3kdsdsjkdkskdjsjkdsjkdsjkdjksjkdsjkdjkdsjkdsjkdsdjks",
-    },
-    {
-      src:SlideF,
-      altText:"Sea",
-    }
-  ];
-
   const {feedback,status} = useAppSelector((state)=>state.feedback);
   const { list:commentList, status: commentStatus } = useAppSelector(state => state.comment);
   const [authenticatedImages,setAuthenticatedImages] =useState();
+  const [fileList,setFileList]=useState();
+  // const {list:fileList,status:fileStatus} = useAppSelector(state => state.file);
 
 
   const [shouldReRenderCommentModal, setShouldReRenderCommentModal] = useState(false);
@@ -112,6 +87,8 @@ const FeedbackDetailsPage = () => {
   const [taskModal, setTaskModal] = useState(false);
 
   const [imageModal,setImageModal]=useState(false);
+  const [fileModal,setFileModal]=useState(false);
+
 
 
   const toggleTaskModal = () => {
@@ -120,6 +97,10 @@ const FeedbackDetailsPage = () => {
 
   const toggleImageModal = () =>{
     setImageModal(!imageModal);
+  }
+
+  const toggleFileModal = () =>{
+    setFileModal(!fileModal);
   }
 
 
@@ -146,6 +127,10 @@ const FeedbackDetailsPage = () => {
       })));
 
       setAuthenticatedImages(transformedPayload);
+    });
+
+    dispatch(GetFileUrlsIdFeedbackAction(feedbackId)).then((data)=>{
+      setFileList(data.payload);
     });
 
 
@@ -176,7 +161,7 @@ const FeedbackDetailsPage = () => {
       text: t('feedback.YouWonBT'),
       icon: "warning",
       showCancelButton: true,
-      cancaelButtonText:t('user.Cancel'),
+      cancelButtonText:t('user.Cancel'),
       confirmButtonText: t('feedback.YesDel'),
     }).then((result) => {
       if (result.isConfirmed) {
@@ -193,10 +178,10 @@ const FeedbackDetailsPage = () => {
   const handleDeleteImage = (id,extension) => {
 
     Swal.fire({
-      title: "Are you sure?",
-      text: "This image will be permanently deleted",
+      title: t('feedback.AreYouSure'),
+      text: t('feedback.thisImageDeleted'),
       showCancelButton: true,
-      cancaelButtonText:t('user.Cancel'),
+      cancelButtonText:t('user.Cancel'),
       confirmButtonText: t('feedback.YesDel'),
     }).then((result) => {
       if (result.isConfirmed) {
@@ -204,8 +189,35 @@ const FeedbackDetailsPage = () => {
         setAuthenticatedImages(updatedState);
         dispatch(DeleteImageAction(id+"."+extension));
     }});
+  }
 
+  const handleDeleteFile = (id,extension) => {
 
+    Swal.fire({
+      title: t('feedback.AreYouSure'),
+      text: t('feedback.thisFileDeleted'),
+      showCancelButton: true,
+      cancelButtonText: t('user.Cancel'),
+      confirmButtonText: t('feedback.YesDel'),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedState = fileList.filter(obj => obj.id !== id);
+        setFileList(updatedState);
+        dispatch(DeleteFileAction(id+"."+extension));
+    }});
+  }
+
+  const handleDownloadFile = (url,name) =>{
+
+    Swal.fire({
+      text: t('feedback.Download')+" "+name,
+      showCancelButton: true,
+      cancelButtonText:t('user.Cancel'),
+      confirmButtonText: t('feedback.Download'),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        downloadFileApi(url,name);
+    }});
 
   }
 
@@ -274,6 +286,12 @@ const FeedbackDetailsPage = () => {
                     </li>
 
                       <ul className="nav-item nav-item-trigger d-xxl-none">
+
+                        <li >
+                          <Button  onClick={toggleFileModal}>
+                            <Icon name="file"></Icon>
+                          </Button>
+                        </li>
 
                         <li >
                           <Button  onClick={toggleImageModal}>
@@ -411,7 +429,7 @@ const FeedbackDetailsPage = () => {
 
                       <Block>
                           <BlockHead className="nk-block-head-line">
-                            <BlockTitle tag="h4" className="overline-title text-base">
+                            <BlockTitle tag="h5" className="overline-title text-base">
                             {t('feedback.FDescription')} :
                             </BlockTitle>
                           </BlockHead>
@@ -436,7 +454,7 @@ const FeedbackDetailsPage = () => {
                           </div> }
 
                           {authenticatedImages?.length===0 &&   
-                          <p>No available images...</p> }
+                          <p>{t('feedback.NoAvailImages')}</p> }
 
                           {authenticatedImages && 
 
@@ -444,34 +462,109 @@ const FeedbackDetailsPage = () => {
                         {authenticatedImages?.map( (item) => {
                             // const imageUrl = await getImageStaticApi(item.imageUrl);
                                       return (
-                            <Col sm={6} lg={4} xxl={3} key={item?.id}>
+                            <Col sm={4} lg={3} xxl={3} key={item?.id}>
                               <Card className="gallery" >
                               <ImageContainer img={item?.imageUrl}  />
-                                <div className="gallery-body card-inner align-center justify-between flex-wrap g-2">
+                                <div className="gallery-body card-inner align-center justify-between flex-wrap g-2"
+                                style={{height:"85px"}}>
                                   <div className="user-card">
                                     
                                     <div className="user-info">
                                       <span className="text">
-                                        {item?.imageName.length > 20 ?
-                                         item?.imageName.substring(0,19) + "..." :
+                                        {item?.imageName.length > 18 ?
+                                         item?.imageName.substring(0,17) + "..." :
                                          item?.imageName}
+
+                              {item.creatorId===currentUser().id && !currentUser().roles.includes("ROLE_ADMIN") &&
+                                    <Button className="btn-p-0 btn-focus" onClick={()=>handleDeleteImage(item?.id,item?.imageExtension)} style={{height:"10px"}}>
+                                      <Icon name="trash-empty-fill"></Icon>
+                                    </Button>
+                                  }
+
+                                  <RolesWithPermession rolesRequired="ADMIN">
+                                      <Button className="btn-p-0 btn-focus" onClick={()=>handleDeleteImage(item?.id,item?.imageExtension)} style={{height:"10px"}}>
+                                        <Icon name="trash-empty-fill"></Icon>
+                                      </Button>
+                                  </RolesWithPermession>
+
+
                                       </span>
                                      
-                                      {/* <span className="sub-text">{item.userEmail}</span> */}
+                                      <span className="sub-text">Added on {formatDate(item.createdAt)}</span>
                                     </div>
                                   </div>
-                                  <div>
-                                    <Button className="btn-p-0 btn-focus" onClick={()=>handleDeleteImage(item?.id,item?.imageExtension)}>
-                                      <Icon name="trash-empty-fill"></Icon>
-                                      <span>Delete</span>
-                                    </Button>
-                                  </div>
+
+                                  
+
+
                                 </div>
                               </Card>
                             </Col>
                           );
                         })}
                         </Row>
+                        }
+                         
+                      </Block>
+
+                      <Block>
+                          <BlockHead className="nk-block-head-line">
+                            <BlockTitle tag="h4" className="overline-title text-base">
+                            {t('feedback.Files')} :
+                            </BlockTitle>
+                          </BlockHead>
+
+                          {fileList===undefined &&   
+                          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
+                            <Spinner type="grow" color="primary" />
+
+                          </div> }
+
+                          {fileList?.length===0  &&
+                          <p>{t('feedback.NoAvailFiles')}</p> }
+
+                          {fileList &&
+
+                        <Block>
+                        <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
+                        {fileList?.map( (item) => {
+                                      return (
+                                        
+
+                            <div className="profile-ud-item">
+                            <div className="profile-ud wider">
+                              <span className="profile-ud-label" style={{ cursor: "pointer" }}
+                                 onClick={() => handleDownloadFile(item?.fileUrl,item?.fileName)}>
+                                &bull;&nbsp;<a href="" onClick={(e) => { e.preventDefault(); }}>{item.fileName}</a>
+                                </span>
+                              <span className="profile-ud-value">
+
+                                <Button className="btn-p-0 btn-focus"  onClick={()=>handleDownloadFile(item?.fileUrl,item?.fileName)}>
+                                      <Icon name="download"></Icon>
+                              </Button>
+
+
+                              {item.creatorId===currentUser().id && !currentUser().roles.includes("ROLE_ADMIN") &&
+                                  <Button className="btn-p-0 btn-focus"  onClick={()=>handleDeleteFile(item?.id,item?.fileExtension)}>
+                                   <Icon name="trash-empty-fill"></Icon>
+                                  </Button>
+                                  }
+
+                              <RolesWithPermession rolesRequired="ADMIN">
+                                <Button className="btn-p-0 btn-focus"  onClick={()=>handleDeleteFile(item?.id,item?.fileExtension)}>
+                                    <Icon name="trash-empty-fill"></Icon>
+                                </Button>
+                              </RolesWithPermession>
+                                
+                                </span>
+                            </div>
+                            </div>
+                            
+                          );
+                          
+                        })}
+                        </div>
+                        </Block>
                         }
                          
                       </Block>
@@ -505,7 +598,7 @@ const FeedbackDetailsPage = () => {
                             </div>
                             <div className="profile-ud-item">
                               <div className="profile-ud wider">
-                                <span className="profile-ud-label">{t('user.LastM')} :</span>
+                                <span className="profile-ud-label" style={{width:"220px"}}>{t('user.LastM')} :</span>
                                 <span className="profile-ud-value">{formatDate(feedback.modifiedAt)}</span>
                               </div>
                             </div>
@@ -644,6 +737,10 @@ const FeedbackDetailsPage = () => {
 
                 <Modal size="lg" isOpen={imageModal} toggle={toggleImageModal}>
                 <ImageModal toggle={toggleImageModal} feedbackId={feedback.id}/>
+                </Modal>
+
+                <Modal size="lg" isOpen={fileModal} toggle={toggleFileModal}>
+                <FileModal toggle={toggleFileModal} feedbackId={feedback.id}/>
                 </Modal>
 
 

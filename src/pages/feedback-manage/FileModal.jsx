@@ -8,24 +8,24 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../app/store";
 import Dropzone from "react-dropzone";
 import { useTranslation } from 'react-i18next'
-import { uploadImageApi } from "../../services/ImageService";
 import currentUser from "../../utils/currentUser";
+import { uploadFileApi } from "../../services/FileService";
 
 
 
 
 
-const ImageModal = ({toggle,feedbackId}) => {
+const FileModal = ({toggle,feedbackId}) => {
     const {t}= useTranslation();
 
+
     const { errors, register, handleSubmit } = useForm();
-    const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(false);
     const [successVal,setSuccessVal] =useState("");
     const [errorVal,setErrorVal] =useState("");
 
-    const [images, setImages] = useState([]);
+    const [files, setFiles] = useState([]);
 
     // handles ondrop function of dropzone
     const handleDropChange = (acceptedFiles, set) => {
@@ -46,15 +46,15 @@ const ImageModal = ({toggle,feedbackId}) => {
         formData.append('feedbackId',feedbackId);
         formData.append('creatorId',currentUser().id);
 
-        images.forEach((image) => {
-            formData.append('images[]', image);
+        files.forEach((file) => {
+            formData.append('files[]', file);
           });
 
     
         // console.log(formData);
-        uploadImageApi(formData).then(()=>{
+        uploadFileApi(formData).then(()=>{
             setLoading(false);
-            setSuccessVal("Images added successfully")
+            setSuccessVal("Files added successfully")
         });
        
     }
@@ -76,7 +76,7 @@ const ImageModal = ({toggle,feedbackId}) => {
             <Icon name="cross-sm"></Icon>
         </a>
         <div className="p-2">
-            <h5 className="title">{t('feedback.AddImages')}</h5>
+            <h5 className="title">{t('feedback.AddFiles')}</h5>
             <div className="mt-4">
             {errorVal && (
                     <div className="mb-3">
@@ -99,35 +99,33 @@ const ImageModal = ({toggle,feedbackId}) => {
 
             
             <Col sm="12">
-            <Dropzone
-                onDrop={(acceptedFiles) => handleDropChange(acceptedFiles, setImages)}
-                accept={[".jpg", ".png", ".svg",".gif"]}
-            >
-                {({ getRootProps, getInputProps }) => (
-                <section>
-                    <div {...getRootProps()} className="dropzone upload-zone dz-clickable">
-                    <input {...getInputProps()} />
-                    {images.length === 0 && (
-                        <div className="dz-message">
-                        <span className="dz-message-text">{t('feedback.DnDImages')}</span>
-                        <span className="dz-message-or">{t('feedback.Or')}</span>
-                        <Button color="primary" type="button">{t('feedback.Select')}</Button>
-                        </div>
-                    )}
-                    {images.map((image) => (
-                        <div
-                        key={image.name}
-                        className="dz-preview dz-processing dz-image-preview dz-error dz-complete"
-                        >
-                        <div className="dz-image">
-                            <img src={image.preview} alt="preview" />
-                        </div>
-                        </div>
-                    ))}
-                    </div>
-                </section>
-                )}
-            </Dropzone>
+            <Dropzone onDrop={(acceptedFiles) => handleDropChange(acceptedFiles, setFiles)}>
+                  {({ getRootProps, getInputProps }) => (
+                    <section>
+                      <div {...getRootProps()} className="dropzone upload-zone dz-clickable">
+                        <input {...getInputProps()} />
+                        {files.length === 0 && (
+                          <div className="dz-message">
+                            <span className="dz-message-text">{t('feedback.DnDFiles')}</span>
+                            <span className="dz-message-or">{t('feedback.Or')}</span>
+                            <Button color="primary" type="button">{t('feedback.Select')}</Button>
+                          </div>
+                        )}
+                        {files.map((file) => (
+                          <div
+                            key={file.name}
+                            className="dz-preview dz-processing dz-image-preview dz-error dz-complete"
+                          >
+                            {/* <div className="dz-image">
+                              <img src={file.preview} alt="preview" />
+                            </div> */}
+                            {file.name}
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
+                </Dropzone>
             </Col>
             
             
@@ -162,4 +160,4 @@ const ImageModal = ({toggle,feedbackId}) => {
      );
 }
  
-export default ImageModal;
+export default FileModal;

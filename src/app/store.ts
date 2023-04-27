@@ -7,6 +7,8 @@ import feedbackSlice from "../features/feedbackSlice";
 import globalSlice from "../features/globalSlice";
 import CommentSlice from "../features/CommentSlice";
 import ImageSlice from "../features/ImageSlice";
+import FileSlice from "../features/FileSlice";
+import NotificationSlice from "../features/NotificationSlice";
 
 
 
@@ -18,7 +20,9 @@ export const store = configureStore({
     feedback: feedbackSlice,
     global: globalSlice,
     comment:CommentSlice,
-    image:ImageSlice
+    image:ImageSlice,
+    file:FileSlice,
+    notification:NotificationSlice
   }
   
   
