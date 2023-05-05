@@ -279,38 +279,7 @@ const UserListRegularPage = () => {
               <div className="card-title-group">
                 <div className="card-tools">
                   <div className="form-inline flex-nowrap gx-3">
-                    {/* <div className="form-wrap">
-                      <RSelect
-                        options={bulkActionOptions}
-                        className="w-130px"
-                        placeholder="Bulk Action"
-                        onChange={(e) => onActionText(e)}
-                      />
-                    </div> */}
-                    {/* <div className="btn-wrap">
-                      <span className="d-none d-md-block">
-                        <Button
-                          disabled={actionText !== "" ? false : true}
-                          color="light"
-                          outline
-                          className="btn-dim"
-                          onClick={(e) => onActionClick(e)}
-                        >
-                          Apply
-                        </Button>
-                      </span>
-                      <span className="d-md-none">
-                        <Button
-                          color="light"
-                          outline
-                          disabled={actionText !== "" ? false : true}
-                          className="btn-dim btn-icon"
-                          onClick={(e) => onActionClick(e)}
-                        >
-                          <Icon name="arrow-right"></Icon>
-                        </Button>
-                      </span>
-                    </div> */}
+                    
                   </div>
                 </div>
                 <div className="card-tools me-n1">
@@ -556,19 +525,7 @@ const UserListRegularPage = () => {
                 ? currentItems.map((item) => {
                     return (
                       <DataTableItem key={item.id}>
-                        {/* <DataTableRow className="nk-tb-col-check">
-                          <div className="custom-control custom-control-sm custom-checkbox notext">
-                            <input
-                              type="checkbox"
-                              className="custom-control-input"
-                              defaultChecked={item.checked}
-                              id={item.id + "uid1"}
-                              key={Math.random()}
-                              onChange={(e) => onSelectChange(e, item.id)}
-                            />
-                            <label className="custom-control-label" htmlFor={item.id + "uid1"}></label>
-                          </div>
-                        </DataTableRow> */}
+                     
                         <DataTableRow>
                           <Link to={`${process.env.PUBLIC_URL}/user-details/${item.id}`}>
                             <div className="user-card">

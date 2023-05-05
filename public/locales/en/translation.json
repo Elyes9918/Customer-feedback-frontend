@@ -267,6 +267,17 @@
         "Confirm":"Confirm",
         "":""
 
+    },
+    "notif":{
+        "NotifSettings":"Notification Settings",
+        "NotifSecurity":"Notification Security",
+        "NotifSText":"You will get only those email notification what you want.",
+        "ANotif":"Activate Notifications",
+        "MyNotif":"My Notifications",
+        "YHave":"You have",
+        "DelNotif":"Delete Notification",
+        "NotifDeleted":"Notification Deleted"
+        
     }
 
   }

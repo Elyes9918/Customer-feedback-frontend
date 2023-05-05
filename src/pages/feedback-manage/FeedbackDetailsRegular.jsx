@@ -30,6 +30,9 @@ import { getImageStaticApi } from "../../services/ImageService";
 import FileModal from "./FileModal";
 import { DeleteFileAction, GetFileUrlsIdFeedbackAction } from "../../features/FileSlice";
 import { downloadFileApi } from "../../services/FileService";
+import { CopyBlock } from "react-code-blocks";
+import {a11yLight} from 'react-code-blocks'
+
 
 
 
@@ -168,7 +171,9 @@ const FeedbackDetailsPage = () => {
 
         dispatch(DeleteCommentAction(id)).then(()=>{
           Swal.fire("Deleted!", "Comment has been deleted.", "success");
-          window.location.reload(false);  
+          dispatch(GetCommentByFeedbackIdAction(feedbackId)).then((data)=>{
+            setCommentData(data.payload);
+          });
         })
 
     }});
@@ -220,6 +225,16 @@ const FeedbackDetailsPage = () => {
     }});
 
   }
+
+    const downloadTxtFile = (data) => {
+        const blob = new Blob([data], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = "SqlScript.sql";
+        link.href = url;
+        link.click();
+      }
+
 
 
   return (
@@ -287,13 +302,13 @@ const FeedbackDetailsPage = () => {
 
                       <ul className="nav-item nav-item-trigger d-xxl-none">
 
-                        <li >
+                        <li key={1}>
                           <Button  onClick={toggleFileModal}>
                             <Icon name="file"></Icon>
                           </Button>
                         </li>
 
-                        <li >
+                        <li key={2}>
                           <Button  onClick={toggleImageModal}>
                             <Icon name="camera-fill"></Icon>
                           </Button>
@@ -303,7 +318,7 @@ const FeedbackDetailsPage = () => {
                         !currentUser().roles.includes("ROLE_ADMIN") &&
                         !currentUser().roles.includes("ROLE_GESTIONNAIRE")&&
                         !currentUser().roles.includes("ROLE_MEMBER")&&
-                        <li >
+                        <li key={3}>
                           <Button  onClick={toggleTaskModal}>
                             <Icon name="pen2"></Icon>
                           </Button>
@@ -311,7 +326,7 @@ const FeedbackDetailsPage = () => {
                         }
 
                       <RolesWithPermession rolesRequired="ADMIN,MEMBER,GESTIONNAIRE">
-                        <li >
+                        <li key={4}>
                           <Button  onClick={toggleTaskModal}>
                             <Icon name="pen2"></Icon>
                           </Button>
@@ -527,11 +542,11 @@ const FeedbackDetailsPage = () => {
 
                         <Block>
                         <div className="profile-ud-list" style={{ width: '100%' ,maxWidth:"1200px"}}>
-                        {fileList?.map( (item) => {
+                        {fileList?.map( (item,index) => {
                                       return (
                                         
 
-                            <div className="profile-ud-item">
+                            <div className="profile-ud-item" key={index}>
                             <div className="profile-ud wider">
                               <span className="profile-ud-label" style={{ cursor: "pointer" }}
                                  onClick={() => handleDownloadFile(item?.fileUrl,item?.fileName)}>
@@ -639,15 +654,38 @@ const FeedbackDetailsPage = () => {
                           <div className="bq-note-item" key={item?.id}>
                             
                             <div className="bq-note-text">
-                            <p><strong><sup>{TypeOptions.find(option => option.value === item.type)?.label} :&nbsp;</sup></strong></p>
+                            <p><strong><sup>{TypeOptions.find(option => option.value === item.type)?.label} :
+
+                            {item?.type==="2" && " "+ item?.description.substring(0, 7)}
+                            
+                            
+                            &nbsp;</sup></strong></p>
                             {item?.type==="0" && 
                             <div dangerouslySetInnerHTML={{ __html: item?.description }} />
                             }
                             {item?.type==="1" && 
-                            <div dangerouslySetInnerHTML={{ __html: item?.description }} />
+
+                            <CopyBlock
+                                  text={item?.description}
+                                  language={"sql"}
+                                  showLineNumbers={true}
+                                  theme={a11yLight}
+                                  codeBlock={true}
+                                  wrapLines
+                                />
                             }
                             {item?.type==="2" && 
-                            <div dangerouslySetInnerHTML={{ __html: item?.description }} />
+                            <>
+                            
+                              <a href={feedback.repo+"/commit/"+item?.description} target="_blank">
+                                Commit Token : #{item?.description}
+                              </a>
+                              
+                              {/* <p>Commit ID : {item?.description.substring(0, 7)}</p> */}
+                              
+
+
+                              </>
                             }
                               
                             </div>
@@ -658,12 +696,26 @@ const FeedbackDetailsPage = () => {
                                 
                               </span>
                               <span className="bq-note-by">
-                                 By <span>{item?.user?.name}</span>
+                                 By <span><strong>{item?.user?.name}</strong></span>
                               </span>
+
+                              {item?.type==="1" && 
+                              <a
+                                href="#deletenote"
+                                onClick={(ev) => {
+                                  ev.preventDefault();
+                                  downloadTxtFile(item?.description)
+                                }}
+                                className="link link-sm link-danger"
+                              >
+                                Download File
+                              </a>
+                              }
 
                           
                             {item.user.id===currentUser().id && !currentUser().roles.includes("ROLE_ADMIN") &&
                               <>
+                              
                               <a
                                 href="#deletenote"
                                 onClick={(ev) => {
@@ -709,6 +761,8 @@ const FeedbackDetailsPage = () => {
                               >
                                 Delete
                               </a>
+                              
+
                               </>
                               </RolesWithPermession>
                               
@@ -732,7 +786,7 @@ const FeedbackDetailsPage = () => {
                   key={shouldReRenderCommentModal}
                   isModalOpen={addNoteModal} 
                   editComment={selectedEditComment} 
-                  feedbackId={feedback.id}
+                  feedback={feedback}
                 />
 
                 <Modal size="lg" isOpen={imageModal} toggle={toggleImageModal}>

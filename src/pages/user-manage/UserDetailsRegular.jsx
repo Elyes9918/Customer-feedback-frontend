@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Modal, ModalBody, Spinner } from "reactstrap";
+import { Card, Spinner } from "reactstrap";
 import {
   Button,
   Block,
@@ -44,7 +44,6 @@ const UserDetailsPage = () => {
   // grabs the id of the url and loads the corresponding data
   useEffect(() => {
     dispatch(GetUserByIdAction(userId));
-    
   }, []);
 
   // function to toggle sidebar

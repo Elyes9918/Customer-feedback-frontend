@@ -12,12 +12,15 @@ import Swal from "sweetalert2";
 import RolesWithPermession from "../../routesProtectionComponents/RolesWithPermession";
 import { Editor } from "@tinymce/tinymce-react";
 import { useTranslation } from 'react-i18next'
+import { CreateNotificationAction } from "../../features/NotificationSlice";
+import { GetProjectByIdAction } from "../../features/projectSlice";
+import { IFeedback } from "../../types/Feedback";
+import { IUser } from "../../types/User";
 
 
 
 
-
-export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
+export const KanbanTaskForm = ({ toggle, editTask,projectId }) => {
   const {t}= useTranslation();
 
 
@@ -51,6 +54,8 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
 
   const isFeedbackDetails = useMatch('/feedback-details/:feedbackId');
 
+  const { project, status } = useAppSelector(state => state.project);
+
 
   const [selectedPriority,setSelectedPriority] = useState(editTask?.priority);
   const [selectedStatus,setSelectedStatus] = useState(editTask?.status);
@@ -76,6 +81,10 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
         label: user.firstName +" "+ user.lastName
       })));
     });
+
+    dispatch(GetProjectByIdAction(projectId));
+
+
 
   },[]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -132,10 +141,19 @@ export const KanbanTaskForm = ({ toggle,taskToBoard, editTask,projectId }) => {
           creatorId:currentUser().id,
           usersId: formData?.users?.map(user => user.value)
         }
-
-        console.log(descriptionText);
   
         dispatch(CreateFeedbackAction(feedback)).then(()=>{
+
+
+
+          const notification = {
+            description:"A Feedback has been added to the Project "+project?.title,
+            type:"2",
+            usersId: project?.usersId.map(user => user.id)
+          }
+          dispatch(CreateNotificationAction(notification));
+      
+
           setLoading(false);
           setErrorVal("");
           setSuccessVal(t('feedback.FCS'));

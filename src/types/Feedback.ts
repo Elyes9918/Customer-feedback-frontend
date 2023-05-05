@@ -8,6 +8,7 @@ export interface IFeedback {
     priority?:string;
     rating?:string;
     progress?:string;
+    repo?:string;
     createdAt?:string;
     modifiedAt?:string;
     usersId?: string[];

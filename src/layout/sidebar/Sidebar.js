@@ -6,7 +6,7 @@ import Menu from "../menu/Menu";
 import Toggle from "./Toggle";
 
 const Sidebar = ({ fixed, theme, className, sidebarToggle, mobileView, ...props }) => {
-  const [collapseSidebar, setSidebar] = useState(false);
+  const [collapseSidebar, setSidebar] = useState(true);
   const [mouseEnter, setMouseEnter] = useState(false);
 
   const toggleCollapse = () => {
@@ -32,7 +32,7 @@ const Sidebar = ({ fixed, theme, className, sidebarToggle, mobileView, ...props 
         <div className="nk-sidebar-brand">
           <Logo />
         </div>
-        <div className="nk-menu-trigger me-n2">
+        {/* <div className="nk-menu-trigger me-n2">
           <Toggle className="nk-nav-toggle nk-quick-nav-icon d-xl-none me-n2" icon="arrow-left" click={sidebarToggle} />
           <Toggle
             className={`nk-nav-compact nk-quick-nav-icon d-none d-xl-inline-flex ${
@@ -41,7 +41,7 @@ const Sidebar = ({ fixed, theme, className, sidebarToggle, mobileView, ...props 
             click={toggleCollapse}
             icon="menu"
           />
-        </div>
+        </div> */}
       </div>
       <div className="nk-sidebar-content" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <SimpleBar className="nk-sidebar-menu">

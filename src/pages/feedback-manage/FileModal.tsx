@@ -11,11 +11,14 @@ import { useTranslation } from 'react-i18next'
 import currentUser from "../../utils/currentUser";
 import { uploadFileApi } from "../../services/FileService";
 
+interface FileModalProps {
+  toggle: () => void;
+  feedbackId: string;
+}
 
 
 
-
-const FileModal = ({toggle,feedbackId}) => {
+const FileModal = ({ toggle, feedbackId }: FileModalProps) => {
     const {t}= useTranslation();
 
 

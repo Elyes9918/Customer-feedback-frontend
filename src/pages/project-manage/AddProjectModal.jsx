@@ -19,6 +19,7 @@ import { getUserListAction } from "../../features/userSlice";
 import { CreateProjectAction } from "../../features/projectSlice";
 import currentUser from "../../utils/currentUser";
 import { useTranslation } from "react-i18next";
+import { CreateNotificationAction } from "../../features/NotificationSlice";
 
 
 
@@ -87,7 +88,17 @@ const AddProjectModal = ({isModalOpen}) => {
       repo:data?.repoLink
     }
 
+
     dispatch(CreateProjectAction(project)).then(()=>{
+
+        const notification = {
+          description:"A Project has been assigned to you",
+          type:"1",
+          usersId:project.usersId
+        }
+        dispatch(CreateNotificationAction(notification));
+      
+      
       setLoading(false);
       setSuccessVal(t('project.PCS'))
       // setModal(false);

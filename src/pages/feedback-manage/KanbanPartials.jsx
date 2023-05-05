@@ -326,7 +326,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                             <span>{t('feedback.Low')}</span>
                           </DropdownItem>
                         </li>
-                        <li key={1}>
+                        <li key={2}>
                           <DropdownItem
                             href="#dropdownitem"
                             onClick={(ev) => {
@@ -336,7 +336,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                             <span>{t('feedback.Medium')}</span>
                           </DropdownItem>
                         </li>
-                        <li key={2}>
+                        <li key={3}>
                           <DropdownItem
                             href="#dropdownitem"
                             onClick={(ev) => {
@@ -346,7 +346,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                             <span>{t('feedback.High')}</span>
                           </DropdownItem>
                         </li>
-                        <li key={3}>
+                        <li key={4}>
                           <DropdownItem
                             href="#dropdownitem"
                             onClick={(ev) => {
@@ -357,7 +357,7 @@ export const KanbanColumn = ({ data, setData, column, index,projectId }) => {
                             <span>{t('feedback.Very High')}</span>
                           </DropdownItem>
                         </li>
-                        <li key={3}>
+                        <li key={5}>
                           <DropdownItem
                             href="#dropdownitem"
                             onClick={(ev) => {

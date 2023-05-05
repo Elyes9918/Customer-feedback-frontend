@@ -22,6 +22,7 @@ export interface IUser {
     token?:IjwtPayload;
     refresh_token?:string;
     isVerified?:number;
+    notificationIsOn?:string;
     checked?:boolean;
   }
 

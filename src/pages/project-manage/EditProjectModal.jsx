@@ -108,6 +108,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
       title:data?.title,
       client:data?.client,
       description:data?.description,
+      repo:data?.repoLink,
       usersId: [
         ...formData.team.map(user => user.value),
         ...formData.clients.map(user => user.value),
@@ -116,7 +117,7 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
       status: selectedStatus
     }
 
-    console.log(project);
+    
 
     dispatch(UpdateProjectAction(project)).then(()=>{
       setLoading(false);
@@ -250,6 +251,20 @@ const EditProjectModal = ({isModalOpen,projectToEdit}) => {
                       projectToEdit?.status === "2" ? StatusOptions[2] : "" }
                       onChange={(e) => setSelectedStatus(e.value)}
                         />
+                    </div>
+                  </Col>
+                  <Col md="12">
+                    <div className="form-group">
+                      <label className="form-label">Web-Based repository link</label>
+                      <input
+                        type="text"
+                        name="repoLink"
+                        defaultValue={projectToEdit?.repo}
+                        placeholder="Please enter your repository link"
+                        ref={register({ required: `${t('page.Login.TfIsReq')}` })}
+                        className="form-control"
+                      />
+                      {errors.repoLink && <span className="invalid">{errors.repoLink.message}</span>}
                     </div>
                   </Col>
                   <Col size="12">

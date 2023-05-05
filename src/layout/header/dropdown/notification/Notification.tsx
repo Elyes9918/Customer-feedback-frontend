@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { DropdownToggle, DropdownMenu, UncontrolledDropdown } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { DropdownToggle, DropdownMenu, UncontrolledDropdown, Spinner } from "reactstrap";
 
 import Icon from "../../../../components/icon/Icon";
 import data from "./NotificationData";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 import { getNotificationsByIdUserApi } from "../../../../services/NotificationService";
 import currentUser from "../../../../utils/currentUser";
-import { GetNotificationByUserIdAction } from "../../../../features/NotificationSlice";
+import { GetNotificationByUserIdAction, UpdateNotificationAction } from "../../../../features/NotificationSlice";
 import { useNavigate } from "react-router-dom";
 import { setInfoPerso, setNotificationPanel } from "../../../../features/globalSlice";
 
@@ -19,8 +19,28 @@ interface NotificationItemProps {
 }
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ icon, iconStyle, text, time, id }) => {
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+ 
+  const onNotifClick = () =>{
+
+    const notification = {
+      id:id,
+      isRead:"1",
+    }
+    dispatch(UpdateNotificationAction(notification))
+    dispatch(setNotificationPanel(true));
+    dispatch(setInfoPerso(false));
+    navigate("/user-profile");
+    
+  } 
+
+
   return (
-    <div className="nk-notification-item" key={id} id={id}>
+    <a href="#" onClick={onNotifClick}>
+    <div className="nk-notification-item" key={id} id={id} >
       <div className="nk-notification-icon">
       <Icon name={icon} className={`icon-circle${iconStyle ? ` ${iconStyle}` : ""}`} />
       </div>
@@ -29,6 +49,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ icon, iconStyle, te
         <div className="nk-notification-time">{time}</div>
       </div>
     </div>
+    </a>
   );
 };
 
@@ -45,13 +66,19 @@ const Notification = () => {
 
   const { list, status } = useAppSelector(state => state.notification);
   const dispatch = useAppDispatch();
+  
+  const [loading,setLoading]=useState(false);
+
+
+
+  const sortedList = [...list].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                     .filter(obj => obj.isRead === "0");
 
   useEffect(()=>{
     dispatch(GetNotificationByUserIdAction(currentUser().id))
   },[])
 
-  const sortedList = [...list].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                     .filter(obj => obj.isRead === "0");
+  
 
 
   function timeAgo(createdAt: string): string {
@@ -88,6 +115,24 @@ const Notification = () => {
     navigate("/user-profile");
   }
 
+
+  const markAllAsRead = () =>{
+  
+    setLoading(true);
+    sortedList.forEach((notif) => {
+      const notification = {
+        id: notif.id,
+        isRead: "1",
+      };
+      dispatch(UpdateNotificationAction(notification));
+    });
+
+    sortedList.splice(0, sortedList.length);
+    console.log(loading);
+    setLoading(false);
+
+  }
+
   return (
     <UncontrolledDropdown className="user-dropdown">
       <DropdownToggle tag="a" className="dropdown-toggle nk-quick-nav-icon">
@@ -104,14 +149,15 @@ const Notification = () => {
       </DropdownToggle>
       <DropdownMenu end className="dropdown-menu-xl dropdown-menu-s1">
         <div className="dropdown-head">
-          <span className="sub-title nk-dropdown-title">{data.title}</span>
-          <a href="#markasread" onClick={(ev) => ev.preventDefault()}>
+          <span className="sub-title nk-dropdown-title">{sortedList?.length} Unread Notifications</span>
+          {/* <a href="#markasread" onClick={(ev) =>{ ev.preventDefault();markAllAsRead()}}>
             Mark All as Read
-          </a>
+          </a> */}
         </div>
         <div className="dropdown-body">
           <div className="nk-notification">
-            {sortedList?.map((item) => {
+            {loading===false ? (
+            sortedList?.map((item) => {
               return (
                 <NotificationItem
                   key={item.id}
@@ -122,7 +168,12 @@ const Notification = () => {
                   time={timeAgo(item.createdAt)}
                 />
               );
-            })}
+            })
+            ):
+            (
+              <Spinner size="sm" color="light" />
+            )
+            }
           </div>
         </div>
         <div className="dropdown-foot center">

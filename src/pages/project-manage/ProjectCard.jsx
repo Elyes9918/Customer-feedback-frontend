@@ -72,13 +72,10 @@ const ProjectCardPage = () => {
   useEffect(()=>{
     if(isListProjects){
       dispatch(getProjectListAction()).then((updatedList)=>{
-        console.log(updatedList.payload);
         setData(updatedList.payload);
-        console.log(updatedList.payload)
       });
     }else if (isMyProjects){
       dispatch(GetProjectsByIdUserAction(currentUser().id)).then((updatedList)=>{
-        console.log(updatedList.payload);
         setData(updatedList.payload);
       });
     }
@@ -169,7 +166,7 @@ const ProjectCardPage = () => {
                 </Button>
                 <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
                   <ul className="nk-block-tools g-3">
-                    <li>
+                    <li key={1}> 
                       <div className="form-control-wrap">
                           <div className="form-icon form-icon-right">
                               <Icon name="search"></Icon>
@@ -181,7 +178,7 @@ const ProjectCardPage = () => {
                           />
                       </div>
                     </li>
-                    <li>
+                    <li key={2}> 
                       <UncontrolledDropdown>
                         <DropdownToggle tag="a" className="dropdown-toggle btn btn-white btn-dim btn-outline-light">
                           <Icon name="filter-alt" className="d-none d-sm-inline"></Icon>
@@ -226,7 +223,7 @@ const ProjectCardPage = () => {
                                 <span>{t('project.Closed')} </span>
                               </DropdownItem>
                             </li>
-                            <li key={3}>
+                            <li key={4}>
                               <DropdownItem
                                 tag="a"
                                 href="#dropdownitem"
@@ -242,7 +239,7 @@ const ProjectCardPage = () => {
                       </UncontrolledDropdown>
                     </li>
                     {isListProjects &&
-                    <li className="nk-block-tools-opt" onClick={() => {onAddClick()}}>
+                    <li className="nk-block-tools-opt" onClick={() => {onAddClick()}} key={5}>
                       <Button color="primary">
                         <Icon name="plus"></Icon>
                         <span>{t('project.AddProject')}</span>
@@ -259,7 +256,6 @@ const ProjectCardPage = () => {
         {status === ApiStatus.loading &&   
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '70px',marginBottom:'70px' }}>
           <Spinner type="grow" color="primary" />
-
         </div> }
 
         {status === ApiStatus.ideal && list.length === 0 &&
@@ -286,16 +282,13 @@ const ProjectCardPage = () => {
           <Row className="g-gs">
             {}
             {currentItems &&
-              currentItems.map((item) => {
-                // var days = setDeadlineDays(item.deadline);
-                // var days = setDeadlineDays(setDeadline(10));
-                
+              currentItems.map((item,index) => {                
                 var FeedbacksNumber = item.feedbacks.length;
                 var feedbacksDone = item.feedbacks.filter((feedback)=>feedback.status===3).length;
 
                 return (
                   
-                  <Col sm="6" lg="4" xxl="3" key={item.id}>
+                  <Col sm="6" lg="4" xxl="3" key={index}>
                     <ProjectCard>
                       <div className="project-head">
                       <Link to={`/feedbacks/${item.id}`}>
@@ -345,19 +338,6 @@ const ProjectCardPage = () => {
                                   <span>{t('project.EditProject')}</span>
                                 </DropdownItem>
                               </li>
-                              
-                                {/* <li onClick={() => completeProject(item.id)}>
-                                  <DropdownItem
-                                    tag="a"
-                                    href="#markasdone"
-                                    onClick={(ev) => {
-                                      ev.preventDefault();
-                                    }}
-                                  >
-                                    <Icon name="check-round-cut"></Icon>
-                                    <span>Mark As Done</span>
-                                  </DropdownItem>
-                                </li> */}
                                 </RolesWithPermession>
                             </ul>
                           </DropdownMenu>
@@ -366,7 +346,7 @@ const ProjectCardPage = () => {
                       <div className="project-details">
                         {item.description.length > 85 ? item.description.substring(0, 84) + "... " : item.description}
                       </div>
-                      <div className="project-progress">
+                      <div className="project-progress" >
                         <div className="project-progress-details">
                           <div className="project-progress-task">
                             <Icon name="check-round-cut"></Icon>
@@ -400,7 +380,7 @@ const ProjectCardPage = () => {
                             );
                           })}
                           {item?.usersId?.length > 2 && (
-                            <li>
+                            <li key={1}>
                               <UserAvatar theme="light" className="sm" text={`+${item?.usersId?.length - 2}`} />
                             </li>
                           )}

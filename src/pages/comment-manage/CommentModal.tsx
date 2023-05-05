@@ -7,19 +7,32 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../../app/store";
+import { useAppDispatch, useAppSelector } from "../../app/store";
 import currentUser from "../../utils/currentUser";
-import { CreateCommentAction, UpdateCommentAction } from "../../features/CommentSlice";
+import { CreateCommentAction, GetCommentByFeedbackIdAction, UpdateCommentAction } from "../../features/CommentSlice";
+import { useTranslation } from "react-i18next";
+import { GetProjectByIdAction } from "../../features/projectSlice";
+import { CreateNotificationAction } from "../../features/NotificationSlice";
+import { IUser } from "../../types/User";
 
 
+interface CommentModalProps {
+    isModalOpen: boolean;
+    editComment: any;
+    feedback: any;
+  }
 
-const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
+const CommentModal: React.FC<CommentModalProps> = ({ isModalOpen, editComment, feedback }) => {
+    const {t}= useTranslation();
+
 
     const TypeOptions = [
         { value: "0", label: "Text" },
         { value: "1", label: "SQL Script" },
         { value: "2", label: "Commit" },
       ];
+
+    const { project, status } = useAppSelector(state => state.project);
 
     const { errors, register, handleSubmit } = useForm();
 
@@ -42,22 +55,36 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
 
     useEffect(()=>{
 
+    dispatch(GetProjectByIdAction(feedback?.project?.id));
+
+
      setModal(isModalOpen);
+
     },[isModalOpen,setSelectedType])
 
-    const submitForm = () =>{
+    const submitForm = (data) =>{
 
         if(editComment){
 
             setLoading(true);
 
-            const comment = {
-                id:editComment?.id,
-                description : descriptionText==="" ?  editComment.description : descriptionText,                
-                type: selectedType.value ?? editComment?.type
+            const editDesc = () =>{
+                if(selectedType === "0"){
+                    return descriptionText==="" ?  editComment.description : descriptionText
+                }
+                if(selectedType=== "1"){
+                    return data?.sqlScript;
+                }
+                if(selectedType === "2"){
+                    return data?.commitId;
+                }
             }
 
-            console.log(comment);
+            const comment = {
+                id:editComment?.id,
+                description : editDesc(),                
+                type: selectedType.value ?? editComment?.type
+            }
 
             dispatch(UpdateCommentAction(comment)).then(()=>{
                 setLoading(false);
@@ -75,13 +102,26 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                 setLoading(true);
 
                 const comment = {
-                    description: descriptionText,
-                    type: selectedType,
+                    description: selectedType.value === "2" ? data?.commitId 
+                                : (selectedType.value==="1" ? data?.sqlScript :descriptionText),
+                    type: selectedType.value,
                     userId: currentUser().id,
-                    feedbackId: feedbackId
+                    feedbackId: feedback?.id
                 }
 
+                console.log(comment);
+
                 dispatch(CreateCommentAction(comment)).then(() => {
+
+                    const notification = {
+                        description:"A Comment has been added to the feedback  "+feedback?.title,
+                        type:"2",
+                        usersId: project?.usersId.map((user:any)=> user.id)
+                      }
+                                
+                     dispatch(CreateNotificationAction(notification));
+
+
                     setLoading(false);
                     setErrorVal("");
                     setSuccessVal("Comment Created Succesfully");
@@ -106,7 +146,7 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                 setModal(false);
                 setAddNoteText("");
                 if(successVal){
-                    window.location.reload();  
+                    dispatch(GetCommentByFeedbackIdAction(feedback?.id))  
                 }
                 }}
                 className="close"
@@ -180,22 +220,17 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                 <Col className="col-12">
                     <div className="form-group">
                         <label className="form-label">SQL Script input</label>
-                        
-                        <Editor
-                        onInit={(evt, editor) => (editorRef.current = editor)}
-                        initialValue={editComment?.description}
-                        onEditorChange={(a)=>{setDescriptionText(a)}}
-                        init={{
-                        menubar: "file edit",
-                        plugins: [
-                            "advlist autolink lists link image charmap print preview anchor",
-                            "searchreplace visualblocks code ",
-                            "insertdatetime media table paste code",
-                        ],
-                        toolbar:
-                            "undo redo " 
-                        }}
+                        <textarea
+                        name="sqlScript"
+                        defaultValue={editComment?.description}
+                        placeholder="Please enter your SQL Code"
+                        className="form-control-xxxl form-control"
+                        style={{resize: "vertical"}}
+                        ref={register({ required: `${t('page.Login.TfIsReq')}` })}
                         />
+                        {errors.sqlScript && <span className="invalid">{errors.sqlScript.message}</span>}
+
+
                     </div>
                 </Col>
                 }
@@ -204,16 +239,19 @@ const CommentModal = ({isModalOpen,editComment,feedbackId}) => {
                 <Col className="col-12">
                     <div className="form-group">
                         <label className="form-label">Commit</label>
-                        
                         <input
                         type="text"
-                        name="title"
+                        name="commitId"
+                        defaultValue={editComment?.description}
                         placeholder="Please enter your commit ID"
                         className="form-control"
                         ref={register({ required: "This field is required" })}
                         />
+                        {errors.commitId && <span className="invalid">{errors.commitId.message}</span>}
                     </div>
                 </Col>
+
+                
                 
                 }
 

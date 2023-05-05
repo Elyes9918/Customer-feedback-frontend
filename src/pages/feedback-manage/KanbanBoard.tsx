@@ -88,7 +88,7 @@ const KanbanBoard = ({ feedbackList, setFeedbackList,projectId }) => {
           <div
             className="kanban-container"
             id="kanban-container"
-            style={{ width: "1280px" }}
+            style={{ width: "1280px" , margin: "0 auto" }}
             {...provided.droppableProps}
             ref={provided.innerRef}
             >

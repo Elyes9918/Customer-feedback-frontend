@@ -6,4 +6,5 @@ export interface INotification {
     createdAt?:string;
     modifiedAt?:string;
     user?: string[];
+    usersId?:string[];
   }

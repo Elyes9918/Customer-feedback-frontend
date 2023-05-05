@@ -296,7 +296,7 @@ const MenuSub = ({ icon, link, text,role, sub, sidebarToggle, mobileView, ...pro
   return (
     <ul className="nk-menu-sub" style={props.style}>
       {sub.map((item) => (
-        <RolesWithPermession rolesRequired={item.role}>
+        <RolesWithPermession rolesRequired={item.role} key={item.text}>
         <MenuItem
           link={item.link}
           icon={item.icon}
@@ -386,8 +386,8 @@ const Menu = ({ sidebarToggle, mobileView }) => {
     <ul className="nk-menu">
       {data.map((item, index) =>
         item.heading ? (
-          <RolesWithPermession rolesRequired={item.role}>
-          <MenuHeading heading={item.heading} key={item.heading} />
+          <RolesWithPermession rolesRequired={item.role}  key={item.heading} >
+          <MenuHeading heading={item.heading}  />
           </RolesWithPermession>
         ) : item.panel ? (
           <PanelItem
@@ -403,7 +403,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
             sidebarToggle={sidebarToggle}
           />
         ) : (
-          <RolesWithPermession rolesRequired={item.role}>
+          <RolesWithPermession rolesRequired={item.role} key={item.text}>
           <MenuItem
             key={item.text}
             link={item.link}

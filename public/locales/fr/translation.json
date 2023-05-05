@@ -1,7 +1,7 @@
 {
     "page":{
         "Login":{
-            "SignIn":"S'inscrire",
+            "SignIn":"Connexion",
             "PEYC":"Veuillez saisir vos données d'identification.",
             "Password":"Mot de passe",
             "EYEAddress":"Entrez votre adresse électronique",
@@ -222,7 +222,7 @@
             "thisImageDeleted":"Cette image sera définitivement supprimée",
             "Download":"Télécharger",
             "Files":"Fichiers",
-            "NoAvailImages":"NAucune image disponible...",
+            "NoAvailImages":"Aucune image disponible...",
             "NoAvailFiles":"Aucun fichier disponible...",
             "AddFiles":"Ajouter des fichiers",
             "DnDImages":"Drag and Drop vos images",
@@ -268,8 +268,18 @@
             "english":"anglais",
             "french":"français",
             "Confirm":"Confirmer",
-            "":"",
             "":""
+        },
+        "notif":{
+            "NotifSettings":"Paramètres de notification",
+            "NotifSecurity":"Sécurité des notifications",
+            "NotifSText":"Vous recevrez uniquement les notifications par e-mail que vous souhaitez.",
+            "ANotif":"Activer les notifications",
+            "MyNotif":"Mes notifications",
+            "YHave":"Vous avez reçu",
+            "DelNotif":"Supprimer la notification",
+            "NotifDeleted":"Notification supprimée"
+            
         }
 
     }

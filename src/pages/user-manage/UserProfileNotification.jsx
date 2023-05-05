@@ -15,7 +15,6 @@ import {
   DataTableItem,
   DataTableRow,
   DataTableBody,
-  TooltipComponent,
   PaginationComponent,
 } from "../../components/Component";
 import { useTranslation } from "react-i18next";
@@ -25,6 +24,7 @@ import { DeleteNotificationAction, GetNotificationByUserIdAction } from "../../f
 import currentUser from "../../utils/currentUser";
 import { Col, DropdownItem, DropdownMenu, DropdownToggle, Row, Spinner, UncontrolledDropdown } from "reactstrap";
 import Swal from "sweetalert2";
+import { UpdateUserAction } from "../../features/userSlice";
 
 
 const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
@@ -144,7 +144,7 @@ const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(DeleteNotificationAction(id)).then(()=>{
-          Swal.fire(t('feedback.Deleted'), t('feedback.FeedbackHaD'), "success");
+          Swal.fire(t('notif.NotifDeleted'), "success");
             window.location.reload(false);    
         })
       }
@@ -164,14 +164,31 @@ const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleSwitchChange = (checked) => {
+    if(checked===false){
+      const user = {
+        id:currentUser().id,
+        notificationIsOn:"0"
+      }
+      dispatch(UpdateUserAction(user));
+    }
+    if(checked===true){
+      const user = {
+        id:currentUser().id,
+        notificationIsOn:"1"
+      }
+      dispatch(UpdateUserAction(user));
+    }
+  };
+
   return (
     <React.Fragment>
       <BlockHead size="lg">
         <BlockBetween>
           <BlockHeadContent>
-            <BlockTitle tag="h4">Notification Settings</BlockTitle>
+            <BlockTitle tag="h4">{t('notif.NotifSettings')}</BlockTitle>
             <BlockDes>
-              <p>You will get only notification what have enabled.</p>
+              {/* <p>You will get only notification what have enabled.</p> */}
             </BlockDes>
           </BlockHeadContent>
           <BlockHeadContent className="align-self-start d-lg-none">
@@ -188,9 +205,9 @@ const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
       <BlockHead size="sm">
         <BlockBetween>
           <BlockHeadContent>
-            <BlockTitle tag="h6">Security Alerts</BlockTitle>
+            <BlockTitle tag="h6">{t('notif.NotifSecurity')}</BlockTitle>
             <BlockDes>
-              <p>You will get only those email notification what you want.</p>
+              <p>{t('notif.NotifSText')}</p>
             </BlockDes>
           </BlockHeadContent>
         </BlockBetween>
@@ -200,52 +217,19 @@ const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
         <div className="gy-3">
           <div className="g-item">
             <div className="custom-control custom-switch">
-              <InputSwitch id="custom-switch" checked label="Email me whenever encounter unusual activity" />
-            </div>
-          </div>
-          <div className="g-item">
-            <div className="custom-control custom-switch">
-              <InputSwitch id="custom-switch2" label="Email me if new browser is used to sign in" />
+              <InputSwitch id="custom-switch" checked label={t('notif.ANotif')} onSwitchChange={handleSwitchChange} />
             </div>
           </div>
         </div>
       </BlockContent>
 
-      <BlockHead size="sm">
-        <BlockBetween>
-          <BlockHeadContent>
-            <BlockTitle tag="h6">News</BlockTitle>
-            <BlockDes>
-              <p>You will get only those email notification what you want.</p>
-            </BlockDes>
-          </BlockHeadContent>
-        </BlockBetween>
-      </BlockHead>
-
-      <BlockContent>
-        <div className="gy-3">
-          <div className="g-item">
-            <div className="custom-control custom-switch">
-              <InputSwitch id="custom-switch3" checked label="Notify me by email about sales and latest news" />
-            </div>
-          </div>
-          <div className="g-item">
-            <div className="custom-control custom-switch">
-              <InputSwitch id="feature-update" label="Email me about new features and updates" />
-            </div>
-          </div>
-          <div className="g-item">
-            <div className="custom-control custom-switch">
-              <InputSwitch id="account-tips" checked label="Email me about tips on using account" />
-            </div>
-          </div>
-        </div>
-      </BlockContent>
+    
+     
 
       <Block >
         <div className="nk-data data-list" style={{marginTop:"35px"}}>
           <div className="data-head">
-            <h6 className="overline-title">My Notifications</h6>
+            <h6 className="overline-title">{t('notif.MyNotif')}</h6>
           </div>
           <div style={{marginTop:"15px"}}></div>
           <DataTable className="card-stretch"  >
@@ -264,7 +248,7 @@ const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
                           className="btn-dim"
                           onClick={(e) => onActionClick(e)}
                         >
-                          You Have {notifList.length} Notifications
+                          {t('notif.YHave')} {notifList.length} Notifications
                         </Button>
                       </span>
                       <span className="d-md-none">
@@ -451,12 +435,13 @@ const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
                               <div className="nk-notification-icon" >
                               <Icon 
                               name={NotificationIcons.find(icon => icon.value === item.type)?.label} 
-                              className={"bg-primary-dim"}
+                              className={item?.isRead==="1" ? "bg-primary-dim" : "bg-danger-dim" }
                               style={{ borderRadius: "50%", width: "30px", height: "30px" }}
                                />
                               </div> 
                               <div className="user-info">
-                                 <strong>{item.description}</strong> 
+                                {item?.isRead==="1" ? item.description : <strong>{item.description}</strong> }
+                                 
                               </div>
                             </div>
                           </Link>
@@ -487,7 +472,7 @@ const UserProfileNotificationPage = ({ sm, updateSm,notifList }) => {
                                             }}
                                           >
                                             <Icon name="trash-empty-fill"></Icon>
-                                            <span>Delete Notification</span>
+                                            <span>{t('notif.DelNotif')}</span>
                                           </DropdownItem>
                                         </li>
                                       </React.Fragment>
