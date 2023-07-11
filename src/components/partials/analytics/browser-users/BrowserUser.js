@@ -4,70 +4,28 @@ import { DropdownItem, UncontrolledDropdown, DropdownToggle, DropdownMenu } from
 import { DataTableRow, DataTableHead, DataTableItem } from "../../../table/DataTable";
 import Icon from "../../../icon/Icon";
 import Progress from "../../../progress/Progress";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
+import { GetDashboardDataAction } from "../../../../features/dashboardSlice";
 
 const BrowserUser = () => {
-  const [browser, setBrowser] = useState("30");
-  const [data, setData] = useState(browserUserData);
-  useEffect(() => {
-    let newData;
-    if (browser === "7") {
-      newData = browserUserDataSet2;
-    } else if (browser === "15") {
-      newData = browserUserDataSet3;
-    } else {
-      newData = browserUserData;
-    }
-    setData(newData);
-  }, [browser]);
+
+  const {dashboardData,status} = useAppSelector((state)=>state.dashboard);
+
+  const progressValueAdmin = Math.round((dashboardData["adminUsers"] / dashboardData["activeUsers"]) * 100);
+  const progressValueGestionnaire = Math.round((dashboardData["gestionaireUsers"] / dashboardData["activeUsers"]) * 100);
+  const progressValueMember = Math.round((dashboardData["memberUsers"] / dashboardData["activeUsers"]) * 100);
+  const progressValueClient = Math.round((dashboardData["clientUsers"] / dashboardData["activeUsers"]) * 100);
+
+
+  
   return (
     <React.Fragment>
       <div className="card-inner mb-n2">
         <div className="card-title-group">
           <div className="card-title card-title-sm">
-            <h6 className="title">Browser Used by Users</h6>
+            <h6 className="title">Platform Users</h6>
           </div>
-          <UncontrolledDropdown className="dropdown">
-            <DropdownToggle className="dropdown-toggle dropdown-indicator btn btn-sm btn-outline-light btn-white">
-              {browser} Days
-            </DropdownToggle>
-            <DropdownMenu end className="dropdown-menu-xs">
-              <ul className="link-list-opt no-bdr">
-                <li className={browser === "7" ? "active" : ""}>
-                  <DropdownItem
-                    href="#dropdownitem"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setBrowser("7");
-                    }}
-                  >
-                    <span>7 Days</span>
-                  </DropdownItem>
-                </li>
-                <li className={browser === "15" ? "active" : ""}>
-                  <DropdownItem
-                    href="#dropdownitem"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setBrowser("15");
-                    }}
-                  >
-                    <span>15 Days</span>
-                  </DropdownItem>
-                </li>
-                <li className={browser === "30" ? "active" : ""}>
-                  <DropdownItem
-                    href="#dropdownitem"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setBrowser("30");
-                    }}
-                  >
-                    <span>30 Days</span>
-                  </DropdownItem>
-                </li>
-              </ul>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+  
         </div>
       </div>
 
@@ -77,38 +35,81 @@ const BrowserUser = () => {
             <span>Browser</span>
           </DataTableRow>
           <DataTableRow className="text-end">
-            <span>Users</span>
+            <span>{dashboardData["activeUsers"]} Users</span>
           </DataTableRow>
           <DataTableRow>
-            <span>% Users</span>
+            <span></span>
           </DataTableRow>
-          <DataTableRow className="tb-col-sm text-end">
-            <span>Bounce Rate</span>
-          </DataTableRow>
+       
         </DataTableHead>
-        {data.map((item) => {
-          return (
-            <DataTableItem key={item.id}>
+            <DataTableItem key={1}>
               <DataTableRow>
                 <div className="icon-text">
-                  <Icon className={`text-${item.theme}`} name="globe"></Icon>
-                  <span className="tb-lead">{item.browser}</span>
+                  <Icon className={`text-primary`} name="globe"></Icon>
+                  <span className="tb-lead">Administrators</span>
                 </div>
               </DataTableRow>
               <DataTableRow className="text-end">
                 <span className="tb-sub tb-amount">
-                  <span>{item.users}</span>
+                  <span>{dashboardData["adminUsers"]}</span>
                 </span>
               </DataTableRow>
               <DataTableRow>
-                <Progress value={item.userPercentage} size="md" className="progress-alt bg-transparent" />
+                <Progress value={progressValueAdmin} size="md" className="progress-alt bg-transparent" />
               </DataTableRow>
-              <DataTableRow className="tb-col-sm text-end">
-                <span className="tb-sub">{item.bounceRate}%</span>
-              </DataTableRow>
+              
             </DataTableItem>
-          );
-        })}
+            <DataTableItem key={2}>
+              <DataTableRow>
+                <div className="icon-text">
+                  <Icon className={`text-danger`} name="globe"></Icon>
+                  <span className="tb-lead">Project Managers</span>
+                </div>
+              </DataTableRow>
+              <DataTableRow className="text-end">
+                <span className="tb-sub tb-amount">
+                  <span>{dashboardData["gestionaireUsers"]}</span>
+                </span>
+              </DataTableRow>
+              <DataTableRow>
+                <Progress value={progressValueGestionnaire} size="md" className="progress-alt bg-transparent" />
+              </DataTableRow>
+              
+            </DataTableItem>
+            <DataTableItem key={3}>
+              <DataTableRow>
+                <div className="icon-text">
+                  <Icon className={`text-info`} name="globe"></Icon>
+                  <span className="tb-lead">Team Members</span>
+                </div>
+              </DataTableRow>
+              <DataTableRow className="text-end">
+                <span className="tb-sub tb-amount">
+                  <span>{dashboardData["memberUsers"]}</span>
+                </span>
+              </DataTableRow>
+              <DataTableRow>
+                <Progress value={progressValueMember} size="md" className="progress-alt bg-transparent" />
+              </DataTableRow>
+              
+            </DataTableItem>
+            <DataTableItem key={4}>
+              <DataTableRow>
+                <div className="icon-text">
+                  <Icon className={`text-orange`} name="globe"></Icon>
+                  <span className="tb-lead">Clients</span>
+                </div>
+              </DataTableRow>
+              <DataTableRow className="text-end">
+                <span className="tb-sub tb-amount">
+                  <span>{dashboardData["clientUsers"]}</span>
+                </span>
+              </DataTableRow>
+              <DataTableRow>
+                <Progress value={progressValueClient} size="md" className="progress-alt bg-transparent" />
+              </DataTableRow>
+              
+            </DataTableItem>
       </div>
     </React.Fragment>
   );

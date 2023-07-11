@@ -17,7 +17,7 @@ import {
 import { Form,  Spinner, Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link,useMatch,useNavigate,useParams } from "react-router-dom";
-import {useState,useEffect}  from 'react';
+import {useState }  from 'react';
 import { useAppDispatch } from '../../app/store';
 import { ChangeUserPasswordAction } from '../../features/authSlice';
 import { useTranslation } from "react-i18next";

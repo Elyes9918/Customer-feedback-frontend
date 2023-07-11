@@ -59,6 +59,7 @@ const Login = () => {
             if(rememberMe===true){
               localStorage.setItem("rememberMe",rememberMe.toString());
             }
+
             navigate(`/dashboard`);
             window.location.reload();
           });

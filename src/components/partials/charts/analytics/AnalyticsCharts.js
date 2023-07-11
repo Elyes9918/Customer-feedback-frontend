@@ -294,19 +294,27 @@ export const TCDoughnut = ({ state, className }) => {
   );
 };
 
-export const SessionDoughnut = ({ state, className }) => {
-  const [data, setData] = useState(deviceStatusData);
-  useEffect(() => {
-    let filteredData;
-    if (state === "7") {
-      filteredData = deviceStatusDataSet2;
-    } else if (state === "15") {
-      filteredData = deviceStatusDataSet3;
-    } else {
-      filteredData = deviceStatusDataSet4;
-    }
-    setData(filteredData);
-  }, [state]);
+export const SessionDoughnut = ({  className,openP,waitingP,closedP }) => {
+
+   var ProjectData = {
+    labels: ["Open", "Waiting", "Closed"],
+    dataUnit: "People",
+    legend: false,
+    datasets: [
+      {
+        borderColor: "#fff",
+        backgroundColor: ["#9cabff", "#b8acff", "#7de1f8"],
+        data: [openP, waitingP,closedP],
+      },
+    ],
+  };
+
+  const [data, setData] = useState(ProjectData);
+
+  useEffect(()=>{
+
+  },[openP,waitingP,closedP])
+
   return (
     <Doughnut
       className={className}

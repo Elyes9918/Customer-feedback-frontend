@@ -4,12 +4,12 @@ import {  IUser, IUserForm } from "../../src/types/User";
 import { ChangePasswordApi, LoginUserApi, RefreshTokenApi, RegisterUserApi, ResetPasswordRequestApi } from "../services/AuthService";
 import { IjwtPayload } from "../../src/types/Jwt";
 
-const jwtpayload : IjwtPayload = {} as any;
+const loggedUser : IUserForm = {} as any;
 
 
 const initialState = {
     authStatus : ApiStatus.ideal,
-    jwtpayload
+    loggedUser
 }
 
 
@@ -43,7 +43,6 @@ export const RefreshTokenAction = createAsyncThunk(
 )
 
 
-
 export const LogoutUserAction = createAsyncThunk(
     "auth/logoutUserAction",
     async () => {
@@ -74,9 +73,6 @@ export const RegisterUserAction = createAsyncThunk(
 )
 
 
-
-
-
 const authSlice = createSlice({
     name:"auth",
     initialState,
@@ -90,7 +86,7 @@ const authSlice = createSlice({
 
         builder.addCase(LoginUserAction.fulfilled,(state,action)=>{
             state.authStatus = ApiStatus.success;
-            // state.jwtpayload = action.payload;
+            // state.loggedUser = action.payload;
         });
 
         builder.addCase(LoginUserAction.rejected,(state)=>{

@@ -72,9 +72,6 @@ export const unAssignFeedbackAction = createAsyncThunk("user/unAssignFeedbackAct
 });
 
 
-
-
-
 const userSlice = createSlice({
     name:"user",
     initialState,
@@ -140,8 +137,6 @@ const userSlice = createSlice({
         state.status = ApiStatus.error;
       });
 
-
-    
     }
 })
 

@@ -1,93 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SessionDoughnut } from "../../charts/analytics/AnalyticsCharts";
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import { Icon } from "../../../Component";
+import { useAppSelector } from "../../../../app/store";
 
 const SessionDevice = () => {
   const [sessionDevice, setSessionDevices] = useState("30");
+
+  const {dashboardData,status} = useAppSelector((state)=>state.dashboard);
+
+
+
+  const progressOpenProjects = Math.round(((dashboardData["projectsStatus"] && dashboardData["projectsStatus"]["openProjects"]) / dashboardData["projects"]) * 10000)/100;
+
+  const progressWaitingProjects = Math.round(( (dashboardData["projectsStatus"] && dashboardData["projectsStatus"]["waitingProjects"]) / dashboardData["projects"]) * 10000)/100;
+
+  const progressClosedProjects = Math.round(( (dashboardData["projectsStatus"] && dashboardData["projectsStatus"]["closedProjects"]) / dashboardData["projects"]) * 10000)/100;
+
+
+  useEffect(()=>{
+
+  },[dashboardData])
+
   return (
     <React.Fragment>
       <div className="card-title-group">
         <div className="card-title card-title-sm">
-          <h6 className="title">Sessions by devices</h6>
+          <h6 className="title">Projects Status</h6>
         </div>
-        <UncontrolledDropdown>
-          <DropdownToggle className="dropdown-toggle dropdown-indicator btn btn-sm btn-outline-light btn-white">
-            {sessionDevice} Days
-          </DropdownToggle>
-          <DropdownMenu end className=" dropdown-menu-xs">
-            <ul className="link-list-opt no-bdr">
-              <li className={sessionDevice === "7" ? "active" : ""}>
-                <DropdownItem
-                  tag="a"
-                  href="#dropdownitem"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSessionDevices("7");
-                  }}
-                >
-                  <span>7 Days</span>
-                </DropdownItem>
-              </li>
-              <li className={sessionDevice === "15" ? "active" : ""}>
-                <DropdownItem
-                  tag="a"
-                  href="#dropdownitem"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSessionDevices("15");
-                  }}
-                >
-                  <span>15 Days</span>
-                </DropdownItem>
-              </li>
-              <li className={sessionDevice === "30" ? "active" : ""}>
-                <DropdownItem
-                  tag="a"
-                  href="#dropdownitem"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSessionDevices("30");
-                  }}
-                >
-                  <span>30 Days</span>
-                </DropdownItem>
-              </li>
-            </ul>
-          </DropdownMenu>
-        </UncontrolledDropdown>
+        {dashboardData["projects"]} Projects
       </div>
       <div className="device-status my-auto">
         <div className="device-status-ck">
-          <SessionDoughnut className="analytics-doughnut" state={sessionDevice} />
+          {progressClosedProjects &&
+          <SessionDoughnut className="analytics-doughnut"  openP={progressOpenProjects} closedP={progressClosedProjects} waitingP={progressWaitingProjects} />}
+          
         </div>
         <div className="device-status-group">
           <div className="device-status-data">
-            <Icon style={{ color: "#798bff" }} name="monitor"></Icon>
-            <div className="title">Desktop</div>
-            <div className="amount"> {sessionDevice === "7" ? "50.5" : sessionDevice === "15" ? "70.5" : "84.5"}%</div>
-            <div className="change up text-danger">
-              <Icon name="arrow-long-up"></Icon>
-              {sessionDevice === "7" ? "2.5" : sessionDevice === "15" ? "4.5" : "10.5"}%
-            </div>
+            <Icon style={{ color: "#798bff" }} name="plus-round-fill"></Icon>
+            <div className="title">Open</div>
+            <div className="amount"> {progressOpenProjects}%</div>
+
           </div>
           <div className="device-status-data">
-            <Icon style={{ color: "#baaeff" }} name="mobile"></Icon>
-            <div className="title">Mobile</div>
-            <div className="amount"> {sessionDevice === "7" ? "32.2" : sessionDevice === "15" ? "25.2" : "14.2"}%</div>
-            <div className="change up text-danger">
-              <Icon name="arrow-long-up"></Icon>
-              {sessionDevice === "7" ? "12.5" : sessionDevice === "15" ? "114.5" : "110.5"}%
-            </div>
+            <Icon style={{ color: "#baaeff" }} name="stop-circle-fill"></Icon>
+            <div className="title">Waiting</div>
+            <div className="amount"> {progressWaitingProjects}%</div>
+           
           </div>
           <div className="device-status-data">
-            <Icon style={{ color: "#7de1f8" }} name="tablet"></Icon>
-            <div className="title">Tablet</div>
-            <div className="amount"> {sessionDevice === "7" ? "10.3" : sessionDevice === "15" ? "4.3" : "1.3"}%</div>
-            <div className="change up text-danger">
-              <Icon name="arrow-long-up"></Icon>
-              {sessionDevice === "7" ? "25.5" : sessionDevice === "15" ? "14.5" : "15.5"}%
-            </div>
+            <Icon style={{ color: "#7de1f8" }} name="minus-round-fill"></Icon>
+            <div className="title">Closed</div>
+            <div className="amount"> {progressClosedProjects}%</div>
+            
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ const menu = [
   {
     icon: "growth-fill",
     text: "Analytics",
-    role: "CLIENT,ADMIN,GESTIONNAIRE,MEMBER",
+    role: "ADMIN,GESTIONNAIRE,MEMBER",
     link: "/dashboard",
   },
   {

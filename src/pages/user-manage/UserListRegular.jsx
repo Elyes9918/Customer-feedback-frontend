@@ -257,7 +257,7 @@ const UserListRegularPage = () => {
                   <Icon name="menu-alt-r"></Icon>
                 </Button>
                 <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
-                  <ul className="nk-block-tools g-3">
+                  {/* <ul className="nk-block-tools g-3">
                     <li>
                       <Button color="light" outline className="btn-white">
                         <Icon name="download-cloud"></Icon>
@@ -265,7 +265,7 @@ const UserListRegularPage = () => {
                       </Button>
                     </li>
                    
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
             </BlockHeadContent>

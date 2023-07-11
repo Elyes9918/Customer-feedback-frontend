@@ -41,12 +41,8 @@ function App() {
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("rememberMe");
       }
-
     }
-
   }
-
-    
 
     
   return (
@@ -57,41 +53,40 @@ function App() {
           <Route element ={<AuthProtectedRoutes/>}>
 
               <Route path="/dashboard" element={<Layout/>}/>  
-        
-              {/* User Pages  -----------------------------------------------------------------------------*/}
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
-                <Route path="/user-list" element={<Layout/>}/>
-              </Route>
+      
+            {/* User Pages  -----------------------------------------------------------------------------*/}
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN'/>}>
+              <Route path="/user-list" element={<Layout/>}/>
+            </Route>
 
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE,MEMBER'/>}>
-                <Route path="/user-details/:userId" element={<Layout/>}/>
-              </Route>
-
-
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,CLIENT,GESTIONNAIRE,MEMBER'/>}>
-                <Route path="/user-profile" element={<Layout/>}/>
-              </Route>
-
-              {/* Project Pages -----------------------------------------------------------------------------*/}
-
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE'/>}>
-                <Route path="/projects" element={<Layout/>}/>
-              </Route>
-
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE,MEMBER,CLIENT'/>}>
-                <Route path="/my-projects" element={<Layout/>}/>
-                <Route path="/project-details/:projectId" element={<Layout/>}/>
-              </Route>
-
-              {/* Feedback Pages -----------------------------------------------------------------------------*/}
-
-              <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE,MEMBER,CLIENT'/>}>
-                <Route path="/feedbacks/:projectId" element={<Layout/>}/>
-                <Route path="/feedback-details/:feedbackId" element={<Layout/>}/>
-              </Route>
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE,MEMBER'/>}>
+              <Route path="/user-details/:userId" element={<Layout/>}/>
+            </Route>
 
 
-              <Route path="/*" element={<Navigate to="/dashboard" replace/>}/>
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,CLIENT,GESTIONNAIRE,MEMBER'/>}>
+              <Route path="/user-profile" element={<Layout/>}/>
+            </Route>
+
+            {/* Project Pages -----------------------------------------------------------------------------*/}
+
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE'/>}>
+              <Route path="/projects" element={<Layout/>}/>
+            </Route>
+
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE,MEMBER,CLIENT'/>}>
+              <Route path="/my-projects" element={<Layout/>}/>
+              <Route path="/project-details/:projectId" element={<Layout/>}/>
+            </Route>
+
+            {/* Feedback Pages -----------------------------------------------------------------------------*/}
+
+            <Route element={<RoleProtectedRoutes rolesRequired='ADMIN,GESTIONNAIRE,MEMBER,CLIENT'/>}>
+              <Route path="/feedbacks/:projectId" element={<Layout/>}/>
+              <Route path="/feedback-details/:feedbackId" element={<Layout/>}/>
+            </Route>
+
+            <Route path="/*" element={<Navigate to="/dashboard" replace/>}/>
 
           </Route>
 
@@ -112,8 +107,6 @@ function App() {
 
         </Routes>
      
-      
-
   );
 }
 

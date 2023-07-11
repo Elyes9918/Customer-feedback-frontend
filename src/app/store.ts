@@ -9,6 +9,7 @@ import CommentSlice from "../features/CommentSlice";
 import ImageSlice from "../features/ImageSlice";
 import FileSlice from "../features/FileSlice";
 import NotificationSlice from "../features/NotificationSlice";
+import dashboardSlice from "../features/dashboardSlice";
 
 
 
@@ -22,7 +23,8 @@ export const store = configureStore({
     comment:CommentSlice,
     image:ImageSlice,
     file:FileSlice,
-    notification:NotificationSlice
+    notification:NotificationSlice,
+    dashboard: dashboardSlice
   }
   
   

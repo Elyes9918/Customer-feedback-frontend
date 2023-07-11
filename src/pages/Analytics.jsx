@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Content from "../layout/content/Content";
 import AudienceOverview from "../components/partials/analytics/audience-overview/AudienceOverview";
 import ActiveUser from "../components/partials/analytics/active-user/ActiveUser";
@@ -21,9 +21,21 @@ import {
   Col,
   PreviewAltCard,
 } from "../components/Component";
+import { useAppDispatch } from "../app/store";
+import { GetDashboardDataAction } from "../features/dashboardSlice";
 
 const AnalyticsHomePage = () => {
   const [sm, updateSm] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(GetDashboardDataAction()).then((data)=>{
+      console.log(data.payload);
+    });
+  },[] );
+
+
   return (
     <React.Fragment>
       <Content>
@@ -44,51 +56,7 @@ const AnalyticsHomePage = () => {
                 </Button>
                 <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
                   <ul className="nk-block-tools g-3">
-                    <li>
-                      <UncontrolledDropdown>
-                        <DropdownToggle tag="a" className="dropdown-toggle btn btn-white btn-dim btn-outline-light">
-                          <Icon className="d-none d-sm-inline" name="calender-date"></Icon>
-                          <span>
-                            <span className="d-none d-md-inline">Last</span> 30 Days
-                          </span>
-                          <Icon className="dd-indc" name="chevron-right"></Icon>
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <ul className="link-list-opt no-bdr">
-                            <li>
-                              <DropdownItem
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                Last 30 days
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                Last 6 months
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                Last 3 weeks
-                              </DropdownItem>
-                            </li>
-                          </ul>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
-                    </li>
+                    
                     <li className="nk-block-tools-opt">
                       <Button color="primary">
                         <Icon name="reports"></Icon>
@@ -101,6 +69,7 @@ const AnalyticsHomePage = () => {
             </BlockHeadContent>
           </div>
         </BlockHead>
+
 
         <Block>
           <Row className="g-gs">
@@ -124,24 +93,41 @@ const AnalyticsHomePage = () => {
                 <TrafficChannel />
               </Card>
             </Col>
-            <Col md="6" xxl="3">
-              <PreviewAltCard className="h-100">
+            
+            <Col md="2" xxl="2">
+              <PreviewAltCard className="h-40">
                 <TrafficDougnut />
               </PreviewAltCard>
             </Col>
-            <Col md="6" xxl="3">
-              <PreviewAltCard className="h-100">
-                <UserMap />
+            <Col md="2" xxl="2">
+              <PreviewAltCard className="h-40">
+                <TrafficDougnut />
               </PreviewAltCard>
-            </Col>
-            <Col xxl="6">
+            </Col>  
+            <Col md="2" xxl="2">
+              <PreviewAltCard className="h-40">
+                <TrafficDougnut />
+              </PreviewAltCard>
+            </Col>  
+            <Col md="2" xxl="2">
+              <PreviewAltCard className="h-40">
+                <TrafficDougnut />
+              </PreviewAltCard>
+            </Col> 
+            <Col md="2" xxl="2">
+              <PreviewAltCard className="h-40">
+                <TrafficDougnut />
+              </PreviewAltCard>
+            </Col> 
+            <Col md="2" xxl="2">
+              <PreviewAltCard className="h-40">
+                <TrafficDougnut />
+              </PreviewAltCard>
+            </Col> 
+            
+              <Col xxl="6">
               <Card className="h-100">
                 <BrowserUser />
-              </Card>
-            </Col>
-            <Col md="6" xxl="3">
-              <Card className="h-100">
-                <PageViewer />
               </Card>
             </Col>
             <Col md="6" xxl="3">
@@ -149,6 +135,18 @@ const AnalyticsHomePage = () => {
                 <SessionDevice />
               </PreviewAltCard>
             </Col>
+            <Col md="6" xxl="3">
+              <PreviewAltCard className="h-100">
+                <UserMap />
+              </PreviewAltCard>
+            </Col>
+          
+            {/* <Col md="6" xxl="3">
+              <Card className="h-100">
+                <PageViewer />
+              </Card>
+            </Col> */}
+            
           </Row>
         </Block>
       </Content>

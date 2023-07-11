@@ -887,7 +887,7 @@ export var TimeOnSiteData = {
 };
 
 export var deviceStatusData = {
-  labels: ["Desktop", "Mobile", "Tablet"],
+  labels: ["Open", "Waiting", "Closed"],
   dataUnit: "People",
   legend: false,
   datasets: [
@@ -900,7 +900,7 @@ export var deviceStatusData = {
 };
 
 export var deviceStatusDataSet4 = {
-  labels: ["Desktop", "Mobile", "Tablet"],
+  labels: ["Open", "Waiting", "Closed"],
   dataUnit: "People",
   legend: false,
   datasets: [
@@ -913,7 +913,7 @@ export var deviceStatusDataSet4 = {
 };
 
 export var deviceStatusDataSet2 = {
-  labels: ["Desktop", "Mobile", "Tablet"],
+  labels: ["Open", "Waiting", "Closed"],
   dataUnit: "People",
   legend: false,
   datasets: [
@@ -926,7 +926,7 @@ export var deviceStatusDataSet2 = {
 };
 
 export var deviceStatusDataSet3 = {
-  labels: ["Desktop", "Mobile", "Tablet"],
+  labels: ["Open", "Waiting", "Closed"],
   dataUnit: "People",
   legend: false,
   datasets: [
