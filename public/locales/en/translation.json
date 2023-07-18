@@ -278,6 +278,27 @@
         "DelNotif":"Delete Notification",
         "NotifDeleted":"Notification Deleted"
         
+    },
+    "dashboard":{
+        "PlatformUsers":"Platform Users",
+        "Roles":"Roles",
+        "Administrators":"Administrators",
+        "ProjectManagers":"Project Managers",
+        "TeamMembers":"Team Members",
+        "Clients":"Clients",
+        "Users":"Users",
+        "ProjectStatus":"Project Status",
+        "FeedbacksStatus":"Feedbacks Status",
+        "Projects":"Projects",
+        "Open":"Open",
+        "Waiting":"Waiting",
+        "Closed":"Closed",
+        "InProgress":"In Progress",
+        "ToReview":"To Review",
+        "Completed":"Completed",
+        "Leaderboard":"Leaderboard",
+        "Company":"Company",
+        "WebsiteAnalytics":"Website Analytics"
     }
 
   }

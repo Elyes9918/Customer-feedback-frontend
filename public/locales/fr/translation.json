@@ -278,8 +278,28 @@
             "MyNotif":"Mes notifications",
             "YHave":"Vous avez reçu",
             "DelNotif":"Supprimer la notification",
-            "NotifDeleted":"Notification supprimée"
-            
+            "NotifDeleted":"Notification supprimée"  
+        },
+        "dashboard":{
+            "PlatformUsers":"Les utilisateurs de la plateforme",
+            "Roles":"Les rôles",
+            "Administrators":"Administrateurs",
+            "ProjectManagers":"Gestionnaires de projet",
+            "TeamMembers":"Memebres d'équipe",
+            "Clients":"Clients",
+            "Users":"Utilisateurs",
+            "ProjectStatus":"Statut des projets",
+            "FeedbacksStatus":"Statut des feedbacks",
+            "Projects":"Projets",
+            "Open":"Ouvert",
+            "Waiting":"En attente",
+            "Closed":"Fermé",
+            "InProgress":"En cours",
+            "ToReview":"A vérifier",
+            "Completed":"Terminé",
+            "Leaderboard":"Tableau de bord",
+            "Company":"Société",
+            "WebsiteAnalytics":"Statistiques de la plateforme"
         }
 
     }

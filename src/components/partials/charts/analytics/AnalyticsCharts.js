@@ -16,6 +16,7 @@ import {
   deviceStatusDataSet3,
   deviceStatusDataSet4,
 } from "./AnalyticsData";
+import { useTranslation } from "react-i18next";
 
 export const AudienceLineChart = ({ state }) => {
   const [data, setData] = useState(analyticOvData);
@@ -294,10 +295,13 @@ export const TCDoughnut = ({ state, className }) => {
   );
 };
 
-export const SessionDoughnut = ({  className,openP,waitingP,closedP }) => {
+export const SessionDoughnut = ({  className,openP,waitingP,closedP,ClosedP1 }) => {
+
+  const {t}= useTranslation();
+
 
    var ProjectData = {
-    labels: ["Open", "Waiting", "Closed"],
+    labels: [`${t('dashboard.Open')}`, `${t('dashboard.Waiting')}`, `${t('dashboard.Closed')}`],
     dataUnit: "People",
     legend: false,
     datasets: [
@@ -345,6 +349,62 @@ export const SessionDoughnut = ({  className,openP,waitingP,closedP }) => {
       }}
     ></Doughnut>
   );
+};
+
+export const FeedbackDoughnut = ({  className,open,inProgress,toReview,completed }) => {
+
+  const {t}= useTranslation();
+
+
+  var ProjectData = {
+   labels: [`${t('dashboard.Open')}`, `${t('dashboard.InProgress')}`, `${t('dashboard.ToReview')}`,`${t('dashboard.Completed')}`],
+   dataUnit: "People",
+   legend: false,
+   datasets: [
+     {
+       borderColor: "#fff",
+       backgroundColor: ["#9cabff", "#b8acff", "#7de1f8","#2596be"],
+       data: [open, inProgress,toReview,completed],
+     },
+   ],
+ };
+
+ const [data, setData] = useState(ProjectData);
+
+ useEffect(()=>{
+
+ },[open,inProgress,toReview,completed])
+
+ return (
+   <Doughnut
+     className={className}
+     data={data}
+     options={{
+       legend: {
+         display: false,
+       },
+       rotation: -1.5,
+       cutoutPercentage: 70,
+       maintainAspectRatio: false,
+       tooltips: {
+         enabled: true,
+         backgroundColor: "#fff",
+         borderColor: "#eff6ff",
+         borderWidth: 2,
+         titleFontSize: 13,
+         titleFontColor: "#6783b8",
+         titleMarginBottom: 6,
+         bodyFontColor: "#9eaecf",
+         bodyFontSize: 12,
+         bodySpacing: 4,
+         yPadding: 10,
+         xPadding: 10,
+         footerMarginTop: 0,
+         displayColors: false,
+       },
+     }}
+   ></Doughnut>
+ );
 };
 
 export const Map = ({ set }) => {
